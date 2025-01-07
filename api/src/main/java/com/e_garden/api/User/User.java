@@ -34,4 +34,6 @@ public class User {
     @Getter
     @Column(nullable = true , length = 2048)
     private String password;
+
+
 }
