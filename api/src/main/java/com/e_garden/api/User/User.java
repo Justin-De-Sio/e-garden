@@ -1,11 +1,8 @@
 package com.e_garden.api.User;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-
 
 @Entity
 @Table(name = "users")
@@ -32,8 +29,17 @@ public class User {
 
     @Setter
     @Getter
-    @Column(nullable = true , length = 2048)
+    @Column(nullable = true, length = 2048)
     private String password;
 
+    public User() {
+        this.name = "";
+        this.surname = "";
+    }
 
+    public User(String email, String password) {
+        super();
+        this.email = email;
+        this.password = password;
+    }
 }

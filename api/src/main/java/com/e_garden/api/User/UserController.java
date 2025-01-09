@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "*")
@@ -14,11 +16,17 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(()-> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllUser() {
+        return userService.getAllUsers();
     }
 
     @PostMapping
@@ -42,4 +50,14 @@ public class UserController {
         }
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody User user)  {
+        return userService.verify(user);
+    }
+
+    @PostMapping("/firstLogin")
+    public String firstLogin() {
+        return null;
+        // tODO
+    }
 }
