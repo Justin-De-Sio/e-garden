@@ -41,8 +41,18 @@ public class ReportController {
     // Mettre à jour un rapport existant (TODO : logique spécifique)
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
-        // TODO: Implémenter la logique de mise à jour
-        return ResponseEntity.notFound().build();
+        return reportService.getReportById(id)
+                .map(existingReport -> {
+                    // Mettre à jour les champs nécessaires
+                    existingReport.setReportDate(reportDetails.getReportDate());
+                    existingReport.setContent(reportDetails.getContent());
+                    existingReport.setUser(reportDetails.getUser());
+
+                    // Sauvegarder les modifications
+                    Report updatedReport = reportService.saveReport(existingReport);
+                    return ResponseEntity.ok(updatedReport);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Supprimer un rapport par ID
