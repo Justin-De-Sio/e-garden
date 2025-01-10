@@ -51,8 +51,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user)  {
-        return userService.verify(user);
+    public ResponseEntity<String> login(@RequestBody User user)  {
+        String token = userService.verify(user);// Cette méthode retourne directement le token ou null
+
+// Si un token est trouvé, renvoyer une réponse 200 OK avec le token
+        if (token != null) {
+            return ResponseEntity.ok(token);
+        } else {
+            return ResponseEntity.notFound().build();// Si aucun token n'est trouvé, renvoyer une réponse 404 Not Found
+        }
     }
 
     @PostMapping("/firstLogin")
