@@ -29,4 +29,10 @@ public class Report {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    // Cette méthode est appelée automatiquement avant l'insertion dans la base de données
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now(); // Définit automatiquement la date de création
+    }
 }
