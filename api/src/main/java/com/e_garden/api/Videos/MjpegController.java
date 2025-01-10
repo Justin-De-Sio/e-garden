@@ -18,7 +18,8 @@ public class MjpegController {
     @GetMapping(value = "/start")
     public String startStream() {
         // Lance la capture
-        String rtspUrl = "";
+        String rtspUrl =    System.getenv("RTSPURL");
+
         rtspReader.startCapture(rtspUrl);
 
         return "Capture démarrée pour : " + rtspUrl;
@@ -32,7 +33,6 @@ public class MjpegController {
 
     /**
      * Ce endpoint diffuse un flux MJPEG.
-     * Ouvrez http://localhost:8080/stream/video dans un navigateur après avoir démarré la capture.
      */
     @GetMapping(value = "/video", produces = MediaType.IMAGE_JPEG_VALUE)
     public void getVideo(HttpServletResponse response) throws IOException {

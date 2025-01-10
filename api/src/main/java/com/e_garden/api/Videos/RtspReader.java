@@ -6,6 +6,8 @@ import org.bytedeco.opencv.opencv_videoio.VideoCapture;
 import org.bytedeco.opencv.global.opencv_imgcodecs; // pour imencode()
 import org.springframework.stereotype.Service;
 
+import static org.bytedeco.opencv.global.opencv_videoio.CAP_FFMPEG;
+
 @Service
 public class RtspReader {
 
@@ -19,6 +21,8 @@ public class RtspReader {
         capturing = true;
 
         capture = new VideoCapture(rtspUrl);
+        capture.set(CAP_FFMPEG, 1);
+
         if (!capture.isOpened()) {
             capturing = false;
             throw new RuntimeException("Impossible d'ouvrir le flux RTSP : " + rtspUrl);
