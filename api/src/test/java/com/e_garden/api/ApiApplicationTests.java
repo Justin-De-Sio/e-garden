@@ -11,9 +11,4 @@ class ApiApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void login() {
-
-	}
-
 }
