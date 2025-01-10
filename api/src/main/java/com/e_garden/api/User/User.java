@@ -50,12 +50,12 @@ public class User {
 
     @Setter
     @Getter
-    @Column(nullable = true, length = 255)
+    @Column(nullable = true, length = 255, name = "class_name")
     private String className;
 
     @Setter
     @Getter
-    @Column(nullable = true)
+    @Column(nullable = true, name ="class_number")
     private Integer groupNumber;
 
     public User() {

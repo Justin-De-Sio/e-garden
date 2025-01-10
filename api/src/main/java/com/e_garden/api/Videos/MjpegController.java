@@ -18,7 +18,7 @@ public class MjpegController {
     @GetMapping(value = "/start")
     public String startStream() {
         // Lance la capture
-        String rtspUrl =    System.getenv("RTSPURL");
+        String rtspUrl =    System.getenv("RTSP_URL");
 
         rtspReader.startCapture(rtspUrl);
 
