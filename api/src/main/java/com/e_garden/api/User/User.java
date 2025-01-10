@@ -32,9 +32,21 @@ public class User {
     @Column(nullable = true, length = 2048)
     private String password;
 
+    @Setter
+    @Getter
+    @Column(nullable = true, length = 255)
+    private String className;
+
+    @Setter
+    @Getter
+    @Column(nullable = true)
+    private Integer groupNumber;
+
     public User() {
         this.name = "";
         this.surname = "";
+        this.groupNumber = -1;
+        this.className = "";
     }
 
     public User(String email, String password) {
