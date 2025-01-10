@@ -112,12 +112,12 @@
     cursor: pointer;
   }
   
-  
 
   .wrapper_img{
     display: flex;
     justify-content: center;
     padding: 18px;
+    padding-left: 25px;
 
   }
   
