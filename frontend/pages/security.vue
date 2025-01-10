@@ -1,6 +1,6 @@
 
 <template>
-  <navbar></navbar>
+  <navbar_v2></navbar_v2>
 </template>
 
 
