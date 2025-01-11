@@ -16,6 +16,10 @@ public class InsertDataConf {
         return args -> {
             User thomas = new User("thomas.robert@ece.fr", "thomas");
             User gabin = new User("gabin.cornaire@ece.fr", "gabin");
+            gabin.setSurname("cornaire");
+            gabin.setName("Gabin");
+            gabin.setClassName("ING4");
+            gabin.setGroupNumber(3);
             User justin = new User("justin.desio@ece.fr", "justin");
             User augustin = new User("augustin.meaudre@ece.fr", "augustin");
             User enzo = new User("enzo.romero@ece.fr", "enzo");
