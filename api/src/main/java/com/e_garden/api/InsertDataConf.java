@@ -14,10 +14,17 @@ public class InsertDataConf {
     @Bean
     CommandLineRunner commandLineRunner(UserService userService) {
         return args -> {
-            User user = new User("thomas", "thomas");
-            User gabin = new User("gabin", "gabin");
-            userService.saveUsers(List.of(user, gabin));
-
+            User thomas = new User("thomas.robert@ece.fr", "thomas");
+            User gabin = new User("gabin.cornaire@ece.fr", "gabin");
+            gabin.setSurname("cornaire");
+            gabin.setName("Gabin");
+            gabin.setClassName("ING4");
+            gabin.setGroupNumber(3);
+            User justin = new User("justin.desio@ece.fr", "justin");
+            User augustin = new User("augustin.meaudre@ece.fr", "augustin");
+            User enzo = new User("enzo.romero@ece.fr", "enzo");
+            User julien = new User("julien.parquet@ece.fr", "enzo");
+            userService.saveUsers(List.of(thomas, gabin, justin, augustin, enzo, julien));
         };
     }
 }

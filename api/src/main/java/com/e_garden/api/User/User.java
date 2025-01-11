@@ -27,14 +27,42 @@ public class User {
     @Column(nullable = false, length = 255)
     private String email;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Setter
     @Getter
     @Column(nullable = true, length = 2048)
     private String password;
 
+    @Setter
+    @Getter
+    @Column(nullable = true, length = 255, name = "class_name")
+    private String className;
+
+    @Setter
+    @Getter
+    @Column(nullable = true, name ="class_number")
+    private Integer groupNumber;
+
     public User() {
         this.name = "";
         this.surname = "";
+        this.groupNumber = -1;
+        this.className = "";
     }
 
     public User(String email, String password) {

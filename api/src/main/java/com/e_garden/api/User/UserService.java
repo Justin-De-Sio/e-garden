@@ -37,6 +37,9 @@ public class UserService  {
 
     public User saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return null;
+        }
         return userRepository.save(user);
     }
 
@@ -62,6 +65,4 @@ public class UserService  {
             return "false";
         }
     }
-
-
 }

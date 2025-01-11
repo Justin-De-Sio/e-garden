@@ -19,7 +19,7 @@ public class JWTService {
     private final String secretKey;
 
     public JWTService() {
-        // TODO
+        // TODO : faire une key static pour le projet en production
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGen.generateKey();
@@ -50,7 +50,6 @@ public class JWTService {
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
