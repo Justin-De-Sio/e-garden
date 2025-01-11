@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -31,6 +32,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        user.setPassword("defaultpasswordegarden");
         return userService.saveUser(user);
     }
 
@@ -52,7 +54,13 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user)  {
+        System.out.println(user.getEmail());
         return userService.verify(user);
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestBody User user) {
+        return "true";
     }
 
     @PostMapping("/firstLogin")

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class DotenvConfig {
 
     @Bean
-    public Dotenv load() {
-        Dotenv dotenv = Dotenv.configure().directory("api/").load();
+    public static Dotenv load() {
+        Dotenv dotenv = Dotenv.configure().directory("api/").filename(".env").load();
         dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
         return dotenv;
     }

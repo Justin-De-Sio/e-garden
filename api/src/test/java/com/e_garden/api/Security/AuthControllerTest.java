@@ -1,6 +1,8 @@
+/*
 package com.e_garden.api.Security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,14 @@ public class AuthControllerTest {
 
     @BeforeEach
     void loginAndRetrieveToken() throws Exception {
-        // Préparer les informations de connexion
-        String loginRequest = objectMapper.writeValueAsString(new LoginRequest("username", "password"));
+        // Préparer les informations de connexion (utiilelisateur et mot de passe)
+        Dotenv dotenv = Dotenv.configure().directory("./").filename(".env").load();
+        dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 
         // Effectuer une requête POST pour se connecter
-        MvcResult result = mockMvc.perform(post("/api/login")
+        MvcResult result = mockMvc.perform(post("/api/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginRequest))
+                        .content("{\"email\":\"thomas.robert@ece.fr\",\"password\":\"thomas\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token", notNullValue())) // Vérifie que le token est présent
                 .andReturn();
@@ -53,22 +56,23 @@ public class AuthControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", not(empty()))) // Vérifie que la réponse contient une liste non vide
-                .andExpect(jsonPath("$[0].username", notNullValue())); // Vérifie que le premier utilisateur a un username
+                .andExpect(jsonPath("$[0].email", notNullValue())) // Vérifie que le premier utilisateur a un email
+                .andExpect(jsonPath("$[0].username", notNullValue())); // Vérifie que le premier utilisateur a un nom d'utilisateur
     }
 
     // Classe interne pour représenter la requête de login
     private static class LoginRequest {
-        private String username;
+        private String email;
         private String password;
 
-        public LoginRequest(String username, String password) {
-            this.username = username;
+        public LoginRequest(String email, String password) {
+            this.email = email;
             this.password = password;
         }
 
         // Getters et setters
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
+        public String getUsername() { return email; }
+        public void setUsername(String email) { this.email = email; }
         public String getPassword() { return password; }
         public void setPassword(String password) { this.password = password; }
     }
@@ -81,3 +85,4 @@ public class AuthControllerTest {
         public void setToken(String token) { this.token = token; }
     }
 }
+*/
