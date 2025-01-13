@@ -1,21 +1,30 @@
 package com.e_garden.api.Events;
 
-import com.e_garden.api.Events.Events;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
-@Getter
 @Setter
-
+@Getter
 public class Events {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String description;
+    private String createdAt;
 
+    // Constructeurs, getters, setters
+    public Events() {}
 
-
+    public Events(String title, String description, String createdAt) {
+        this.title = title;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
 
 }
