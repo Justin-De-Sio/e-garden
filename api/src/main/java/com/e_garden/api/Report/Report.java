@@ -24,7 +24,7 @@ public class Report {
     @Column(name = "report_date", nullable = false)
     private LocalDateTime reportDate;
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", nullable = true, columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "created_at", updatable = false)
