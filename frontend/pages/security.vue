@@ -3,7 +3,7 @@
 
   <div id="app">
     <CustomComponent
-        iconPath="/assets/conge.png"
+        iconPath="/_nuxt/assets/conge.png"
         iconBackgroundColor="#95BD75"
         title="XX passages"
         subtitle="Nombre de passage"
@@ -12,7 +12,7 @@
 
   <div id="app">
     <CustomComponent
-        iconClass="@/assets/disque.png"
+        iconPath="/_nuxt/assets/disque.png"
         iconBackgroundColor="#457B9D54"
         title="XX% utilisé"
         subtitle="stockage disque dur"
@@ -21,7 +21,7 @@
 
   <div id="app">
     <CustomComponent
-        iconClass="@/assets/attention.png"
+        iconPath="/_nuxt/assets/attention.png"
         iconBackgroundColor="#DA555280"
         title="XX absences de CR"
         subtitle="Alertes"
