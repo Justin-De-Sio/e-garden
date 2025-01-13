@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "events")
@@ -16,12 +18,12 @@ public class Events {
     private Long id;
     private String title;
     private String description;
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     // Constructeurs, getters, setters
     public Events() {}
 
-    public Events(String title, String description, String createdAt) {
+    public Events(String title, String description, LocalDateTime createdAt) {
         this.title = title;
         this.description = description;
         this.createdAt = createdAt;
