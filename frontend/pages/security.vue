@@ -1,8 +1,7 @@
 
 <template>
-  <navbar></navbar>
+  <navbar_2></navbar_2>
   <div class="wrapper_notification_component">
-    <notification.vue></notification.vue>
   </div>
 </template>
 
