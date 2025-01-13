@@ -53,12 +53,10 @@ public class JWTService {
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
-        System.out.println(claims.toString());
         return claimResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
-        System.out.println(token);
         return Jwts.parser()
                 .verifyWith(getKey())
                 .build()
@@ -68,7 +66,6 @@ public class JWTService {
 
     public boolean validateToken(String token, UserPrincipal userDetails) {
         final String userName = extractEmail(token);
-        System.out.println(userName);
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
