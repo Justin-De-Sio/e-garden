@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JWTFilter extends OncePerRequestFilter {
 
     private JWTService jwtService;
 
     private ApplicationContext applicationContext;
 
     @Autowired
-    public JwtFilter(JWTService jwtService, ApplicationContext applicationContext) {
+    public JWTFilter(JWTService jwtService, ApplicationContext applicationContext) {
         this.jwtService = jwtService;
         this.applicationContext = applicationContext;
     }

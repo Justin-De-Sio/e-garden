@@ -34,17 +34,20 @@ public class UserController {
     }
 
     @PostMapping
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public User createUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
     @PutMapping("/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody  User userDetails) {
         // TODO
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (userService.getUserById(id).isEmpty()) {
             return ResponseEntity.notFound().build();

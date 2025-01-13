@@ -24,10 +24,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConf {
 
     private UserDetailsService userService;
-    private JwtFilter jwtFilter;
+    private JWTFilter jwtFilter;
 
     @Autowired
-    public SecurityConf(UserDetailsService userService, JwtFilter jwtFilter){
+    public SecurityConf(UserDetailsService userService, JWTFilter jwtFilter){
         this.userService = userService;
         this.jwtFilter = jwtFilter;
 
@@ -39,7 +39,7 @@ public class SecurityConf {
         return httpSecurity
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(url+"user/login", url+"csrf-token").permitAll()
+                        .requestMatchers(url+"user/login", url+"csrf-token", "/swagger-ui.html", "/api-docs").permitAll()
                        // .anyRequest().permitAll())
                         .anyRequest().authenticated())
                 //.httpBasic(Customizer.withDefaults())
