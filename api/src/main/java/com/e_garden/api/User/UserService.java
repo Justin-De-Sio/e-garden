@@ -31,9 +31,4 @@ public class UserService {
     public void deleteUSer(Long id) {
         userRepository.deleteById(id);
     }
-
-    public Optional<User> getUserByBadgeId(Long badgeId) {
-        return userRepository.findByBadgeId(badgeId);
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.e_garden.api.Events;
 
+import com.e_garden.api.User.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 @Setter
 @Getter
-public class Events {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,33 +23,23 @@ public class Events {
     @Column(nullable = true)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
-    public Events() {
+    // Relation avec l'utilisateur (un événement peut être lié à un seul utilisateur ou aucun)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = true) // La contrainte nullable=true permet qu'un événement ne soit pas nécessairement lié à un utilisateur
+    private User user;
+
+    public Event() {
         this.title = "";
         this.createdAt = LocalDateTime.now();
+        this.user = null;
     }
 
-    public Events(String title, String description) {
+    public Event(String title, String description) {
         this();
         this.title = title;
         this.description = description;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }
