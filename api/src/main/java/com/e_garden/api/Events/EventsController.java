@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/events")
@@ -70,9 +72,17 @@ public class EventsController {
 
     @PostMapping("/door/{id}")
     public ResponseEntity<Events> saveEntry(@PathVariable Long id) {
-        return null;
-        // TODO :
+        // Création d'un événement pour le passage de portail
+        Events event = new Events();
+        event.setTitle("Door Passed");
+        event.setDescription("User with the badge ID : " + id + " passed the door.");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+        event.setCreatedAt(LocalDateTime.parse(formattedDateTime)); // Ajout de l'heure formatée
 
+        // Sauvegarde de l'événement en base de données
+        Events savedEvent = eventsService.saveEvents(event);
+
+        return ResponseEntity.ok(savedEvent); // Retourne l'événement créé
     }
-
 }

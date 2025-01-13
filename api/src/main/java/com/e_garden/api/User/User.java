@@ -11,6 +11,14 @@ import lombok.Setter;
 @Table(name = "users")
 public class User {
 
+    //Partie pour event lié au badge
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String fullName;
+    private Long badgeId; // ID du badge
+    // Getters et Setters
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
