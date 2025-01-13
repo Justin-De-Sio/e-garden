@@ -23,12 +23,10 @@ public class EventController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/paginated/{nb}")
-    public ResponseEntity<Page<Event>> getPaginatedEvents(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size,
-                                                          @PathVariable String nb) {
-        Page<Event> eventsPage = eventService.getPaginatedEvents(page, size);
-        return ResponseEntity.ok(eventsPage);
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Event>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
+                                                          @RequestParam(defaultValue = "0") Integer page) {
+        return ResponseEntity.ok(eventService.getPaginatedEvents(page, size));
     }
 
     @DeleteMapping("/{id}")

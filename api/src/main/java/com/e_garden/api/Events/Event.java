@@ -1,6 +1,7 @@
 package com.e_garden.api.Events;
 
 import com.e_garden.api.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class Event {
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
-    // Relation avec l'utilisateur (un événement peut être lié à un seul utilisateur ou aucun)
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true) // La contrainte nullable=true permet qu'un événement ne soit pas nécessairement lié à un utilisateur
     private User user;
