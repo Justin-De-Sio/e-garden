@@ -32,6 +32,12 @@ public class ReportController {
         return reportService.getAllReports();
     }
 
+    // Récupérer les 10 derniers comptes rendus non remplis
+    @GetMapping("/unfilled")
+    public List<Report> getLast10UnfilledReports() {
+        return reportService.findLast10UnfilledReports();
+    }
+
     // Créer un nouveau rapport
     @PostMapping
     public Report createReport(@RequestBody Report report) {

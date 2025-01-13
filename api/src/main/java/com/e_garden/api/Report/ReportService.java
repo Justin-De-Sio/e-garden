@@ -43,4 +43,8 @@ public class ReportService {
     public void deleteReport(Long id) {
         reportRepository.deleteById(id);
     }
+
+    public List<Report> findLast10UnfilledReports() {
+        return reportRepository.findTop10ByContentIsNullOrContentOrderByReportDateDesc("");
+    }
 }
