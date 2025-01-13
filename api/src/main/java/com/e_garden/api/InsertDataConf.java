@@ -1,5 +1,6 @@
 package com.e_garden.api;
 
+import com.e_garden.api.User.Roles;
 import com.e_garden.api.User.User;
 import com.e_garden.api.User.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -20,10 +21,17 @@ public class InsertDataConf {
             gabin.setName("Gabin");
             gabin.setClassName("ING4");
             gabin.setGroupNumber(3);
+            gabin.setRole(String.valueOf(Roles.ADMINISTRATEUR));
             User justin = new User("justin.desio@ece.fr", "justin");
             User augustin = new User("augustin.meaudre@ece.fr", "augustin");
             User enzo = new User("enzo.romero@ece.fr", "enzo");
             User julien = new User("julien.parquet@ece.fr", "enzo");
+            thomas.setRole(String.valueOf(Roles.ADMINISTRATEUR));
+            enzo.setRole(String.valueOf(Roles.ADMINISTRATEUR));
+            julien.setRole(String.valueOf(Roles.ADMINISTRATEUR));
+            augustin.setRole(String.valueOf(Roles.ADMINISTRATEUR));
+            justin.setRole(String.valueOf(Roles.ADMINISTRATEUR));
+
             userService.saveUsers(List.of(thomas, gabin, justin, augustin, enzo, julien));
         };
     }

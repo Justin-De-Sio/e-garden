@@ -58,7 +58,6 @@ public class JWTFilter extends OncePerRequestFilter {
                                 null, Collections.singleton(new SimpleGrantedAuthority(role)));
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
             }
         }
         filterChain.doFilter(request, response);

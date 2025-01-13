@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('UTILISATEUR')")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userService.getUserByEmail(user.getUsername()).getId() != id)
+            return ResponseEntity.notFound().build();
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(()-> ResponseEntity.notFound().build());

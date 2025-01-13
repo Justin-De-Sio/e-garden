@@ -1,12 +1,14 @@
 package com.e_garden.api.User;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -85,10 +87,6 @@ public class User {
 
     public void setClassName(String className) {
         this.className = className;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {
