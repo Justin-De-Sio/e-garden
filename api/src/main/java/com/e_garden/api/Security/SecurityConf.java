@@ -1,5 +1,7 @@
 package com.e_garden.api.Security;
 
+import com.e_garden.api.Exception.CustomAccessDeniedHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConf {
 
     private UserDetailsService userService;
@@ -39,9 +43,15 @@ public class SecurityConf {
                        // .anyRequest().permitAll())
                         .anyRequest().authenticated())
                 //.httpBasic(Customizer.withDefaults())
+                .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandlers()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandlers() {
+        return new CustomAccessDeniedHandler();
     }
 
     @Bean

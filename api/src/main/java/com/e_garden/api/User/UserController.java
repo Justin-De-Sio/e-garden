@@ -2,6 +2,8 @@ package com.e_garden.api.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('UTILISATEUR')")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
@@ -25,6 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
+    @Secured({"ADMINISTRATEUR"})
     public List<User> getAllUser() {
         return userService.getAllUsers();
     }
