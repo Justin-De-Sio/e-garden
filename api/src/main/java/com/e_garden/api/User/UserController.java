@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -20,17 +21,24 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/profil/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserProfil(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userService.getUserByEmail(user.getUsername()).getId() != id)
+        if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
             return ResponseEntity.notFound().build();
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(()-> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(()-> ResponseEntity.notFound().build());
+    }
     @GetMapping("/all")
     @Secured({"ADMINISTRATEUR"})
     public List<User> getAllUser() {
