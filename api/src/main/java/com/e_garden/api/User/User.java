@@ -27,6 +27,8 @@ public class User {
     @Column(nullable = false, length = 255)
     private String email;
 
+    private Roles role;
+
     public String getEmail() {
         return email;
     }
@@ -58,11 +60,20 @@ public class User {
     @Column(nullable = true, name ="class_number")
     private Integer groupNumber;
 
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
     public User() {
         this.name = "";
         this.surname = "";
         this.groupNumber = -1;
         this.className = "";
+        this.role = Roles.UTILISATEUR;
     }
 
     public User(String email, String password) {

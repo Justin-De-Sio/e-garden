@@ -60,7 +60,7 @@ public class UserService  {
                         new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
                 );
         if (authentication.isAuthenticated()){
-            return jwtService.generateToken(user.getEmail());
+            return jwtService.generateToken(user.getEmail(), String.valueOf(user.getRole()));
         } else {
             return "false";
         }
