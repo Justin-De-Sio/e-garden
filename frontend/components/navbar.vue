@@ -73,31 +73,57 @@
   </nav>
 </template>
 
+
 <script>
+
 export default {
-  data(){
+  data() {
     return {
       IsExpanded: false,
       profil_name: "Profil",
     };
   },
-  methods : {
-    toggleMenu(){
+  methods: {
+    toggleMenu() {
       this.IsExpanded = !this.IsExpanded;
     },
     async fetchProfilName() {
-      try{
-        const response = await fetch("http://localhost:8080/api/user/all");
-        const data = await response.json();
-        this.profil_name = data.name;
-      }catch(error){
-        console.error("Erreur lors de la récupération du nom :", error);
-        this.profil_name = "Profil";
-      }
+      try {
+        const jwtCookie = useCookie('jwt');
+        const token = jwtCookie.value;
 
-    }
+        if (!token) {
+          console.error("Aucun token JWT trouvé dans les cookies.");
+          this.profil_name = "Profil";
+          return;
+        }
+
+        const response = await fetch("http://localhost:8080/api/user/all", {
+          method: "GET",
+          headers: {
+            Authorization: `${token}`, 
+          },
+        });
+
+        if (!response.ok) {
+          console.error("Erreur lors de la récupération des données :", response.statusText);
+          this.profil_name = "Profil";
+          return;
+        }
+
+        const data = await response.json();
+        this.profil_name = data.name; 
+      } catch (error) {
+        console.error("Erreur lors de la récupération du nom :", error);
+        this.profil_name = "Erreur";
+      }
+    },
+  },
+  mounted() {
+    this.fetchProfilName(); 
   },
 };
+
 </script>
 
 <style lang="css" scoped>
