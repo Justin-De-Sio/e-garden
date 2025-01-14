@@ -4,5 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
     '~/assets/css/reset.css', // Inclure le fichier CSS global
-  ]
+  ],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
+
+  axios: {
+    baseURL: 'http://localhost:8080/api/user/login',
+  };
 })
