@@ -37,7 +37,6 @@
 import { login } from '~/services/auth';
 
   export default {
-    name: 'LoginPage',
     data() {
       return {
         email: '',
@@ -51,24 +50,27 @@ import { login } from '~/services/auth';
         passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
       },
       async handleSubmit() {
-        if (!this.email || !this.password) {
-          alert('Veuillez remplir tous les champs.');
-          return;
-        }
-  
-        try 
-        {
-          const token = await login(this.email, this.password, this.$cookies);
-          
-          console.log('Token JWT :', token);
-          this.$router.push('/security');
-          alert('Connexion réussie !');
-        } catch (error) {
-          console.error('Erreur lors de la connexion :', error);
-          alert('Une erreur est survenue. Veuillez réessayer.');
-        }
-      },
+      if (!this.email || !this.password) {
+        alert('Veuillez remplir tous les champs.');
+        return;
+      }
+
+      try {
+        // Appel de la fonction login depuis auth.js
+        const token = await login(this.email, this.password, this.$cookies);
+
+        // Affiche un message de succès
+        alert('Connexion réussie !');
+        console.log('Token JWT stocké :', token);
+
+        // Redirection vers la page sécurisée
+        this.$router.push('/securite');
+      } catch (error) {
+        console.error('Erreur lors de la connexion :', error.message || error);
+        alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
+      }
     },
+  },
   };
   </script>
 
