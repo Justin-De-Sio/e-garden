@@ -9,22 +9,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JWTFilter extends OncePerRequestFilter {
 
     private JWTService jwtService;
 
     private ApplicationContext applicationContext;
 
     @Autowired
-    public JwtFilter(JWTService jwtService, ApplicationContext applicationContext) {
+    public JWTFilter(JWTService jwtService, ApplicationContext applicationContext) {
         this.jwtService = jwtService;
         this.applicationContext = applicationContext;
     }
@@ -49,16 +51,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserPrincipal userDetails = (UserPrincipal) applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(email);
-            System.out.println(userDetails.toString());
             if (jwtService.validateToken(token, userDetails)) {
-                String roles = jwtService.extractRoles(token);
-                // TODO controler le roles pour l'accès aux données
+                String role = jwtService.extractRoles(token);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails,
-                                null, userDetails.getAuthorities());
+                                null, Collections.singleton(new SimpleGrantedAuthority(role)));
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
             }
         }
         filterChain.doFilter(request, response);

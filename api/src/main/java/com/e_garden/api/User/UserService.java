@@ -55,12 +55,20 @@ public class UserService  {
         userRepository.deleteById(id);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public String verify(User user) {
+        User userInfo = getUserByEmail(user.getEmail());
+        if (userInfo == null) {
+            return "false";
+        }
         Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
                 );
         if (authentication.isAuthenticated()){
-            return jwtService.generateToken(user.getEmail(), String.valueOf(user.getRole()));
+            return jwtService.generateToken(user.getEmail(), userInfo.getRole());
         } else {
             return "false";
         }
