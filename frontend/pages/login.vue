@@ -34,6 +34,8 @@
   </template>
   
   <script>
+import { login } from '~/services/auth';
+
   export default {
     name: 'LoginPage',
     data() {
@@ -54,30 +56,12 @@
           return;
         }
   
-        try {
-          // Requête POST vers le backend pour l'authentification
-          const response = await fetch('http://localhost:8080/api/user/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: this.email, password: this.password }),
-          });
-  
-          if (!response.ok) {
-            alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
-            return;
-          }
-  
-          const token = await response.text();
-
-        // Utiliser useCookie pour gérer les cookies
-          const jwtCookie = useCookie('jwt');
-          jwtCookie.value = token; // Stocker le token dans un cookie
-
-  
+        try 
+        {
+          const token = await login(this.email, this.password, this.$cookies);
+          console.log('Token JWT :', token);
+          this.$router.push('/security');
           alert('Connexion réussie !');
-          this.$router.push('/securite'); // Redirection vers la page dashboard
         } catch (error) {
           console.error('Erreur lors de la connexion :', error);
           alert('Une erreur est survenue. Veuillez réessayer.');

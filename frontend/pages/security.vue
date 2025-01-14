@@ -1,6 +1,6 @@
 
 <template>
-  <navbar_2></navbar_2>
+  <navbar></navbar>
   <div class="wrapper_notification_component">
   </div>
 </template>
