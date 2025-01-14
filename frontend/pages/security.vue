@@ -7,9 +7,16 @@
 
 
 <script setup lang="ts">
+import { JWTPayload } from '~/services/jwtpayload';
+
   definePageMeta({
     middleware: 'auth', 
   });
+
+  const sessionCookie = useCookie('session');
+  const token = sessionCookie.value;
+  JWTPayload(token);
+
 </script>
 
 
