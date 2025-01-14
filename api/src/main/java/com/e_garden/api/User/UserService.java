@@ -61,13 +61,21 @@ public class UserService  {
         log.createLog(String.valueOf(Levels.USER), "Utilisateur supprimé", "user id : " + id);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public String verify(User user) {
+        User userInfo = getUserByEmail(user.getEmail());
+        if (userInfo == null) {
+            return "false";
+        }
         Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
                 );
         if (authentication.isAuthenticated()){
             log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.toString());
-            return jwtService.generateToken(user.getEmail());
+            return jwtService.generateToken(user.getEmail(), userInfo.getRole());
         } else {
             log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
             return "false";

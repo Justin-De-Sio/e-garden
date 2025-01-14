@@ -2,45 +2,48 @@ package com.e_garden.api.User;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
-    @Getter
     @Column(nullable = true, length = 255)
     private String name;
-
-    @Setter
-    @Getter
     @Column(nullable = true, length = 255)
     private String surname;
-
-    @Setter
-    @Getter
     @Column(nullable = false, length = 255)
     private String email;
+    @Column(nullable = false, name = "roles")
+    private String role;
+    @Column(nullable = true, length = 2048)
+    private String password;
+    @Column(nullable = true, length = 255, name = "class_name")
+    private String className;
+    @Column(nullable = true, name = "class_number")
+    private Integer groupNumber;
 
-    public String getName() {
-        return name;
+    public User() {
+        this.name = "";
+        this.surname = "";
+        this.groupNumber = -1;
+        this.className = "";
+        this.role = String.valueOf(Roles.UTILISATEUR);
     }
+
+    public User(String email, String password) {
+        this();
+        this.email = email;
+        this.password = password;
+    }
+
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
     }
 
     public String getSurname() {
@@ -49,6 +52,18 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public Integer getGroupNumber() {
@@ -75,32 +90,12 @@ public class User {
         this.password = password;
     }
 
-    @Setter
-    @Getter
-    @Column(nullable = true, length = 2048)
-    private String password;
-
-    @Setter
-    @Getter
-    @Column(nullable = true, length = 255, name = "class_name")
-    private String className;
-
-    @Setter
-    @Getter
-    @Column(nullable = true, name ="class_number")
-    private Integer groupNumber;
-
-    public User() {
-        this.name = "";
-        this.surname = "";
-        this.groupNumber = -1;
-        this.className = "";
+    public String getRole() {
+        return String.valueOf(role);
     }
 
-    public User(String email, String password) {
-        super();
-        this.email = email;
-        this.password = password;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
