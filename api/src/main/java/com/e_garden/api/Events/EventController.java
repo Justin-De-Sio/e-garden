@@ -24,7 +24,7 @@ public class EventController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<Event>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
+    public ResponseEntity<Page<EventDTO>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
                                                           @RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(eventService.getPaginatedEvents(page, size));
     }
@@ -42,8 +42,9 @@ public class EventController {
     @PostMapping("/door/{id}")
     public ResponseEntity<Event> saveEntry(@PathVariable Long id) {
         Event event = new Event();
-        event.setTitle("Door Passed");
-        event.setDescription("User with the badge ID : " + id + " passed the door.");
+        event.setTitle("Enregistrement de passage");
+        event.setEventType(0);
+        event.setDoorNumber(Math.toIntExact(id));
 
         // TODO sauvegarder l'utilisateurs courant
         //UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
