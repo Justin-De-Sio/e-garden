@@ -50,6 +50,7 @@
 <script setup>
   import { ref, computed } from 'vue';
   import { useRoute } from 'vue-router';
+  import { JWTPayload } from '~/services/jwtpayload';
 
   // Définir les rôles et menus
   const roles = ref([
@@ -80,7 +81,7 @@
   ]);
 
   // Gestion de l'état du menu
-  const isExpanded = ref(false);
+  const IsExpanded = ref(false);
 
   // Utiliser la route actuelle pour récupérer les paramètres d'URL
   const currentPath = ref("");
@@ -88,16 +89,22 @@
   
   console.log("Route ", route.path);
 
+  
+  const sessionCookie = useCookie('session');
+  const token = sessionCookie.value;
+  const rolePayload = JWTPayload(token);
 
-  // Calculer le rôle courant depuis l'URL
+
+
   const currentRole = computed(() => {
-    const roleFromUrl = route.query.role; // Récupère `role` depuis l'URL
-    return roles.value.find((role) => role.name === currentRoleProp?.name) || null;
-  });
+  return roles.value.find((role) => role.name.toLowerCase() === (rolePayload || "").toLowerCase()) || null;
+});
+
+  console.log(currentRole);
 
   // Basculer l'état du menu
   const toggleMenu = () => {
-    isExpanded.value = !isExpanded.value;
+    IsExpanded.value = !IsExpanded.value;
   };
 </script>
   

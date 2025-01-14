@@ -1,8 +1,7 @@
 
 <template>
-  <navbar/>
-
-  <div class="wrapper_notification_component">
+  <navbar v-if="test" :currentprops="test"/>
+    <div class="wrapper_notification_component">
   </div>
 </template>
 
@@ -18,7 +17,9 @@ import { JWTPayload } from '~/services/jwtpayload';
   
   const sessionCookie = useCookie('session');
   const token = sessionCookie.value;
+
   const rolePayload = JWTPayload(token);
+  const test = {'role':rolePayload};
   console.log('Role Payload:', rolePayload);
 
 
