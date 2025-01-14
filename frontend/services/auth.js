@@ -1,26 +1,24 @@
-import axios from 'axios';
 
-export async function login(email, password, $cookies) {
+export async function login(email_var, password_var) {
   try {
-    const response = await axios.post('http://localhost:8080/api/user/login', {
-      email,
-      password,
+    const response = await fetch('http://localhost:8080/api/user/login', 
+      {
+      method: 'POST',
+      headers:{
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({email: email_var, password: password_var})
     });
 
-    const token = response.data;
+    const token = await response.text();
 
     if (!token) {
       throw new Error('Aucun token reçu. Vérifiez votre backend.');
     }
 
-    // Stocker le token dans les cookies
-    $cookies.set('jwt', token, {
-      httpOnly: false, // Le cookie peut être lu côté client
-      secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en production
-      maxAge: 60 * 60 * 24, // Durée de vie en secondes (24 heures)
-    });
-
-    return token; // Retourne le token pour un usage éventuel
+    const jwtCookie = useCookie('session');
+    jwtCookie.value = token
+    alert('Connexion réussie !');
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);
     throw error;

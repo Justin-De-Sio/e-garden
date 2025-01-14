@@ -57,16 +57,15 @@ import { login } from '~/services/auth';
 
       try {
         // Appel de la fonction login depuis auth.js
-        const token = await login(this.email, this.password, this.$cookies);
+        const token = await login(this.email, this.password);
 
         // Affiche un message de succès
         alert('Connexion réussie !');
-        console.log('Token JWT stocké :', token);
 
         // Redirection vers la page sécurisée
-        this.$router.push('/securite');
+        this.$router.push('/security');
       } catch (error) {
-        console.error('Erreur lors de la connexion :', error.message || error);
+
         alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
       }
     },
