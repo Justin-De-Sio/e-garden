@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="project_placement" :class="{expanded: IsExpanded}">
-       
+
         <NuxtLink to="/" >
           <div class="main_wrapper" :class="{expanded: IsExpanded}">
             <div class="wrapper_img":class="{expanded: IsExpanded}" >
@@ -20,7 +20,7 @@
             </div>
             <h4>Dashboard</h4>
           </div>
-        
+
         </NuxtLink>
         <NuxtLink to="/">
           <div class="main_wrapper" :class="{expanded: IsExpanded}">
@@ -29,7 +29,7 @@
             </div>
             <h4>Sécurité</h4>
           </div>
-          
+
         </NuxtLink>
         <NuxtLink to="/">
           <div class="main_wrapper" :class="{expanded: IsExpanded}">
@@ -38,7 +38,7 @@
             </div>
             <h4>Capteurs</h4>
           </div>
-          
+
         </NuxtLink>
         <NuxtLink to="/">
           <div class="main_wrapper" :class="{expanded: IsExpanded}">
@@ -101,7 +101,7 @@ export default {
         const response = await fetch("http://localhost:8080/api/user/all", {
           method: "GET",
           headers: {
-            Authorization: `${token}`, 
+            Authorization: `${token}`,
           },
         });
 
@@ -112,7 +112,7 @@ export default {
         }
 
         const data = await response.json();
-        this.profil_name = data.name; 
+        this.profil_name = data.name;
       } catch (error) {
         console.error("Erreur lors de la récupération du nom :", error);
         this.profil_name = "Erreur";
@@ -120,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchProfilName(); 
+    this.fetchProfilName();
   },
 };
 
@@ -134,7 +134,7 @@ nav {
   width: 125px;
   height: 100vh;
   background-color: #151b11;
-  
+
   position: relative;
   transition: width 0.3s ease;
 }
@@ -154,7 +154,7 @@ nav.expanded{
   display: flex;
   flex-direction: column;
 
-  height: 100%; 
+  height: 100%;
 }
 
 .project_placement {
@@ -201,7 +201,7 @@ nav.expanded{
 .expand_navbar {
   position: absolute;
   top: 8em;
-  right: -1em; 
+  right: -1em;
   cursor: pointer;
 }
 
@@ -257,7 +257,7 @@ width: 100%;
 }
 
 a.logo-link {
-width: auto; 
+width: auto;
 }
 
 .circle_around_angle img.rotated {
