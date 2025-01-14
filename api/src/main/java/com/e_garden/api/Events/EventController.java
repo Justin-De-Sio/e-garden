@@ -1,9 +1,9 @@
 package com.e_garden.api.Events;
 
+import com.e_garden.api.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/event")
@@ -24,8 +24,8 @@ public class EventController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<EventDTO>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
-                                                          @RequestParam(defaultValue = "0") Integer page) {
+    public ResponseEntity<PageDTO<EventDTO>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
+                                                                @RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(eventService.getPaginatedEvents(page, size));
     }
 

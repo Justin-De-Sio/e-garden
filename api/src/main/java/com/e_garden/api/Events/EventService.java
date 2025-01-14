@@ -1,11 +1,13 @@
 package com.e_garden.api.Events;
 
+import com.e_garden.api.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,12 +19,19 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public Page<EventDTO> getPaginatedEvents(int page, int size) {
+    public PageDTO<EventDTO> getPaginatedEvents(int page, int size) {
         Page<Event> eventPage = eventRepository.findAll(PageRequest.of(page, size));
-
-
-        return eventPage.map(this::getEventDTOFromEvent);
-        //return eventRepository.findAll(PageRequest.of(page, size));
+        List<EventDTO> eventDTOs = eventPage
+                .getContent()
+                .stream()
+                .map(this::getEventDTOFromEvent)
+                .toList();
+        return (new PageDTO<>(
+                eventDTOs,
+                eventPage.getNumber(),
+                eventPage.getSize(),
+                eventPage.getTotalElements()
+        ));
     }
 
     public Optional<Event> getEventsById(Long id) {
@@ -41,23 +50,24 @@ public class EventService {
 
     private EventDTO getEventDTOFromEvent(Event event) {
         EventDTO eventDTO = new EventDTO();
-        eventDTO.id = event.getId();
-        eventDTO.eventType = event.getEventType();
-        eventDTO.title = event.getTitle();
+        eventDTO.setId(event.getId());
+        eventDTO.setEventType(event.getEventType());
+        eventDTO.setTitle(event.getTitle());
+        eventDTO.setUserId(event.getId() == null ? event.getUser().getId() : -1);
         String date = event.getCreatedAt().format(DateTimeFormatter.ofPattern("'le' dd MMMM yyyy 'à' HH'H'mm"));
         return switch (event.getEventType()) {
             case 0 -> {
-                eventDTO.description = event.getUser().getName() + " " +
+                eventDTO.setDescription(event.getUser().getName() + " " +
                         event.getUser().getSurname() + "a badgé " + date +
-                        " à la porte numéro : " + event.getDoorNumber() + ".";
+                        " à la porte numéro : " + event.getDoorNumber() + ".");
                 yield eventDTO;
             }
             case 1 -> {
-                eventDTO.description = "La caméra a détecté un mouvement " + date + ".";
+                eventDTO.setDescription("La caméra a détecté un mouvement " + date + ".");
                 yield eventDTO;
             }
             default -> {
-                eventDTO.description = "erreur interne, type d'événement non reconnu";
+                eventDTO.setDescription("erreur interne, type d'événement non reconnu");
                 yield eventDTO;
             }
         };

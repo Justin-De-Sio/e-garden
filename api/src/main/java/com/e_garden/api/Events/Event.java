@@ -30,7 +30,7 @@ public class Event {
     @Column(nullable = true, name = "door_number")
     private Integer doorNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true) // La contrainte nullable=true permet qu'un événement ne soit pas nécessairement lié à un utilisateur
     private User user;
 

@@ -1,14 +1,16 @@
 package com.e_garden.api.Events;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class EventDTO {
-     Long id;
-     String title;
-     String description;
-     Integer eventType;
-     @Getter
-     Long userId;
+     private Long id;
+     private String title;
+     private String description;
+     private Integer eventType;
+     private Long userId;
 
      public EventDTO() {
      }
