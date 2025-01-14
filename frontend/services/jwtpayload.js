@@ -3,5 +3,5 @@ export function JWTPayload(token){
     const TokenPayload = JSON.parse(atob(split_token[1]));
 
     console.log("Payload : ", TokenPayload.role);
-
+    return TokenPayload.role
 }

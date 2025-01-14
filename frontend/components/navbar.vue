@@ -1,288 +1,274 @@
 <template>
-  <nav :class="{expanded : IsExpanded}">
-    <div class="placement_icon_navbar">
-      <div class="logo_placement">
-        <NuxtLink to="/login" class="logo-link">
-          <img src="../assets/logo.png" alt="Logo" width="80" height="auto" />
-        </NuxtLink>
-      </div>
-      <div class="expand_navbar" @click="toggleMenu">
-        <div class="circle_around_angle">
-            <img :class="{ rotated: IsExpanded }" src="../assets/angle.png" alt="Angle" width="25px" height="25px" />
-        </div>
-      </div>
-      <div class="project_placement" :class="{expanded: IsExpanded}">
-
-        <NuxtLink to="/" >
-          <div class="main_wrapper" :class="{expanded: IsExpanded}">
-            <div class="wrapper_img":class="{expanded: IsExpanded}" >
-              <img src="../assets/applications.png" alt="Application" />
-            </div>
-            <h4>Dashboard</h4>
-          </div>
-
-        </NuxtLink>
-        <NuxtLink to="/">
-          <div class="main_wrapper" :class="{expanded: IsExpanded}">
-            <div class="wrapper_img" :class="{expanded: IsExpanded}">
-              <img src="../assets/camera.png" alt="Camera" />
-            </div>
-            <h4>Sécurité</h4>
-          </div>
-
-        </NuxtLink>
-        <NuxtLink to="/">
-          <div class="main_wrapper" :class="{expanded: IsExpanded}">
-            <div class="wrapper_img":class="{expanded: IsExpanded}">
-              <img src="../assets/capteur.png" alt="Capteur" />
-            </div>
-            <h4>Capteurs</h4>
-          </div>
-
-        </NuxtLink>
-        <NuxtLink to="/">
-          <div class="main_wrapper" :class="{expanded: IsExpanded}">
-            <div class="wrapper_img" :class="{expanded: IsExpanded}">
-              <img src="../assets/gestion.png" alt="Gestion" />
-            </div>
-            <h4>Gestionnaire</h4>
-          </div>
-        </NuxtLink>
-      </div>
-
-      <div class="profil_placement">
-        <NuxtLink to="/">
-            <div class="main_wrapper" id="parametres"  :class="{expanded: IsExpanded}">
-              <div class="wrapper_img" :class="{expanded: IsExpanded}">
-                <img src="../assets/parametres.png" alt="Parametre" />
+    <nav :class="{expanded : IsExpanded}">
+      <ul>
+        <li class="logoItem">
+          <img src="../assets/logo.png" alt="logo" width="80px" height="auto">
+        </li>
+        <li class="expandItem" @click="toggleMenu">
+          <img src="../assets/angle.png" :class="{ rotated: IsExpanded }" alt="angle" width="25px" height="auto">
+        </li>
+        <!-- Project profil -->
+        <li v-if="currentRole" class="role" :class="{expanded : IsExpanded}">
+          <ul :class="{expanded : IsExpanded}">
+            <li
+              v-for="project in currentRole.menuProject"
+              :key="project.name"
+              class="itemProject"
+              :class="{expanded : IsExpanded}"
+              
+            >
+              <div class="hoverItemProject" :class="{expanded : IsExpanded}">
+                <img :src="project.icon" :alt="project.name" width="25" height="25" />
+                <h4 class="nameItemProject" :class="{expanded : IsExpanded}" >{{ project.name }}</h4>
               </div>
-              <h4>Paramètre</h4>
-            </div>
-          </NuxtLink>
-          <NuxtLink to="/">
-            <div class="main_wrapper" :class="{expanded: IsExpanded}">
-              <div class="wrapper_img" :class="{expanded: IsExpanded}">
-                <img src="../assets/profil.png" alt="Profil" />
+            </li>
+          </ul>
+          <!-- Items profil -->
+          <div class="profileContainer" :class="{expanded : IsExpanded}">
+            <li
+              v-for="(project, index) in currentRole.menuProfil"
+              :key="project.name"
+              :class="['itemProfil', { lastItemProfil: index === currentRole.menuProfil.length - 1 }]"
+            >
+              <div class="hoverItemProject" :class="{expanded : IsExpanded}">
+                <img :src="project.icon" :alt="project.name" width="25" height="25" />
+                <h4 class="nameItemProject" :class="{expanded : IsExpanded}">{{ project.name }}</h4>
               </div>
-              <h4>{{ profil_name }}</h4>
-            </div>
-          </NuxtLink>
-      </div>
-
-    </div>
-  </nav>
+            </li>
+          </div>
+        </li>
+        <!-- Si aucun rôle défini -->
+        <li v-else>
+          <p>Aucun rôle spécifié ou rôle invalide.</p>
+        </li>
+      </ul>
+    </nav>
 </template>
 
+  
+  
+<script setup>
+  import { ref, computed } from 'vue';
+  import { useRoute } from 'vue-router';
 
-<script>
-
-export default {
-  data() {
-    return {
-      IsExpanded: false,
-      profil_name: "Profil",
-    };
-  },
-  methods: {
-    toggleMenu() {
-      this.IsExpanded = !this.IsExpanded;
+  // Définir les rôles et menus
+  const roles = ref([
+    {
+      name: 'administrateur',
+      menuProject: [
+        { name: 'Sécurité', icon: '/_nuxt/assets/camera.png' },
+        { name: 'Gestionnaires', icon: '/_nuxt/assets/gestion.png' },
+        { name: 'PPE1', icon: '/_nuxt/assets/capteur.png' },
+        { name: 'PPE2', icon: '/_nuxt/assets/applications.png' },
+      ],
+      menuProfil: [
+        { name: 'Paramètre', icon: '/_nuxt/assets/parametres.png' },
+        { name: 'Profil', icon: '/_nuxt/assets/profil.png' },
+      ],
     },
-    async fetchProfilName() {
-      try {
-        const jwtCookie = useCookie('jwt');
-        const token = jwtCookie.value;
-
-        if (!token) {
-          console.error("Aucun token JWT trouvé dans les cookies.");
-          this.profil_name = "Profil";
-          return;
-        }
-
-        const response = await fetch("http://localhost:8080/api/user/all", {
-          method: "GET",
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          console.error("Erreur lors de la récupération des données :", response.statusText);
-          this.profil_name = "Profil";
-          return;
-        }
-
-        const data = await response.json();
-        this.profil_name = data.name;
-      } catch (error) {
-        console.error("Erreur lors de la récupération du nom :", error);
-        this.profil_name = "Erreur";
-      }
+    {
+      name: 'utilisateur',
+      menuProject: [
+        { name: 'PPE1', icon: '/_nuxt/assets/capteur.png' },
+        { name: 'PPE2', icon: '/_nuxt/assets/applications.png' },
+      ],
+      menuProfil: [
+        { name: 'Paramètres', icon: '/_nuxt/assets/parametres.png' },
+        { name: 'Profil', icon: '/_nuxt/assets/profil.png' },
+      ],
     },
-  },
-  mounted() {
-    this.fetchProfilName();
-  },
-};
+  ]);
 
+  // Gestion de l'état du menu
+  const isExpanded = ref(false);
+
+  // Utiliser la route actuelle pour récupérer les paramètres d'URL
+  const currentPath = ref("");
+  const route = useRoute();
+  
+  console.log("Route ", route.path);
+
+
+  // Calculer le rôle courant depuis l'URL
+  const currentRole = computed(() => {
+    const roleFromUrl = route.query.role; // Récupère `role` depuis l'URL
+    return roles.value.find((role) => role.name === currentRoleProp?.name) || null;
+  });
+
+  // Basculer l'état du menu
+  const toggleMenu = () => {
+    isExpanded.value = !isExpanded.value;
+  };
 </script>
+  
+<style scoped>
 
-<style lang="css" scoped>
-nav {
-  display: flex;
-  justify-content: center;
-  padding: 0 30px;
-  width: 125px;
-  height: 100vh;
-  background-color: #151b11;
+    :root {
 
-  position: relative;
-  transition: width 0.3s ease;
-}
+        --Gilroy-Med: "Gilroy-Medium";
+        --Gilroy-Bold: "Gilroy-Bold";
+    }
 
-nav.expanded{
-  width: 270px;
+    nav {
+        display: flex;
+        flex-direction: column;
+        width: 130px;
+        height: 100vh;
+        background-color: #151b11;
+        color: white;
+        padding: 1rem;
+        position: relative;
+        transition: width 0.3s ease;
+    }
 
-}
-.logo_placement {
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    nav.expanded{
+        width: 270px;
 
-.placement_icon_navbar{
-  display: flex;
-  flex-direction: column;
-
-  height: 100%;
-}
-
-.project_placement {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.2rem;
-  justify-items: center;
-  margin-top: 5rem;
-}
-
-.project_placement.expanded{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5em;
-  justify-items: start;
-  margin-top: 5em;
-}
-
-.project_placement img {
-  width: 25px;
-  height: auto;
-  cursor: pointer;
-}
-
-
-.wrapper_img{
-  display: flex;
-  justify-content : center;
-  width: 100%;
-  padding: 20px;
-
-}
-
-.wrapper_img.expanded{
-  display: flex;
-  justify-content : center;
-  padding: 20px;
-  padding-left: 30px;
-  width: 0;
-}
+    }
 
 
 
-.expand_navbar {
-  position: absolute;
-  top: 8em;
-  right: -1em;
-  cursor: pointer;
-}
+    .expandItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #151b11;
+        position: absolute;
+        top: 9.5rem;
+        right: -1em; 
+        cursor: pointer;
+        width: 2.5em;
+        height: 2.5em;
+        border-radius: 50%;
 
-.circle_around_angle {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: #151B11;
-  border-radius: 50%;
-  width: 3em;
-  height: 3em;
-}
+    }
 
-.circle_around_angle img {
-  transform: rotate(-90deg);
-  margin-right: 3px;
-  display: block;
-}
+    .expandItem img {
+        display: block;
+        transform: rotate(-90deg);
+        margin-left: 8px;
+    }
 
-.main_wrapper, #parametres{
-  display: flex;
-  flex-direction: row;
-  justify-items: center;
-  align-items: center;
-  border-radius: 15px;
-}
+    .expandItem img.rotated {
+        transform: rotate(90deg);
+    }
 
 
-.main_wrapper.expanded{
-  display: flex;
-  align-items: left;
-  justify-content: flex-start;
-  padding-right: 2em;
-}
+    ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
 
-h4{
-  display: none;
-  color: white;
-  text-decoration: none;
-  font-family: "Gilroy-Medium";
-}
-
-nav.expanded h4 {
-display: block;
-margin-left: 20px;
-}
-
-
-a{
-text-decoration: none;
-color: inherit;
-width: 100%;
-}
-
-a.logo-link {
-width: auto;
-}
-
-.circle_around_angle img.rotated {
-transform: rotate(90deg);
-}
-
-.project_placement .main_wrapper:hover{
-  background-color: #95BD75;
-}
-
-.profil_placement  #parametres:hover {
-background-color: #95BD75;
-}
-
-.profil_placement{
-    margin-top: auto;
-    margin-bottom: 2rem;
-  }
-
-.profil_placement img {
-  width: 25px;
-  height: auto;
-  cursor: pointer;
-}
+    ul.expanded{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        list-style: none;
+        height: 100%;
+        width: 100% ;
+        padding: 0;
+        margin: 0;
+    }
 
 
+    .role {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    .role.expanded{
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .itemProject {
+        margin: 0.5rem 0;
+        cursor: pointer;
+    }
+
+    .itemProject.expanded {
+        margin: 0.5rem 0;
+        cursor: pointer;
+        width: 100%;
+
+    }
+
+    .nameItemProject {
+        display: none;
+    }
+
+    .nameItemProject.expanded {
+        display: flex;
+    }
+
+    .hoverItemProject {
+        padding: 1.2rem 1.4rem;
+        border-radius: 1rem;
+    }
+
+    .hoverItemProject h4{
+        font-family: "Gilroy-Medium";
+    }
+
+    .hoverItemProject.expanded{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        flex-direction: row;
+        gap: 2rem;
+
+    }
+
+    .hoverItemProject:hover {
+        background-color: #95bd75;
+    }
+
+    .logoItem {
+        cursor: pointer;
+        margin: 2rem 0 4rem 0;
+    }
+
+    .profileContainer {
+        margin-top: auto; 
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        width: 100%; 
+    }
+
+    .profileContainer.expanded{
+        margin-top: auto; 
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; 
+        width: 100%; 
+    }
+
+    .itemProfil {
+        cursor: pointer;
+        margin: 0.5rem 0;
+    }
+
+
+    .itemProfil.lastItemProfil .hoverItemProject:hover {
+        background-color: transparent;
+    }
+
+    .itemProfil.lastItemProfil h4 {
+        cursor: default;
+    }
+
+    
 
 </style>
+  
