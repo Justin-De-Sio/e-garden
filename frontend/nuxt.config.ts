@@ -7,7 +7,5 @@ export default defineNuxtConfig({
   ],
   modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
 
-  axios: {
-    baseURL: 'http://localhost:8080/api/user/login',
-  };
+
 })
