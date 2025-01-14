@@ -53,7 +53,7 @@ public class EventService {
         eventDTO.setId(event.getId());
         eventDTO.setEventType(event.getEventType());
         eventDTO.setTitle(event.getTitle());
-        eventDTO.setUserId(event.getId() == null ? event.getUser().getId() : -1);
+        eventDTO.setUserId(event.getUser() == null ? -1 : event.getUser().getId());
         String date = event.getCreatedAt().format(DateTimeFormatter.ofPattern("'le' dd MMMM yyyy 'à' HH'H'mm"));
         return switch (event.getEventType()) {
             case 0 -> {

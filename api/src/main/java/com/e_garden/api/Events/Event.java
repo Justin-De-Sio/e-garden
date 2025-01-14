@@ -35,7 +35,7 @@ public class Event {
     private User user;
 
     public Event() {
-        this.eventType = 0;
+        this.eventType = -1;
         this.title = "";
         this.createdAt = LocalDateTime.now();
         this.user = null;
@@ -45,4 +45,6 @@ public class Event {
         this();
         this.title = title;
     }
+
+
 }
