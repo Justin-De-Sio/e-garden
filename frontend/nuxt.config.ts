@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/reset.css', // Inclure le fichier CSS global
   ],
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
 
 
 })

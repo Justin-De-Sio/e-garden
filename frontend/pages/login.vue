@@ -33,44 +33,46 @@
     </div>  
   </template>
   
-  <script>
-import { login } from '~/services/auth';
+  <script setup>
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { login } from '~/services/auth';
+  
 
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-      };
-    },
-    methods: {
-      togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const type = passwordInput.getAttribute('type');
-        passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
-      },
-      async handleSubmit() {
-      if (!this.email || !this.password) {
-        alert('Veuillez remplir tous les champs.');
-        return;
-      }
-
-      try {
-        // Appel de la fonction login depuis auth.js
-        const token = await login(this.email, this.password);
-
-        // Affiche un message de succès
-        alert('Connexion réussie !');
-
-        // Redirection vers la page sécurisée
-        this.$router.push('/security');
-      } catch (error) {
-
-        alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
-      }
-    },
-  },
+  const email = ref('');
+  const password = ref('');
+  
+  // Accès au routeur
+  const router = useRouter();
+  
+  // Afficher / masquer le mot de passe
+  const togglePassword = () => {
+    const passwordInput = document.getElementById('password');
+    const type = passwordInput.getAttribute('type');
+    passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
   };
+  
+
+  const handleSubmit = async () => {
+    if (!email.value || !password.value) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+  
+    try {
+      // Appel de la fonction login depuis le service auth.js
+      await login(email.value, password.value);
+  
+      router.push('/security');
+    } catch (error) {
+      alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
+    }
+  };
+  
+  // Middleware pour bloquer les utilisateurs connectés (optionnel)
+  definePageMeta({
+    middleware: 'already-log', 
+  });
   </script>
 
   
