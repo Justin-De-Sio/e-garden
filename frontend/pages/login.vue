@@ -77,7 +77,7 @@
 
   
           alert('Connexion réussie !');
-          this.$router.push('/securite'); // Redirection vers la page dashboard
+          this.$router.push('/security'); // Redirection vers la page dashboard
         } catch (error) {
           console.error('Erreur lors de la connexion :', error);
           alert('Une erreur est survenue. Veuillez réessayer.');
