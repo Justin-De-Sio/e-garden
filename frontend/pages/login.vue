@@ -59,6 +59,7 @@ import { login } from '~/services/auth';
         try 
         {
           const token = await login(this.email, this.password, this.$cookies);
+          
           console.log('Token JWT :', token);
           this.$router.push('/security');
           alert('Connexion réussie !');
