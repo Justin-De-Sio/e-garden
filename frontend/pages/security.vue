@@ -1,6 +1,6 @@
 
 <template>
-
+<!--
   <div id="app">
     <CustomComponent
         iconPath="/_nuxt/assets/conge.png"
@@ -27,11 +27,11 @@
         subtitle="Alertes"
     />
   </div>
-  <!--
-  <navbar></navbar>
+
+  <navbar></navbar>-->
   <div class="wrapper_notification_component">
     <notification></notification>
-  </div>-->
+  </div>
 
 </template>
 
@@ -51,7 +51,7 @@ export default {
 <style scoped>
 .wrapper_notification_component{
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
 }
 
