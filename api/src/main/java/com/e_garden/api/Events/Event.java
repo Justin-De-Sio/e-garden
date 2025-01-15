@@ -46,5 +46,15 @@ public class Event {
         this.title = title;
     }
 
-
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", createdAt=" + createdAt +
+                ", eventType=" + eventType +
+                ", doorNumber=" + doorNumber +
+                ", user=" + user +
+                '}';
+    }
 }
