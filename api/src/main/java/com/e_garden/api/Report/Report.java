@@ -33,6 +33,14 @@ public class Report {
     // Cette méthode est appelée automatiquement avant l'insertion dans la base de données
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now(); // Définit automatiquement la date de création
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Report() {
+    }
+
+    public Report(User user, LocalDateTime reportDate) {
+        this.user = user;
+        this.reportDate = reportDate;
     }
 }

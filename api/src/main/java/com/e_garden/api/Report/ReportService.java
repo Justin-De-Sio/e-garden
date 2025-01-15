@@ -1,8 +1,11 @@
 package com.e_garden.api.Report;
+import com.e_garden.api.PageDTO;
 import com.e_garden.api.User.User;
 import com.e_garden.api.User.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +47,14 @@ public class ReportService {
         reportRepository.deleteById(id);
     }
 
-    public List<Report> findLast10UnfilledReports() {
-        return reportRepository.findTop10ByContentIsNullOrContentOrderByReportDateDesc("");
+    public PageDTO<Report> getPaginatedReports(int page, int size) {
+        Page<Report> reportPage = reportRepository.findAllByOrderByReportDateAsc(PageRequest.of(page, size));
+
+         return  (new PageDTO<>(
+                reportPage.getContent(),
+                reportPage.getNumber(),
+                reportPage.getSize(),
+                reportPage.getTotalElements()
+        ));
     }
 }

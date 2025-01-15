@@ -1,10 +1,11 @@
 package com.e_garden.api.Report;
 
+import com.e_garden.api.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/report")
@@ -18,7 +19,6 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    // Récupérer un rapport par ID
     @GetMapping("/{id}")
     public ResponseEntity<Report> getReportById(@PathVariable Long id) {
         return reportService.getReportById(id)
@@ -26,42 +26,29 @@ public class ReportController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Récupérer tous les rapports
-    @GetMapping
-    public List<Report> getAllReports() {
-        return reportService.getAllReports();
+    @GetMapping("/paginated")
+    public ResponseEntity<PageDTO<Report>> getPaginatedReports(@RequestParam(defaultValue = "10") Integer size,
+                                                                   @RequestParam(defaultValue = "0") Integer page) {
+        return ResponseEntity.ok(reportService.getPaginatedReports(page, size));
     }
 
-    // Récupérer les 10 derniers comptes rendus non remplis
-    @GetMapping("/unfilled")
-    public List<Report> getLast10UnfilledReports() {
-        return reportService.findLast10UnfilledReports();
-    }
-
-    // Créer un nouveau rapport
+    // TODO : a revoir si necessaire ?? Tu rentres tu badges on te prépare un rapport
     @PostMapping
     public Report createReport(@RequestBody Report report) {
         return reportService.saveReport(report);
     }
 
-    // Mettre à jour un rapport existant (TODO : logique spécifique)
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
-        return reportService.getReportById(id)
-                .map(existingReport -> {
-                    // Mettre à jour les champs nécessaires
-                    existingReport.setReportDate(reportDetails.getReportDate());
-                    existingReport.setContent(reportDetails.getContent());
-                    existingReport.setUser(reportDetails.getUser());
-
-                    // Sauvegarder les modifications
-                    Report updatedReport = reportService.saveReport(existingReport);
-                    return ResponseEntity.ok(updatedReport);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Report> currentReport = reportService.getReportById(id);
+        if (currentReport.isEmpty())
+            return ResponseEntity.notFound().build();
+        Report updatedReport = currentReport.get();
+        updatedReport.setContent(reportDetails.getContent());
+        return ResponseEntity.ok(reportService.saveReport(updatedReport));
     }
 
-    // Supprimer un rapport par ID
+    // TODO à revoir si on supprime
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
         if (reportService.getReportById(id).isEmpty()) {
