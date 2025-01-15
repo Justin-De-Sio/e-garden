@@ -1,6 +1,6 @@
 package com.e_garden.api.User;
 
-
+import com.e_garden.api.Events.Event;
 import com.e_garden.api.Report.Report;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,13 +9,13 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
     @Getter
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,12 +34,107 @@ public class User {
     @Column(nullable = false, length = 255, unique = true)
     private String email;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Event> events = new ArrayList<>();
+
     @Setter
     @Getter
-    @Column(nullable = true , length = 2048)
+    @Column(nullable = false, name = "roles")
+    private String role;
+
+    @Column(nullable = true, length = 2048)
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Report> events = new ArrayList<>();
+    private List<Report> reports = new ArrayList<>();
 
+    @Column(nullable = true, length = 255, name = "class_name")
+    private String className;
+
+    @Column(nullable = true, name = "class_number")
+    private Integer groupNumber;
+
+    public User() {
+        this.name = "";
+        this.surname = "";
+        this.groupNumber = -1;
+        this.className = "";
+        this.role = String.valueOf(Roles.UTILISATEUR);
+    }
+
+    public User(String email, String password) {
+        this();
+        this.email = email;
+        this.password = password;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public Integer getGroupNumber() {
+        return groupNumber;
+    }
+
+    public void setGroupNumber(Integer groupNumber) {
+        this.groupNumber = groupNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return String.valueOf(role);
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", className='" + className + '\'' +
+                ", groupNumber=" + groupNumber +
+                '}';
+    }
 }

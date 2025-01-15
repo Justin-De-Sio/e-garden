@@ -1,6 +1,8 @@
 
 <template>
-  <navbar></navbar>
+  <navbar_2></navbar_2>
+  <div class="wrapper_notification_component">
+  </div>
 </template>
 
 
@@ -10,5 +12,9 @@
 
 
 <style scoped>
-
+.wrapper_notification_component{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

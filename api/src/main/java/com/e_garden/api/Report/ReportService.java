@@ -51,10 +51,11 @@ public class ReportService {
         Page<Report> reportPage = reportRepository.findAllByOrderByReportDateAsc(PageRequest.of(page, size));
 
          return  (new PageDTO<>(
-                reportPage.getContent(),
-                reportPage.getNumber(),
-                reportPage.getSize(),
-                reportPage.getTotalElements()
+                 reportPage.getContent(),
+                 reportPage.getNumber(),
+                 reportPage.getSize(),
+                 reportPage.getTotalElements(),
+                 reportPage.getTotalPages()
         ));
     }
 }
