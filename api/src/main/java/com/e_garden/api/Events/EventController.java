@@ -1,20 +1,28 @@
 package com.e_garden.api.Events;
 
 import com.e_garden.api.PageDTO;
+import com.e_garden.api.User.User;
+import com.e_garden.api.User.UserPrincipal;
+import com.e_garden.api.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/event")
 @CrossOrigin(origins = "*")
 public class EventController {
     private final EventService eventService;
+    private final UserService userService;
 
     @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, UserService userService) {
         this.eventService = eventService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -51,11 +59,11 @@ public class EventController {
         event.setEventType(0);
         event.setDoorNumber(Math.toIntExact(id));
 
-        // TODO sauvegarder l'utilisateurs courant
-        //UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
-        //  return ResponseEntity.notFound().build();
-        //event.setUser(user);
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userByEmail = userService.getUserByEmail(user.getUsername());
+        if (!Objects.equals(userByEmail.getId(), id))
+            return ResponseEntity.notFound().build();
+        event.setUser(userByEmail);
         return ResponseEntity.ok(eventService.saveEvents(event));
     }
 }
