@@ -1,5 +1,7 @@
 package com.e_garden.api.Events;
 
+import com.e_garden.api.Log.Levels;
+import com.e_garden.api.Log.LogService;
 import com.e_garden.api.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,13 @@ import java.util.Optional;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
+    private final LogService log;
 
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, LogService log) {
         this.eventRepository = eventRepository;
+        this.log = log;
+
     }
 
     public PageDTO<EventDTO> getPaginatedEvents(int page, int size) {
@@ -39,13 +44,13 @@ public class EventService {
     }
 
     public Event saveEvents(Event event) {
-        // TODO ADD LOG
+        log.createLog(String.valueOf(Levels.EVENT), "Evenement ajouté", event.toString());
         return eventRepository.save(event);
     }
 
     public void deleteEvents(Long id) {
-        // TODO ADD LOG
         eventRepository.deleteById(id);
+        log.createLog(String.valueOf(Levels.EVENT), "Evenement supprimé", "event id :" + id);
     }
 
     private EventDTO getEventDTOFromEvent(Event event) {
