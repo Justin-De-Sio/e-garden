@@ -31,6 +31,7 @@ public class Report {
     private LocalDateTime createdAt;
 
     // Cette méthode est appelée automatiquement avant l'insertion dans la base de données
+    // TODO implémenter cette méthode dans log
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
