@@ -4,5 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
     '~/assets/css/reset.css', // Inclure le fichier CSS global
-  ]
+  ],
+
+
 })

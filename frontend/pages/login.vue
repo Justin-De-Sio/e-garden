@@ -15,35 +15,66 @@
             </div>
           </div>
   
-          <form>
-            <input type="email" name="email" id="email" placeholder="Email">
+          <form @submit.prevent="handleSubmit">
+            <input type="email" name="email" id="email" v-model="email" placeholder="Email">
             <div class="line"></div>
             <div class="password-wrapper">
-              <input type="password" id="password" placeholder="Password">
+              <input type="password" id="password" v-model="password" placeholder="Password">
               <span class="toggle-password" @click="togglePassword">
                 <img src="../assets/oeil.png" alt="Afficher/Cacher le mot de passe" class="eye-icon">
               </span>
             </div>
             <div class="line"></div>
+            <button type="submit">Connexion</button>
           </form>
-          <button type="button">Connexion</button>
+          
         </div>
       </div>
     </div>  
   </template>
   
-  <script>
-  export default {
-    name: 'LoginPage',
-    methods: {
-      togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const type = passwordInput.getAttribute('type');
-        passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
-      },
-    },
+  <script setup>
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { login } from '~/services/auth';
+  
+
+  const email = ref('');
+  const password = ref('');
+  
+  // Accès au routeur
+  const router = useRouter();
+  
+  // Afficher / masquer le mot de passe
+  const togglePassword = () => {
+    const passwordInput = document.getElementById('password');
+    const type = passwordInput.getAttribute('type');
+    passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
   };
+  
+
+  const handleSubmit = async () => {
+    if (!email.value || !password.value) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+  
+    try {
+      // Appel de la fonction login depuis le service auth.js
+      await login(email.value, password.value);
+  
+      router.push('/security');
+    } catch (error) {
+      alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
+    }
+  };
+  
+  // Middleware pour bloquer les utilisateurs connectés (optionnel)
+  definePageMeta({
+    middleware: 'already-log', 
+  });
   </script>
+
   
   <style scoped>
   
@@ -163,11 +194,15 @@
   }
 
   button{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 15%;
     background-color: #151B11 ;
     color: white;
     width: 85%;
-    height: 5%;
+    height: 40px;
     border: none;
     border-radius: 30px;
     cursor: pointer;
