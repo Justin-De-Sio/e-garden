@@ -36,6 +36,9 @@
 
 
 <script setup lang="ts">
+import notification from "~/components/notification.vue";
+await notification (0,5);
+
 import CustomComponent from '@/components/indicator.vue';
 
 import Header_title from "~/components/header_title.vue";
