@@ -58,7 +58,7 @@ public class EventService {
         return switch (event.getEventType()) {
             case 0 -> {
                 eventDTO.setDescription(event.getUser().getName() + " " +
-                        event.getUser().getSurname() + "a badgé " + date +
+                        event.getUser().getSurname() + " a badgé " + date +
                         " à la porte numéro : " + event.getDoorNumber() + ".");
                 yield eventDTO;
             }
@@ -67,7 +67,7 @@ public class EventService {
                 yield eventDTO;
             }
             default -> {
-                eventDTO.setDescription("erreur interne, type d'événement non reconnu");
+                eventDTO.setDescription("Erreur interne, type d'événement non reconnu");
                 yield eventDTO;
             }
         };
