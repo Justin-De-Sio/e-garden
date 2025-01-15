@@ -74,7 +74,7 @@ public class UserService {
                         new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
                 );
         if (authentication.isAuthenticated()){
-            log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.toString());
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
             return jwtService.generateToken(user.getEmail(), userInfo.getRole());
         } else {
             log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
