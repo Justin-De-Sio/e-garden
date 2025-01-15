@@ -1,7 +1,7 @@
 package com.e_garden.api.Report;
+import com.e_garden.api.Log.Levels;
+import com.e_garden.api.Log.LogService;
 import com.e_garden.api.PageDTO;
-import com.e_garden.api.User.User;
-import com.e_garden.api.User.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,12 +16,12 @@ import java.util.Optional;
 public class ReportService {
 
     private final ReportRepository reportRepository;
-    private final UserRepository userRepository;
+    private final LogService logService;
 
     @Autowired
-    public ReportService(ReportRepository reportRepository, UserRepository userRepository) {
+    public ReportService(ReportRepository reportRepository, LogService logService) {
         this.reportRepository = reportRepository;
-        this.userRepository = userRepository;
+        this.logService = logService;
     }
 
     public List<Report> getAllReports() {
@@ -34,10 +34,12 @@ public class ReportService {
 
     public Report saveReport(Report report) {
         report.setReportDate(LocalDateTime.now());
+        logService.createLog(String.valueOf(Levels.REPORT), "Enregistrement d'un rapport", "report id : " + report.toString());
         return reportRepository.save(report);
     }
 
     public void deleteReport(Long id) {
+        logService.createLog(String.valueOf(Levels.REPORT), "Suppression d'un rapport", "report id : " + id);
         reportRepository.deleteById(id);
     }
 
