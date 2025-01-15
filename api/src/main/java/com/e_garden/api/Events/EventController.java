@@ -3,6 +3,7 @@ package com.e_garden.api.Events;
 import com.e_garden.api.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Event> getEventsById(@PathVariable Long id) {
         return eventService.getEventsById(id)
                 .map(ResponseEntity::ok)
@@ -24,12 +26,14 @@ public class EventController {
     }
 
     @GetMapping("/paginated")
+    @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<PageDTO<EventDTO>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
                                                                 @RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(eventService.getPaginatedEvents(page, size));
     }
 
     @DeleteMapping("/{id}")
+    @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Void> deleteEvents(@PathVariable Long id) {
         if (eventService.getEventsById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -40,6 +44,7 @@ public class EventController {
     }
 
     @PostMapping("/door/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Event> saveEntry(@PathVariable Long id) {
         Event event = new Event();
         event.setTitle("Enregistrement de passage");
