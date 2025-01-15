@@ -2,6 +2,7 @@ package com.e_garden.api.User;
 
 import com.e_garden.api.Events.Event;
 import com.e_garden.api.Report.Report;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,7 @@ public class User {
     @Column(nullable = false, name = "roles")
     private String role;
 
+    @JsonIgnore
     @Column(nullable = true, length = 2048)
     private String password;
 

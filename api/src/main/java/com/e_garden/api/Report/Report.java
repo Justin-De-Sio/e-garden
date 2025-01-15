@@ -27,6 +27,9 @@ public class Report {
     @Column(name = "content", nullable = true, columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "validated", nullable = false)
+    private boolean validated;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -38,10 +41,16 @@ public class Report {
     }
 
     public Report() {
+        this.validated = false;
     }
 
-    public Report(User user, LocalDateTime reportDate) {
+    public Report(User user) {
+        this();
         this.user = user;
-        this.reportDate = reportDate;
+    }
+
+    public Report(User user, String content) {
+        this(user);
+        this.content = content;
     }
 }

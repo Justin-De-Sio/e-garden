@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,14 +33,7 @@ public class ReportService {
     }
 
     public Report saveReport(Report report) {
-        // Récupérer l'utilisateur depuis la base de données
-        User user = userRepository.findById(report.getUser().getId())
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + report.getUser().getId() + " not found."));
-
-        // Associer l'utilisateur récupéré au rapport
-        report.setUser(user);
-
-        // Sauvegarder le rapport
+        report.setReportDate(LocalDateTime.now());
         return reportRepository.save(report);
     }
 
