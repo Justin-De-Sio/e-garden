@@ -1,11 +1,12 @@
-async function notification(page, size) {
+export async function Notification(page, size) {
     const url = `http://localhost:8080/api/event/paginated?page=${page}&size=${size}`;
 
     try {
 
         const sessionCookie = useCookie("session");
-        console.log(sessionCookie);
+        
         const token = sessionCookie.value;
+
 
         const response = await fetch(url, {
             method: 'GET',
@@ -24,5 +25,5 @@ async function notification(page, size) {
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
-    }
-}
+    };
+};

@@ -36,14 +36,18 @@
 
 
 <script setup lang="ts">
-import notification from "~/components/notification.vue";
-await notification (0,5);
 
+import { Notification } from "~/services/notification";
 import CustomComponent from '@/components/indicator.vue';
 
 import Header_title from "~/components/header_title.vue";
 import navbar from "~/components/navbar.vue";
 import { JWTPayload } from "~/services/jwtpayload";
+
+
+
+const result = Notification(1, 10);
+
 
 definePageMeta({
   middleware: "auth",

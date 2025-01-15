@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Gilroy:wght@500&display=swap');
+
 
 .button-container {
   position: relative;
