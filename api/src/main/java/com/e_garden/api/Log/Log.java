@@ -18,6 +18,7 @@ public class Log {
     @Column(nullable = false)
     private String message;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String details;
 
     @Column(nullable = false)

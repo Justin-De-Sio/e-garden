@@ -51,7 +51,7 @@ public class EventController {
         }
     }
 
-    @PostMapping("/door/{id}")
+    @GetMapping("/door/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Event> saveEntry(@PathVariable Long id) {
         Event event = new Event();
@@ -61,7 +61,7 @@ public class EventController {
 
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());
-        if (!Objects.equals(userByEmail.getId(), id))
+        if (userByEmail == null)
             return ResponseEntity.notFound().build();
         event.setUser(userByEmail);
         return ResponseEntity.ok(eventService.saveEvents(event));
