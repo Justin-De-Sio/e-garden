@@ -82,9 +82,6 @@
 
   // Gestion de l'état du menu
   const IsExpanded = ref(false);
-
-  // Utiliser la route actuelle pour récupérer les paramètres d'URL
-  const currentPath = ref("");
   const route = useRoute();
   
   console.log("Route ", route.path);
@@ -129,8 +126,7 @@
     }
 
     nav.expanded{
-        width: 270px;
-
+      width: 270px;
     }
 
 
@@ -275,7 +271,11 @@
         cursor: default;
     }
 
-    
+    @media screen and (max-width: 768px) {
+      nav{
+        display: flex;
+      }
+    }
 
 </style>
   
