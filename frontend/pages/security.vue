@@ -7,11 +7,18 @@
       <div class="placement_header_title">
         <Header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici même !" />
       </div>
+      <Indicators
+        iconPath="/_nuxt/assets/passages.png"
+        iconBackgroundColor="#95BD75"
+        title="XX passages"
+        subtitle="Nombre de passage"
+    />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import Indicators from "~/components/indicators.vue";
 import Header_title from "~/components/header_title.vue";
 import navbar from "~/components/navbar.vue";
 import { JWTPayload } from "~/services/jwtpayload";

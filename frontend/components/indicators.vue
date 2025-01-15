@@ -8,31 +8,31 @@
         <h2>{{ subtitle }}</h2>
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  export default {
-    name: 'CustomFrame',
-    props: {
-      iconPath: {
-        type: String,
-        required: true
-      },
-      iconBackgroundColor: {
-        type: String,
-        required: true
-      },
-      title: {
-        type: String,
-        required: true
-      },
-      subtitle: {
-        type: String,
-        required: true
-      }
-    }
-  }
-  </script>
+<script setup>
+  import { defineProps } from 'vue';
+  
+  defineProps({
+    iconPath: {
+      type: String,
+      required: true,
+    },
+    iconBackgroundColor: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    subtitle: {
+      type: String,
+      required: true,
+    },
+  });
+</script>
+  
   
   <style scoped>
   @font-face {
@@ -45,30 +45,30 @@
   .custom-frame {
     width: 256px;
     height: 81px;
-    background-color: #FFFFFF; /* Couleur de fond */
-    border: 2px solid grey;
+    background-color: #FFFFFF; 
     display: flex;
-    flex-direction: row; /* Aligner les éléments horizontalement */
+    flex-direction: row; 
     align-items: center;
-    padding: 0 10px; /* Espacement interne */
-    font-family: 'NomDeVotrePolice', sans-serif; /* Utilisation de la police */
-    border-radius: 15px; /* Bords arrondis */
+    padding: 0 10px; 
+    font-family: 'gilroy-medium', sans-serif; 
+    border-radius: 15px; 
   }
   .icon-background {
-    border-radius: 12px; /* Bords arrondis */
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px; /* Espacement entre l'icône et le texte */
+    margin-right: 10px; 
+    margin-left: 12px;
     width: 38px;
     height: 38px;
   }
   .icon-image {
-    width: 21px; /* Taille de l'icône */
-    height: 21px; /* Taille de l'icône */
+    width: 21px; 
+    height: 21px; 
   }
   .custom-frame i {
-    font-size: 21px; /* Taille de l'icône */
+    font-size: 21px; 
   }
   .text-container {
     display: flex;
