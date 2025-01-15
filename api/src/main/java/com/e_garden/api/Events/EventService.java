@@ -35,7 +35,8 @@ public class EventService {
                 eventDTOs,
                 eventPage.getNumber(),
                 eventPage.getSize(),
-                eventPage.getTotalElements()
+                eventPage.getTotalElements(),
+                eventPage.getTotalPages()
         ));
     }
 
