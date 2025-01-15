@@ -24,8 +24,7 @@ const sessionCookie = useCookie("session");
 const token = sessionCookie.value;
 
 const rolePayload = JWTPayload(token);
-const test = { role: rolePayload };
-console.log("Role Payload:", rolePayload);
+
 </script>
 
 <style>

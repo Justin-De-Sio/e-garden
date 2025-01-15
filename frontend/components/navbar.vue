@@ -14,7 +14,7 @@
               v-for="project in currentRole.menuProject"
               :key="project.name"
               class="itemProject"
-              :class="{expanded : IsExpanded}"
+              :class="{expanded : IsExpanded, active: isActive(project.name) }"
               
             >
               <div class="hoverItemProject" :class="{expanded : IsExpanded}">
@@ -52,12 +52,11 @@
   import { useRoute } from 'vue-router';
   import { JWTPayload } from '~/services/jwtpayload';
 
-  // Définir les rôles et menus
   const roles = ref([
     {
       name: 'administrateur',
       menuProject: [
-        { name: 'Sécurité', icon: '/_nuxt/assets/camera.png' },
+        { name: 'Security', icon: '/_nuxt/assets/camera.png' },
         { name: 'Gestionnaires', icon: '/_nuxt/assets/gestion.png' },
         { name: 'PPE1', icon: '/_nuxt/assets/capteur.png' },
         { name: 'PPE2', icon: '/_nuxt/assets/applications.png' },
@@ -80,30 +79,30 @@
     },
   ]);
 
-  // Gestion de l'état du menu
   const IsExpanded = ref(false);
   const route = useRoute();
-  
-  console.log("Route ", route.path);
-
-  
   const sessionCookie = useCookie('session');
   const token = sessionCookie.value;
   const rolePayload = JWTPayload(token);
 
-
-
   const currentRole = computed(() => {
-  return roles.value.find((role) => role.name.toLowerCase() === (rolePayload || "").toLowerCase()) || null;
-});
+    return roles.value.find((role) => role.name.toLowerCase() === (rolePayload || "").toLowerCase()) || null;
+  });
 
-  console.log(currentRole);
 
-  // Basculer l'état du menu
+
+  // Vérifie si l'élément est actif
+  const isActive = (projectName) => {
+    const currentPath = route.path.toLowerCase().replace('/', '');
+    
+    return currentPath === projectName.toLowerCase();
+  };
+
   const toggleMenu = () => {
     IsExpanded.value = !IsExpanded.value;
   };
 </script>
+
   
 <style scoped>
 
@@ -232,10 +231,9 @@
 
     }
 
-    .hoverItemProject:hover {
-        background-color: #95bd75;
+    .itemProject.active .hoverItemProject {
+      background-color: #95bd75; /* Couleur de surbrillance */
     }
-
     .logoItem {
         cursor: pointer;
         margin: 2rem 0 4rem 0;
@@ -273,8 +271,41 @@
 
     @media screen and (max-width: 768px) {
       nav{
-        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 80px;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        background-color: #151b11;
+        color: white;
+        padding: 0;
+        transition: width 0.3s ease;
       }
+
+      ul {
+        flex-direction: row; 
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        height: 100%;
+      }
+
+      .logoItem {
+        display: none; 
+      }
+
+      .profileContainer {
+        display: none; 
+      }
+
+      .hoverItemProject {
+        padding: 0.7rem 0.9rem;
+        border-radius: 0.5rem;
+    }
     }
 
 </style>
