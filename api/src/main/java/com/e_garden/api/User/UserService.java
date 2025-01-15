@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public List<User> saveUsers(Iterable<User> users) {
-        List<User> usersSaved = new ArrayList<User>();
+        List<User> usersSaved = new ArrayList<>();
         for (User u: users) {
             usersSaved.add(saveUser(u));
         }
