@@ -60,7 +60,6 @@
     }
   
     try {
-      // Appel de la fonction login depuis le service auth.js
       await login(email.value, password.value);
   
       router.push('/security');
@@ -69,7 +68,6 @@
     }
   };
   
-  // Middleware pour bloquer les utilisateurs connectés (optionnel)
   definePageMeta({
     middleware: 'already-log', 
   });
@@ -129,13 +127,13 @@
   }
   
   .title_part h1 {
-    font-family: "Gilroy-Bold";
+    font-family: "Gilroy-Bold", sans-serif;
     font-size: 2.5em;
     padding-left: 25px;
   }
   
   .title_part h6 {
-    font-family: "Gilroy-Regular";
+    font-family: "Gilroy-Regular", sans-serif;
     color: #7B7B7B;
     font-size: 0.9em;
     margin-left: 18px;
