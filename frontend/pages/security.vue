@@ -4,15 +4,40 @@
       <navbar />
     </div>
     <div class="right_side">
-      <div class="placement_header_title">
+      <div class="placement_header_title"> <!-- Mettre la width a 100%-->
         <Header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici même !" />
       </div>
-      <Indicators
-        iconPath="/_nuxt/assets/passages.png"
-        iconBackgroundColor="#95BD75"
-        title="XX passages"
-        subtitle="Nombre de passage"
-    />
+      <div class="placement_indicators_header">
+        <h2>Indicateurs</h2>
+        <div class="placement_indicators_components">
+          <Indicators
+            iconPath="/_nuxt/assets/passages.png"
+            iconBackgroundColor="#95BD75"
+            title="XX passages"
+            subtitle="Nombre de passage"
+          />
+          <Indicators
+              iconPath="/_nuxt/assets/passages.png"
+              iconBackgroundColor="#95BD75"
+              title="XX passages"
+              subtitle="Nombre de passage"
+          />
+          <Indicators
+              iconPath="/_nuxt/assets/passages.png"
+              iconBackgroundColor="#95BD75"
+              title="XX passages"
+              subtitle="Nombre de passage"
+          />
+        </div>
+      </div>
+      <div class="sub_camera_report_placement">
+        <div class="placement_camera">
+          <h2>Caméra</h2>
+        </div>
+        <div class="placement_report">
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,10 +77,11 @@ body {
   flex-direction: column;
   padding: 2vw; 
   flex: 1;
+  margin-left: 2vw
 }
 
 .placement_header_title {
-  margin: 2vw 2vw; 
+  margin-top: 2.5vw; 
 }
 
 h1 {
@@ -68,6 +94,21 @@ h3 {
   font-family: "Gilroy-Medium";
   color: #969696;
   font-size: 1rem; 
+}
+
+h2{
+  font-family: "Gilroy-Medium";
+}
+
+.placement_indicators_header h2{
+  margin-top: 4vw; 
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.placement_indicators_components{
+  display: flex;
+  gap: 1.5rem;
 }
 
 </style>
