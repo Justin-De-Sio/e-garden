@@ -1,68 +1,32 @@
 <template>
-    <div class="camera_section">
-      <div v-if="error" class="error">{{ error }}</div>
-      <pre v-else-if="jsonData">{{ formattedJson }}</pre>
+    <div>
+      <h1>Événement</h1>
+      <div v-if="event">{{ event }}</div>
       <div v-else>Chargement...</div>
     </div>
   </template>
   
   <script setup>
-  import { ref, computed, onMounted } from "vue";
-  import { useCookie } from "#app";
+  import { ref, onMounted } from 'vue';
   
-  // Récupération du token dans le cookie
+  const event = ref(null);
   const sessionCookie = useCookie("session");
-  const token = sessionCookie.value;
-  console.log(token);
-  
-  const jsonData = ref(null);
-  const error = ref(null);
-  
-  // Requête à l'API lors du montage du composant
-  const fetchData = async () => {
+    const token = sessionCookie.value;
+    const errorMessage = ref('');
+
+    onMounted(async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/event/1", {
-        method: "GET",
+        const data = await $fetch('/api/report/1', {
         headers: {
-          Authorization: `Bearer ${token}`,
-          withCredentials: true,    
-        crossorigin: true,    
-        mode: 'no-cors',
+            Authorization: `Bearer ${token}`,
         },
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP : ${response.status}`);
-      }
-  
-      jsonData.value = await response.json();
-      console.log(jsonData.value);
-    } catch (err) {
-      error.value = err.message;
+        });
+        event.value = data;
+    } catch (error) {
+        console.error('Erreur lors de la requête API :', error);
+        errorMessage.value = 'Impossible de charger l’événement. Veuillez réessayer plus tard.';
     }
-  };
-  
-  // Appel de fetchData lors du montage du composant
-  onMounted(() => {
-    fetchData();
-  });
-  
-  // Formater les données JSON pour un affichage lisible
-  const formattedJson = computed(() =>
-    jsonData.value ? JSON.stringify(jsonData.value, null, 2) : null
-  );
+    });
+
   </script>
-  
-  <style scoped>
-  pre {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
-    font-family: monospace;
-    overflow-x: auto;
-  }
-  .error {
-    color: red;
-  }
-  </style>
   

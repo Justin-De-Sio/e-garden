@@ -2,6 +2,7 @@ package com.e_garden.api.Security;
 
 import com.e_garden.api.Exception.CustomAccessDeniedHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 @EnableWebSecurity
+@CrossOrigin(origins = "*")
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConf {
 
@@ -38,6 +41,7 @@ public class SecurityConf {
         String url = "/api/";
         return httpSecurity
                 .csrf(customizer -> customizer.disable())
+                .cors(cors -> cors.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(url+"user/login", url+"csrf-token", "/swagger-ui.html", "/api-docs").permitAll()
                        // .anyRequest().permitAll())
