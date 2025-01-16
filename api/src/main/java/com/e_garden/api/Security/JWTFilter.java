@@ -21,9 +21,9 @@ import java.util.Collections;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
-    private JWTService jwtService;
+    private final JWTService jwtService;
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     @Autowired
     public JWTFilter(JWTService jwtService, ApplicationContext applicationContext) {

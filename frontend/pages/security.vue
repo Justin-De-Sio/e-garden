@@ -28,7 +28,10 @@
     />
   </div>
 
-  <navbar></navbar>-->
+  <navbar></navbar>
+
+  import notification from "~/components/notification.vue";
+await notification (0,5);-->
   <div class="wrapper_notification_component">
     <notification></notification>
   </div>
@@ -36,6 +39,8 @@
 
 
 <script setup lang="ts">
+
+
 
 import { Notification } from "~/services/notification";
 import CustomComponent from '@/components/indicator.vue';

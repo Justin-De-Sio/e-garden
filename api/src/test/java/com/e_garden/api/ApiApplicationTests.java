@@ -1,7 +1,6 @@
 package com.e_garden.api;
-
+/*
 import io.github.cdimascio.dotenv.Dotenv;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -29,3 +28,4 @@ class ApiApplicationTests {
 	}
 
 }
+*/

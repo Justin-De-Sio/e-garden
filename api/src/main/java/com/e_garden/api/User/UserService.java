@@ -1,5 +1,7 @@
 package com.e_garden.api.User;
 
+import com.e_garden.api.Log.Levels;
+import com.e_garden.api.Log.LogService;
 import com.e_garden.api.Security.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,17 +16,19 @@ import java.util.Optional;
 
 
 @Service
-public class UserService  {
+public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
+    private final LogService log;
 
-    private JWTService jwtService;
     @Autowired
-    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, JWTService jwtService) {
+    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, JWTService jwtService, LogService log) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.log = log;
     }
 
     public List<User> getAllUsers() {
@@ -40,11 +44,12 @@ public class UserService  {
         if (userRepository.existsByEmail(user.getEmail())) {
             return null;
         }
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur ajouté", user.toString());
         return userRepository.save(user);
     }
 
     public List<User> saveUsers(Iterable<User> users) {
-        List<User> usersSaved = new ArrayList<User>();
+        List<User> usersSaved = new ArrayList<>();
         for (User u: users) {
             usersSaved.add(saveUser(u));
         }
@@ -53,6 +58,7 @@ public class UserService  {
 
     public void deleteUSer(Long id) {
         userRepository.deleteById(id);
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur supprimé", "user id : " + id);
     }
 
     public User getUserByEmail(String email) {
@@ -68,8 +74,10 @@ public class UserService  {
                         new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
                 );
         if (authentication.isAuthenticated()){
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
             return jwtService.generateToken(user.getEmail(), userInfo.getRole());
         } else {
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
             return "false";
         }
     }

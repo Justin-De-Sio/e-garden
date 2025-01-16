@@ -12,8 +12,12 @@ import java.io.IOException;
 @RequestMapping("/stream")
 public class MjpegController {
 
-    @Autowired
     private RtspReader rtspReader;
+
+    @Autowired
+    public MjpegController(RtspReader rtspReader) {
+        this.rtspReader = rtspReader;
+    }
 
     @GetMapping(value = "/start")
     public String startStream() {
