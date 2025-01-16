@@ -7,7 +7,7 @@ Il permet d'ajouter de la sécurité au potager, de l'arrosage automatique et de
 La collaboration entre groupe est organisé.
 Le contact pour le PFE est **enzo.romero@edu.ece.fr**.
 
-## Aspects technique
+## Aspects techniques
 Le projet est constitué d'une **API backend** en `Java 23 avec Spring Boot` et d'une **application frontend** en `NodeJS avec Nuxt.js`.
 L'aspect technique de ces deux applications est expliqué dans un fichier Readme à leur racine.
 
