@@ -55,6 +55,11 @@ public class EventController {
         }
     }
 
+    //  TODO Lors du badgeage via le site web de notre application,
+    //   si la personne est autorisée, un indicateur vert apparaîtra.
+    //   En revanche, l’indicateur devient rouge si la personne n’est pas
+    //   autorisée à accéder au potager.
+
     @GetMapping("/door/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Event> saveEntry(@PathVariable Long id) {

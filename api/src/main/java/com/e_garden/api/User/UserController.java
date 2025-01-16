@@ -20,6 +20,8 @@ public class UserController {
         this.userService = userService;
     }
 
+    // TODO : Un système de récupération de mot de passe
+    //  oublié sera également disponible.
     @GetMapping("/profil/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<User> getUserProfil(@PathVariable Long id) {
