@@ -54,6 +54,7 @@ public class Event {
     public Event() {
         this.eventType = -1;
         this.title = "";
+        this.createdAt = LocalDateTime.now();
         this.user = null;
     }
 
