@@ -33,58 +33,46 @@
     </div>  
   </template>
   
-  <script>
-  export default {
-    name: 'LoginPage',
-    data() {
-      return {
-        email: '',
-        password: '',
-      };
-    },
-    methods: {
-      togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const type = passwordInput.getAttribute('type');
-        passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
-      },
-      async handleSubmit() {
-        if (!this.email || !this.password) {
-          alert('Veuillez remplir tous les champs.');
-          return;
-        }
+  <script setup>
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { login } from '~/services/auth';
   
-        try {
-          // Requête POST vers le backend pour l'authentification
-          const response = await fetch('http://localhost:8080/api/user/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: this.email, password: this.password }),
-          });
-  
-          if (!response.ok) {
-            alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
-            return;
-          }
-  
-          const token = await response.text();
 
-        // Utiliser useCookie pour gérer les cookies
-          const jwtCookie = useCookie('jwt');
-          jwtCookie.value = token; // Stocker le token dans un cookie
-
+  const email = ref('');
+  const password = ref('');
   
-          alert('Connexion réussie !');
-          this.$router.push('/security'); // Redirection vers la page dashboard
-        } catch (error) {
-          console.error('Erreur lors de la connexion :', error);
-          alert('Une erreur est survenue. Veuillez réessayer.');
-        }
-      },
-    },
+  // Accès au routeur
+  const router = useRouter();
+  
+  // Afficher / masquer le mot de passe
+  const togglePassword = () => {
+    const passwordInput = document.getElementById('password');
+    const type = passwordInput.getAttribute('type');
+    passwordInput.setAttribute('type', type === 'password' ? 'text' : 'password');
   };
+  
+
+  const handleSubmit = async () => {
+    if (!email.value || !password.value) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+  
+    try {
+      // Appel de la fonction login depuis le service auth.js
+      await login(email.value, password.value);
+  
+      router.push('/security');
+    } catch (error) {
+      alert('Erreur lors de la connexion. Vérifiez vos identifiants.');
+    }
+  };
+  
+  // Middleware pour bloquer les utilisateurs connectés (optionnel)
+  definePageMeta({
+    middleware: 'already-log', 
+  });
   </script>
 
   

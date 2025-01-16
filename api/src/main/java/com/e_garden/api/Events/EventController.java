@@ -1,6 +1,8 @@
 package com.e_garden.api.Events;
 
 import com.e_garden.api.PageDTO;
+import com.e_garden.api.Report.Report;
+import com.e_garden.api.Report.ReportService;
 import com.e_garden.api.User.User;
 import com.e_garden.api.User.UserPrincipal;
 import com.e_garden.api.User.UserService;
@@ -18,11 +20,13 @@ import java.util.Objects;
 public class EventController {
     private final EventService eventService;
     private final UserService userService;
+    private final ReportService reportService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService) {
+    public EventController(EventService eventService, UserService userService, ReportService reportService) {
         this.eventService = eventService;
         this.userService = userService;
+        this.reportService = reportService;
     }
 
     @GetMapping("/{id}")
@@ -64,6 +68,7 @@ public class EventController {
         if (userByEmail == null)
             return ResponseEntity.notFound().build();
         event.setUser(userByEmail);
+        reportService.saveReport(new Report(userByEmail));
         return ResponseEntity.ok(eventService.saveEvents(event));
     }
 }

@@ -1,6 +1,8 @@
 package com.e_garden.api.User;
 
 import com.e_garden.api.Events.Event;
+import com.e_garden.api.Report.Report;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +32,7 @@ public class User {
 
     @Setter
     @Getter
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 255, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -41,8 +43,12 @@ public class User {
     @Column(nullable = false, name = "roles")
     private String role;
 
+    @JsonIgnore
     @Column(nullable = true, length = 2048)
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Report> reports = new ArrayList<>();
 
     @Column(nullable = true, length = 255, name = "class_name")
     private String className;
