@@ -24,35 +24,42 @@
 </template>
 
 <script>
+import {Notification} from "~/services/notification.js";
+
 export default {
   name: 'CustomButton',
   data() {
     return {
       showRectangle: false,
-      notifications: [],
+      notifications: null,
       currentPage: 1,
     };
   },
   methods: {
     toggleRectangle() {
       this.showRectangle = !this.showRectangle;
+      console.log("clicktoggleRectangle")
       if (this.showRectangle) {
-        this.fetchNotifications();
+        this.notifications = Notification(this.currentPage, 5);
+        console.log(this.notifications)
       }
     },
-    async fetchNotifications() {
-      const response = await fetch(`http://localhost:8080/event/paginated?page=${this.currentPage}&size=5`);
-      const data = await response.json();
-      this.notifications = data.content;
-    },
     fetchNextPage() {
+      console.log("clickfetchNextPage")
+
       this.currentPage += 1;
-      this.fetchNotifications();
+      this.notifications = Notification(this.currentPage, 5);
+      console.log(this.notifications)
+
     },
     fetchPreviousPage() {
+      console.log("clickfetchPreviousPage")
+
       if (this.currentPage > 1) {
         this.currentPage -= 1;
-        this.fetchNotifications();
+        this.notifications = Notification(this.currentPage, 5);
+        console.log(this.notifications)
+
       }
     },
   },
