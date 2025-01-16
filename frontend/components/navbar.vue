@@ -106,11 +106,6 @@
   
 <style scoped>
 
-    :root {
-
-        --Gilroy-Med: "Gilroy-Medium";
-        --Gilroy-Bold: "Gilroy-Bold";
-    }
 
     nav {
         display: flex;
@@ -219,7 +214,7 @@
     }
 
     .hoverItemProject h4{
-        font-family: "Gilroy-Medium";
+        font-family: "Gilroy-Medium" , sans-serif;
     }
 
     .hoverItemProject.expanded{
@@ -232,8 +227,10 @@
     }
 
     .itemProject.active .hoverItemProject {
-      background-color: #95bd75; /* Couleur de surbrillance */
+      background-color: #95bd75; 
     }
+
+
     .logoItem {
         cursor: pointer;
         margin: 2rem 0 4rem 0;

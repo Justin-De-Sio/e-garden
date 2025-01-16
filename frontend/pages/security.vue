@@ -17,22 +17,18 @@
             subtitle="Nombre de passage"
           />
           <Indicators
-              iconPath="/_nuxt/assets/passages.png"
-              iconBackgroundColor="#95BD75"
-              title="XX passages"
-              subtitle="Nombre de passage"
+            iconPath="/_nuxt/assets/exclamation.png"
+            iconBackgroundColor="#e39695"
+            title="XX Alertes"
+            subtitle="Alertes"
           />
-          <Indicators
-              iconPath="/_nuxt/assets/passages.png"
-              iconBackgroundColor="#95BD75"
-              title="XX passages"
-              subtitle="Nombre de passage"
-          />
+
         </div>
       </div>
       <div class="sub_camera_report_placement">
         <div class="placement_camera">
           <h2>Caméra</h2>
+          <div class="flux_video"></div>
         </div>
         <div class="placement_report">
 
@@ -66,8 +62,10 @@ body {
 
 .wrapper_page {
   display: flex;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
 }
-
 .left_side {
   height: 100vh;
 }
@@ -81,34 +79,51 @@ body {
 }
 
 .placement_header_title {
-  margin-top: 2.5vw; 
+  margin-top: 2.5vh; 
 }
 
 h1 {
-  font-family: "Gilroy-Bold";
+  font-family: "Gilroy-Medium", sans-serif;
   color: black;
   font-size: 2rem; 
 }
 
 h3 {
-  font-family: "Gilroy-Medium";
+  font-family: "Gilroy-Regular", sans-serif;
   color: #969696;
   font-size: 1rem; 
 }
 
 h2{
-  font-family: "Gilroy-Medium";
+  font-family: "Gilroy-Medium", sans-serif;
 }
 
 .placement_indicators_header h2{
-  margin-top: 4vw; 
-  font-size: 1.6rem;
+  margin-top: 5vh; 
+  font-size: clamp(1rem, 1.5vw, 1.5rem); 
   margin-bottom: 1rem;
 }
 
-.placement_indicators_components{
+.placement_indicators_components {
+
   display: flex;
+  flex-direction: row;
   gap: 1.5rem;
+  width: 100% ;
+  max-width: 90%;
+}
+
+
+.sub_camera_report_placement{
+  display: flex;
+  margin-top: 4vh;
+}
+.flux_video{
+  margin-top: 1.5vh;
+  width: 35rem;
+  height: 25rem;
+  background-color: #dad7cd;
+  border-radius: 20px;
 }
 
 </style>

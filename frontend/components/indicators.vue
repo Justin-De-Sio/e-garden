@@ -43,32 +43,33 @@
   }
   
   .custom-frame {
-    width: 256px;
-    height: 81px;
+    width: 30% ;
+    max-width: 18rem;
+    min-width: 10.5rem;
+    height: 100%;
     background-color: #FFFFFF; 
     display: flex;
     flex-direction: row; 
     align-items: center;
-    padding: 0 10px; 
+    padding: clamp(0.5rem, 2vw, 1.5rem) clamp(1rem, 2vw, 1.4rem);
     font-family: 'gilroy-medium', sans-serif; 
-    border-radius: 15px; 
+    border-radius: 0.8rem; 
   }
   .icon-background {
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px; 
-    margin-left: 12px;
-    width: 38px;
-    height: 38px;
+    margin-right: 15px; 
+    width: 20%;
+    height: auto;
+    padding: 0.1rem;
+    border-radius: 0.6rem; 
   }
   .icon-image {
-    width: 21px; 
-    height: 21px; 
-  }
-  .custom-frame i {
-    font-size: 21px; 
+    width: 100%; 
+    height: auto;
+    padding: clamp(0.3rem, 0.7vw, 3rem);
+
   }
   .text-container {
     display: flex;
@@ -76,12 +77,12 @@
     align-items: flex-start;
   }
   .custom-frame h1 {
-    font-size: 13px;
-    margin: 0;
+    font-size: clamp(0.7rem, 1.5vw, 1rem); 
+    margin: 2px;
     color: #000000;
   }
   .custom-frame h2 {
-    font-size: 11px;
+    font-size: clamp(0.6rem, 1.5vw, 0.9rem); 
     color: #7B7B7B;
     margin: 0;
   }
