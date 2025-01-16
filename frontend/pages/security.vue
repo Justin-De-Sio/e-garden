@@ -95,6 +95,7 @@ import Header_title from "~/components/header_title.vue";
 import navbar from "~/components/navbar.vue";
 import Report from "~/components/report.vue";
 import { JWTPayload } from "~/services/jwtpayload";
+import {Notification} from "~/services/notification";
 
 definePageMeta({
   middleware: "auth",
@@ -104,6 +105,13 @@ const sessionCookie = useCookie("session");
 const token = sessionCookie.value;
 
 const rolePayload = JWTPayload(token);
+
+
+const content = ref({});
+onMounted(async () => {
+  content.value = await Notification(1, 10);
+  console.log(content.value);
+});
 
 </script>
 
@@ -206,9 +214,14 @@ h3 {
 .camera_section{
   width: auto;
   /*  background-color: pink; */  
-
+  
   height: 25rem;
 }
+
+.camera_section p {
+  color: black;
+}
+
 .report_section{
   width: auto;
   /*   background-color: black;*/  

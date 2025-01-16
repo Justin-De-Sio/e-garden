@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/reset.css', // Inclure le fichier CSS global
   ],
+  routeRules: {
+    '/api/event/**': {
+        proxy: { to: "http://localhost:8080/api/event/**", },
+    },
+  }
+}
 
-
-})
+)
