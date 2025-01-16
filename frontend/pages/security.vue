@@ -1,11 +1,14 @@
 <template>
-  <div class="wrapper_page">
+    <div class="wrapper_page">
     <div class="left_side">
       <navbar />
     </div>
     <div class="right_side">
       <div class="placement_header_title"> <!-- Mettre la width a 100%-->
         <Header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici même !" />
+      </div>
+      <div class="wrapper_notification_component">
+        <notification></notification>
       </div>
       <div class="placement_indicators_header">
         <h2>Indicateurs</h2>
@@ -41,9 +44,7 @@
     </div>
   </div>
 
-  <div class="wrapper_notification_component">
-    <notification></notification>
-  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -52,6 +53,7 @@ import Indicators from "~/components/indicators.vue";
 import Header_title from "~/components/header_title.vue";
 import navbar from "~/components/navbar.vue";
 import { JWTPayload } from "~/services/jwtpayload";
+import notification from "~/components/notification.vue"
 
 
 

@@ -1,7 +1,7 @@
 <template>
   <div class="button-container">
     <button class="custom-button" @click="toggleRectangle">
-      <img src="@/assets/cloche.png" alt="Button Image" class="button-image" />
+      <img src="~/assets/cloche.png" alt="Button Image" class="button-image" />
     </button>
     <div v-if="showRectangle" class="rectangle">
       <div class="icon-group">
