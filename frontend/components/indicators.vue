@@ -51,7 +51,7 @@
     display: flex;
     flex-direction: row; 
     align-items: center;
-    padding: clamp(0.5rem, 2vw, 1.5rem) clamp(1rem, 2vw, 1.4rem);
+    padding: 1rem;
     font-family: 'gilroy-medium', sans-serif; 
     border-radius: 0.8rem; 
   }
@@ -62,8 +62,8 @@
     margin-right: 15px; 
     width: 20%;
     height: auto;
-    padding: 0.1rem;
-    border-radius: 0.6rem; 
+    padding: 0.08rem;
+    border-radius: 0.5rem; 
   }
   .icon-image {
     width: 100%; 
