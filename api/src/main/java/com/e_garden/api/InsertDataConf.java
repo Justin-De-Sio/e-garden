@@ -44,6 +44,9 @@ public class InsertDataConf {
             for (User user : users) {
                 user.setRole(String.valueOf(Roles.ADMINISTRATEUR));
                 user.setGroupNumber(3);
+                if (userService.saveUser(user) == null) {
+                    continue;
+                }
                 user = userService.saveUser(user);
                 // Ajouter un compte-rendu rempli
                 Report filledReport = new Report(user, "Compte-rendu rempli pour " + user.getName() + " " + user.getSurname());
