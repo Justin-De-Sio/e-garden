@@ -35,8 +35,7 @@
                 <Camera></Camera>
             </div>
             <div class="report_section">
-              <h2>Compte-rendus</h2>
-              <Report></Report>
+              <Report v-if="reportData" :report="reportData"></Report>
             </div>
           </div>
         </div>
@@ -99,15 +98,22 @@ import Report from "~/components/report.vue";
 import Camera from "~/components/camera.vue";
 import { JWTPayload } from "~/services/jwtpayload";
 import {Notification} from "~/services/notification";
+import {fetchBackend} from "~/services/call_backend"
 
+const reportData=ref();
 definePageMeta({
-  middleware: "auth",
+  middleware: "auth"
 });
 
-const sessionCookie = useCookie("session");
-const token = sessionCookie.value;
-
-const rolePayload = JWTPayload(token);
+onMounted(async () => {
+    try {
+        const data = await fetchBackend('/api/report/', 0, 5);
+        reportData.value = data;
+        console.log(reportData.value); // Utilise les données retournées
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+    }
+});
 
 </script>
 
@@ -158,6 +164,7 @@ h1 {
 
 h2{
   font-family: "Gilroy-Medium", sans-serif;
+  font-size: 1.5rem; 
   margin-bottom: 2vh;
 }
 
