@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/report")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class ReportController {
 
     private final ReportService reportService;
@@ -38,7 +38,7 @@ public class ReportController {
     @GetMapping("/paginated")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<PageDTO<Report>> getPaginatedReports(@RequestParam(defaultValue = "10") Integer size,
-                                                                   @RequestParam(defaultValue = "0") Integer page) {
+                                                               @RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(reportService.getPaginatedReports(page, size));
     }
 
@@ -56,7 +56,6 @@ public class ReportController {
     }
 
     @PutMapping("/{id}")
-    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
         Optional<Report> currentReport = reportService.getReportById(id);
         if (currentReport.isEmpty())
@@ -87,5 +86,11 @@ public class ReportController {
             reportService.deleteReport(id);
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @GetMapping("/statistique")
+    @Secured({"ADMINISTRATEUR"})
+    public ResponseEntity<Integer> getReportsStatistique() {
+        return ResponseEntity.ok(reportService.getUnvalidatedReportsCount());
     }
 }

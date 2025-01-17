@@ -16,9 +16,9 @@ public class LogService {
         this.logRepository = logRepository;
     }
 
-    public Log createLog(String level, String message, String details) {
+    public void createLog(String level, String message, String details) {
         Log log = new Log(level, message, details);
-        return logRepository.save(log);
+        logRepository.save(log);
     }
 
     public List<Log> getAllLogsByType(String[] levels) {

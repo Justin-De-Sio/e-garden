@@ -17,33 +17,57 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Titre de l'Event
+     */
     @Column(nullable = false)
     private String title;
 
+    /**
+     * Date de création de l'Event
+     */
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
-    // type 0 : user padge ; type 1 : caméra détecte un mouvement ; ...
+    /**
+     * Type 0 : action de l'user badge ;
+     * Type 1 : caméra détecte un mouvement ;
+     * Type 2 : à définir…
+     */
     @Column(nullable = false, name = "event_type")
     private Integer eventType;
 
+    /**
+     * Numéro de porte, correspond à un badge.
+     * Peut aussi être utilisé pour le numéro d'une caméra, ou d'un autre objet à l'avenir.
+     */
     @Column(nullable = true, name = "door_number")
     private Integer doorNumber;
 
+    /**
+     * L'utilisateur, facultatif, enregistré si on a l'information.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = true) // La contrainte nullable=true permet qu'un événement ne soit pas nécessairement lié à un utilisateur
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     public Event() {
         this.eventType = -1;
         this.title = "";
-        this.createdAt = LocalDateTime.now();
         this.user = null;
     }
 
     public Event(String title) {
         this();
         this.title = title;
+    }
+
+    /**
+     * Cette méthode est appelée automatiquement avant l'insertion dans la base de données.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override

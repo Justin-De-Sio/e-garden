@@ -2,6 +2,12 @@ package com.e_garden.api;
 
 import java.util.List;
 
+/**
+ * Class formant une Page, elle contient des objects et des informations sur la position de la page actuelle, le nombre
+ * total de pages, le nombre total d'éléments, et la taille de la page.
+ *
+ * @param <T>
+ */
 public class PageDTO<T> {
 
     private List<T> content;

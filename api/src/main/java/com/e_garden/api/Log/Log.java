@@ -2,6 +2,7 @@ package com.e_garden.api.Log;
 
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,13 +26,20 @@ public class Log {
     private LocalDateTime timestamp;
 
     public Log() {
-        this.timestamp = LocalDateTime.now();
     }
 
     public Log(String level, String message, String details) {
+        this();
         this.level = level;
         this.message = message;
         this.details = details;
+    }
+
+    /**
+     * Permet d'ajouter automatique la date de création/enregistrement du log.
+     */
+    @PrePersist
+    public void prePersist() {
         this.timestamp = LocalDateTime.now();
     }
 

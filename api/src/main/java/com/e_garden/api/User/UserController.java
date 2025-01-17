@@ -6,12 +6,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class UserController {
     private final UserService userService;
 
@@ -21,14 +23,13 @@ public class UserController {
     }
 
     @GetMapping("/profil/{id}")
-    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<User> getUserProfil(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
             return ResponseEntity.notFound().build();
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
-                .orElseGet(()-> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
@@ -36,8 +37,9 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
-                .orElseGet(()-> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @GetMapping("/all")
     @Secured({"ADMINISTRATEUR"})
     public List<User> getAllUser() {
@@ -52,7 +54,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody  User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         // TODO
         return ResponseEntity.notFound().build();
     }
@@ -69,13 +71,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO user)  {
+    public String login(@RequestBody UserDTO user) {
         return userService.verify(new User(user.getEmail(), user.getPassword()));
     }
 
-    @PostMapping("/firstLogin")
-    public String firstLogin() {
-        return null;
-        // tODO
+    @GetMapping("/roles")
+    @Secured({"ADMINISTRATEUR"})
+    public List<String> getRoles() {
+        return Arrays.stream(Roles.values())
+                .map(role -> role.name().substring(0, 1).toUpperCase() + role.name().substring(1).toLowerCase())
+                .collect(Collectors.toList()).reversed();
     }
 }
