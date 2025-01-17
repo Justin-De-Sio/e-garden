@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    Page<Report> findAllByOrderByReportDateAsc(Pageable pageable);
+    Page<Report> findAllByValidatedOrderByReportDateAsc(boolean validated, Pageable pageable);
 }

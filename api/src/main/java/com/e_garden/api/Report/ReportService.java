@@ -44,7 +44,7 @@ public class ReportService {
     }
 
     public PageDTO<Report> getPaginatedReports(int page, int size) {
-        Page<Report> reportPage = reportRepository.findAllByOrderByReportDateAsc(PageRequest.of(page, size));
+        Page<Report> reportPage = reportRepository.findAllByValidatedOrderByReportDateAsc(true, PageRequest.of(page, size));
 
         return (new PageDTO<>(
                 reportPage.getContent(),
