@@ -1,6 +1,7 @@
-package com.e_garden.api.Security;
+package com.e_garden.api.Conf;
 
 import com.e_garden.api.Exception.CustomAccessDeniedHandler;
+import com.e_garden.api.Security.JWTFilter;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

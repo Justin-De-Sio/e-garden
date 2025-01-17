@@ -1,4 +1,4 @@
-package com.e_garden.api;
+package com.e_garden.api.Conf;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

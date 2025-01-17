@@ -1,4 +1,4 @@
-package com.e_garden.api;
+package com.e_garden.api.Conf;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
