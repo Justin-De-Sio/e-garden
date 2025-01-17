@@ -24,15 +24,23 @@ public class Log {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    public Log() {
+    /**
+     * Permet d'ajouter automatique la date de création/enregistrement du log.
+      */
+    @PrePersist
+    public void prePersist() {
         this.timestamp = LocalDateTime.now();
     }
 
+
+    public Log() {
+    }
+
     public Log(String level, String message, String details) {
+        this();
         this.level = level;
         this.message = message;
         this.details = details;
-        this.timestamp = LocalDateTime.now();
     }
 
     public String getLevel() {
