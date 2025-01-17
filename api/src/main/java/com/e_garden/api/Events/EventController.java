@@ -12,8 +12,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
-
 @RestController
 @RequestMapping("/event")
 @CrossOrigin(origins = "*")
@@ -30,7 +28,6 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Event> getEventsById(@PathVariable Long id) {
         return eventService.getEventsById(id)
                 .map(ResponseEntity::ok)
@@ -56,7 +53,6 @@ public class EventController {
     }
 
     @GetMapping("/door/{id}")
-    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<Event> saveEntry(@PathVariable Long id) {
         Event event = new Event();
         event.setTitle("Enregistrement de passage");

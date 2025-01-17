@@ -21,14 +21,13 @@ public class UserController {
     }
 
     @GetMapping("/profil/{id}")
-    @Secured({"ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"})
     public ResponseEntity<User> getUserProfil(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
             return ResponseEntity.notFound().build();
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
-                .orElseGet(()-> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
@@ -36,8 +35,9 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
-                .orElseGet(()-> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @GetMapping("/all")
     @Secured({"ADMINISTRATEUR"})
     public List<User> getAllUser() {
@@ -52,7 +52,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody  User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
         // TODO
         return ResponseEntity.notFound().build();
     }
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO user)  {
+    public String login(@RequestBody UserDTO user) {
         return userService.verify(new User(user.getEmail(), user.getPassword()));
     }
 

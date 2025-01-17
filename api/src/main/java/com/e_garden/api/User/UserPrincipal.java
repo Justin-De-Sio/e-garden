@@ -33,7 +33,9 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * Méthode qui retourne l'username, dans ce projet l'username unique correspond à l'email.
+     *
+     * @return Email de l'utilisateur
      */
     @Override
     public String getUsername() {

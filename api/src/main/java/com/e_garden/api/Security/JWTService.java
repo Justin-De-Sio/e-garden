@@ -8,7 +8,9 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 
@@ -34,8 +36,9 @@ public class JWTService {
 
     /**
      * Méthode qui permet de générer le JWT Token
+     *
      * @param email de l'utilisateur
-     * @param role de l'utilisateur
+     * @param role  de l'utilisateur
      * @return le token en String
      */
     public String generateToken(String email, String role) {
@@ -54,6 +57,7 @@ public class JWTService {
 
     /**
      * Méthode retournant la Key pour signer le token, elle utilise le secret.
+     *
      * @return un objet SecretKey
      */
     private SecretKey getKey() {
@@ -63,6 +67,7 @@ public class JWTService {
 
     /**
      * Retourne l'email d'un Token utilisateur
+     *
      * @param token en texte
      * @return l'email de l'utilisateur
      */
@@ -72,6 +77,7 @@ public class JWTService {
 
     /**
      * Retourne le role d'un Token utilisateur
+     *
      * @param token de l'utilisateur en texte
      * @return le role de l'utilisateur
      */
@@ -81,10 +87,11 @@ public class JWTService {
 
     /**
      * Méthode permettant de retourner les informations d'un Token
-     * @param token de l'utilisateur en texte
+     *
+     * @param token         de l'utilisateur en texte
      * @param claimResolver le Résolver
-     * @return Un objet de Typ Claims
      * @param <T>
+     * @return Un objet de Typ Claims
      */
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
@@ -93,6 +100,7 @@ public class JWTService {
 
     /**
      * Méthode permettant d'extraire les informations d'un Token
+     *
      * @param token de l'utilisateur en texte
      * @return un object Claims
      */
@@ -106,7 +114,8 @@ public class JWTService {
 
     /**
      * Méthode qui vérifié que l'utilisateur correspond bien à l'utilisateur dans le Token et qu'il n'est pas expiré.
-     * @param token de l'utilisateur en texte
+     *
+     * @param token       de l'utilisateur en texte
      * @param userDetails utilisateur courant
      * @return un boolean true si le token est valide, false sinon
      */
@@ -117,6 +126,7 @@ public class JWTService {
 
     /**
      * Méthode qui contrôle la date d'expiration du Token par rapport à la date du jour.
+     *
      * @param token de l'utilisateur en texte
      * @return true si valide, false sinon
      */
@@ -126,6 +136,7 @@ public class JWTService {
 
     /**
      * Méthode qui retourne la date d'expiration dans un Token.
+     *
      * @param token de l'utilisateur en texte
      * @return la date d'expiration
      */

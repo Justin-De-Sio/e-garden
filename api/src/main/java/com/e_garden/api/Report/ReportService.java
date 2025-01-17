@@ -1,8 +1,8 @@
 package com.e_garden.api.Report;
+
 import com.e_garden.api.Log.Levels;
 import com.e_garden.api.Log.LogService;
 import com.e_garden.api.PageDTO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +34,7 @@ public class ReportService {
 
     public Report saveReport(Report report) {
         report.setReportDate(LocalDateTime.now());
-        logService.createLog(String.valueOf(Levels.REPORT), "Enregistrement d'un rapport", "report id : " + report.toString());
+        logService.createLog(String.valueOf(Levels.REPORT), "Enregistrement d'un rapport", "report id : " + report);
         return reportRepository.save(report);
     }
 
@@ -46,12 +46,12 @@ public class ReportService {
     public PageDTO<Report> getPaginatedReports(int page, int size) {
         Page<Report> reportPage = reportRepository.findAllByOrderByReportDateAsc(PageRequest.of(page, size));
 
-         return  (new PageDTO<>(
-                 reportPage.getContent(),
-                 reportPage.getNumber(),
-                 reportPage.getSize(),
-                 reportPage.getTotalElements(),
-                 reportPage.getTotalPages()
+        return (new PageDTO<>(
+                reportPage.getContent(),
+                reportPage.getNumber(),
+                reportPage.getSize(),
+                reportPage.getTotalElements(),
+                reportPage.getTotalPages()
         ));
     }
 }

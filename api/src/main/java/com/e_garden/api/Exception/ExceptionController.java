@@ -10,6 +10,7 @@ public class ExceptionController {
 
     /**
      * Root de test permettant de s'assurer que l'API fonctionne avec une authentification Bearer Token.
+     *
      * @return un String
      */
     @GetMapping("/")

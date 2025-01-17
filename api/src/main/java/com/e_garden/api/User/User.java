@@ -14,47 +14,38 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private final List<Report> reports = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private final List<Event> events = new ArrayList<>();
     @Id
     @Getter
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Setter
     @Getter
     @Column(nullable = true, length = 255)
     private String name;
-
     @Setter
     @Getter
     @Column(nullable = true, length = 255)
     private String surname;
-
     @Setter
     @Getter
     @Column(nullable = false, length = 255, unique = true)
     private String email;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Event> events = new ArrayList<>();
-
     @Setter
     @Getter
     @Column(nullable = false, name = "roles")
     private String role;
-
     @JsonIgnore
     @Column(nullable = true, length = 2048)
     private String password;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Report> reports = new ArrayList<>();
-
     @Column(nullable = true, length = 255, name = "class_name")
     private String className;
-
     @Column(nullable = true, name = "class_number")
     private Integer groupNumber;
 
@@ -72,11 +63,6 @@ public class User {
         this.password = password;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSurname() {
         return surname;
     }
@@ -87,6 +73,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getClassName() {
@@ -136,7 +126,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", className='" + className + '\'' +
                 ", groupNumber=" + groupNumber +
                 '}';

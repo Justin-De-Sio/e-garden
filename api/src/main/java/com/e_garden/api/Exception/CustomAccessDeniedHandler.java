@@ -15,10 +15,11 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     /**
      * Fonction permettant de gérer manuellement les erreurs d'appel.
      * Elle retourne un texte personnalisé dans la Response de l'appel.
-     * @param request la requête
-     * @param response la réponse
+     *
+     * @param request               la requête
+     * @param response              la réponse
      * @param accessDeniedException Injection de l'objet AccessDeniedException
-     * @throws IOException l'exception levée avec le message personnalisée
+     * @throws IOException      l'exception levée avec le message personnalisée
      * @throws ServletException l'exception levée en cas de besoin
      */
     @Override
