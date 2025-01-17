@@ -1,15 +1,29 @@
 <template>
-
     <div class="report_container">
       <div 
         class="grid_report_person" 
         v-for="(item, index) in report.content" 
         :key="item.id"
       >
-        <div class="wrapper_content">
-          <div class="profil_card">
-            <img src="~/assets/profil_cr.jpg" alt="" />
+        <div 
+          class="wrapper_content" 
+
+        >
+          <div class="profil_card"           
+          @mouseenter="toggleHover(index, true)" 
+          @mouseleave="toggleHover(index, false)">
+            <img src="~/assets/profil_cr.jpg" alt="profil" />
           </div>
+
+          <div class="page_overlay" 
+            v-if="hoveredIndex === index">
+        </div>
+  
+          <HoverCard 
+            class="HoverTheCard" 
+            v-if="hoveredIndex === index"
+          ></HoverCard>
+  
           <div class="content_profil_report">
             <div class="placement_cr_icon">
               <h3>{{ item.user.name }}</h3>
@@ -17,7 +31,8 @@
                 :src="item.content ? '/_nuxt/assets/cr_done.png' : '/_nuxt/assets/cr_empty.png'" 
                 alt="icon" 
                 width="15vw" 
-                height="auto"  />
+                height="auto" 
+              />
               <button 
                 class="toggle_button" 
                 @click="toggleExpand(index)"
@@ -28,7 +43,7 @@
                   alt="angle" 
                   width="15px" 
                   height="auto"
-                >
+                />
               </button>
             </div>
             <div 
@@ -36,7 +51,7 @@
               ref="contentRefs" 
               :style="{ height: expandedItems[index] ? calculatedHeights[index] + 'px' : '0px' }"
             >
-            <p>{{ item.content }}</p>
+              <p>{{ item.content }}</p>
             </div>
           </div>
         </div>
@@ -47,10 +62,11 @@
   
   <script setup>
   import { ref, onMounted, nextTick } from 'vue';
+  import HoverCard from "~/components/identityCard.vue";
   
-
   const expandedItems = ref([]);
-  const calculatedHeights = ref([]); 
+  const calculatedHeights = ref([]);
+  const hoveredIndex = ref(null);
   
   defineProps({
     report: {
@@ -58,7 +74,7 @@
     },
   });
   
-  const contentRefs = ref([]); 
+  const contentRefs = ref([]);
   
   function calculateHeights() {
     nextTick(() => {
@@ -71,17 +87,17 @@
   function toggleExpand(index) {
     expandedItems.value[index] = !expandedItems.value[index];
   }
-
-
   
-
+  function toggleHover(index, isHovering) {
+    hoveredIndex.value = isHovering ? index : null;
+  }
+  
   onMounted(() => {
     calculateHeights();
   });
   </script>
   
   <style scoped>
-
   .report_container {
     margin-top: 1rem;
     width: 100%;
@@ -89,14 +105,9 @@
     background-color: white;
     border-radius: 1rem;
     overflow-y: auto;
+    position: relative;
   }
   
-  h2 {
-    font-family: "Gilroy-Medium", sans-serif;
-    font-size: clamp(0.9rem, 2vw, 1.5rem);
-    margin-bottom: 1vh;
-  }
-
   .grid_report_person:nth-child(1) {
     width: 100%;
     padding-top: 1rem;
@@ -114,6 +125,7 @@
     padding: 1rem 0 0.5rem 1rem;
     width: 100%;
     height: 100%;
+    position: relative;
   }
   
   .profil_card {
@@ -134,11 +146,32 @@
     object-fit: cover;
   }
   
+  .HoverTheCard {
+    position: absolute;
+    top: 0;
+    left: 0.5rem;
+    width: 300px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    z-index: 100;
+  }
+  
+  .page_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 99;
+  }
+  
   .placement_cr_icon {
     display: flex;
     align-items: center;
     flex-direction: row;
-
   }
   
   .placement_cr_icon h3 {
@@ -152,30 +185,27 @@
   .content_wrapper {
     margin-top: 0.5rem;
     overflow: hidden;
-    height: 0; 
+    height: 0;
     transition: height 0.3s ease-in-out;
     overflow-y: auto;
   }
-
-  .content_wrapper p{
-    color: #7B7B7B;
+  
+  .content_wrapper p {
+    color: #7b7b7b;
     font-family: 'Gilroy-Regular';
     font-size: 0.8rem;
     margin-right: 1rem;
     text-align: justify;
-
   }
-
-
-
-  .toggle_button{
+  
+  .toggle_button {
     cursor: pointer;
     margin-left: auto;
     margin-right: 2rem;
     background: none;
     border: none;
   }
-
+  
   .toggle_button img.rotated {
     transform: rotate(180deg);
   }
