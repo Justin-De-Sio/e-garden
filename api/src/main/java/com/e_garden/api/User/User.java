@@ -35,6 +35,7 @@ public class User {
     @Column(nullable = false, length = 255, unique = true)
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events = new ArrayList<>();
 
@@ -47,6 +48,7 @@ public class User {
     @Column(nullable = true, length = 2048)
     private String password;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Report> reports = new ArrayList<>();
 
