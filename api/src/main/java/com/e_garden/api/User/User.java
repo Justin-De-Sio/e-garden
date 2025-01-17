@@ -146,7 +146,7 @@ public class User {
     public List<Event> getEvents() {
         return events;
     }
-    
+
     public List<Report> getReports() {
         return reports;
     }
