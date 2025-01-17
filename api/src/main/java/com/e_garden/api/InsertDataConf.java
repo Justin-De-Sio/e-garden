@@ -12,6 +12,14 @@ import java.util.List;
 
 @Configuration
 public class InsertDataConf {
+    /**
+     * Offre la possibilité de charger des objects dans la base de données si elles n'est pas déjà chargé de ces object.
+     * La base de données est remplis de ces "données de tests systématiquement".
+     * TODO : A retirer pour la mise en production.
+     *
+     * @param userService injection de l'objet UserService
+     * @return|
+     */
     @Bean
     CommandLineRunner commandLineRunner(UserService userService) {
         return args -> {
