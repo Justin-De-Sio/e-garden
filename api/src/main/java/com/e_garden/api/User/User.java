@@ -63,6 +63,14 @@ public class User {
         this.password = password;
     }
 
+    public User(String email, String password, String name, String surname, String className) {
+        this(email, password);
+        this.name = name;
+        this.surname = surname;
+        this.className = className;
+
+    }
+
     public String getSurname() {
         return surname;
     }
