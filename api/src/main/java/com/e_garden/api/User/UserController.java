@@ -54,7 +54,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         // TODO
         return ResponseEntity.notFound().build();
     }
@@ -73,12 +73,6 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestBody UserDTO user) {
         return userService.verify(new User(user.getEmail(), user.getPassword()));
-    }
-
-    @PostMapping("/firstLogin")
-    public String firstLogin() {
-        return null;
-        // tODO
     }
 
     @GetMapping("/roles")
