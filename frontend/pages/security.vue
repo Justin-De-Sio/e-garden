@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper_page">
     <div class="left_side">
-      <navbar />
+      <navbar class="navbar"/>
     </div>
     <div class="main_right_container">
       <div class="header_section">
@@ -35,6 +35,7 @@
                 <Camera></Camera>
             </div>
             <div class="report_section">
+              <h2>Compte-rendus</h2>
               <Report v-if="reportData" :report="reportData"></Report>
             </div>
           </div>
@@ -48,46 +49,7 @@
     </div>
 
   </div>
-    <!-- 
-    <div class="right_side">
-      <div class="left_right_side">
-        <div class="placement_header_title"> 
-          <Header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici même !" />
-        </div>
-        <div class="placement_indicators_header">
-          <h2>Indicateurs</h2>
-          <div class="placement_indicators_components">
-            <Indicators
-              iconPath="/_nuxt/assets/passages.png"
-              iconBackgroundColor="#95BD75"
-              title="XX passages"
-              subtitle="Nombre de passage"
-            />
-            <Indicators
-              iconPath="/_nuxt/assets/exclamation.png"
-              iconBackgroundColor="#e39695"
-              title="XX Alertes"
-              subtitle="Alertes"
-            />
 
-          </div>
-        </div>
-        <div class="sub_camera_report_placement">
-          <div class="placement_camera">
-            <h2>Caméra</h2>
-            <div class="flux_video"></div>
-          </div>
-          <div class="placement_report">
-            <Report></Report>
-          </div>
-        </div>
-      </div>
-      <div class="right_right_side">
-
-      </div>
-    </div>
-  </div>
-  -->
 </template>
 
 <script setup lang="ts">
@@ -109,7 +71,7 @@ onMounted(async () => {
     try {
         const data = await fetchBackend('/api/report/', 0, 5);
         reportData.value = data;
-        console.log(reportData.value); // Utilise les données retournées
+        console.log(reportData.value);
     } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
     }
@@ -134,9 +96,11 @@ body {
 
 
 .left_side {
-  height: 100vh;
+
+  height: 100%;
   /*background-color: aqua;*/ 
 }
+
 
 .main_right_container{
   /*background-color: blueviolet;*/ 
@@ -227,7 +191,10 @@ h3 {
   width: auto;
   /*   background-color: black;*/  
   margin-top: 2rem;
+
   height: 25rem;
+
+
 
 }
 /*

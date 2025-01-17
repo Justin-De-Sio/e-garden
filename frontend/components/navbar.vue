@@ -266,44 +266,8 @@
         cursor: default;
     }
 
-    @media screen and (max-width: 768px) {
-      nav{
-        flex-direction: row;
-        width: 100%;
-        height: 80px;
-        position: fixed;
-        bottom: 0;
-        top: auto;
-        left: 0;
-        justify-content: center;
-        align-items: center;
-        background-color: #151b11;
-        color: white;
-        padding: 0;
-        transition: width 0.3s ease;
-      }
-
-      ul {
-        flex-direction: row; 
-        align-items: center;
-        justify-content: space-around;
-        width: 100%;
-        height: 100%;
-      }
-
-      .logoItem {
-        display: none; 
-      }
-
-      .profileContainer {
-        display: none; 
-      }
-
-      .hoverItemProject {
-        padding: 0.7rem 0.9rem;
-        border-radius: 0.5rem;
-    }
-    }
+    
+    
 
 </style>
   
