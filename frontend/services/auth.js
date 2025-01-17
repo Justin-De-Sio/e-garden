@@ -1,7 +1,7 @@
 
 export async function login(email_var, password_var) {
   try {
-    const response = await fetch('http://localhost:8080/api/user/login', 
+    const response = await fetch('/api/user/login', 
       {
       method: 'POST',
       headers:{

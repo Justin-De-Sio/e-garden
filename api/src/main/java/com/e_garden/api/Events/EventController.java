@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/event")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class EventController {
     private final EventService eventService;
     private final UserService userService;

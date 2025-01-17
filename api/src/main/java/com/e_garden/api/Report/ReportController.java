@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/report")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class ReportController {
 
     private final ReportService reportService;

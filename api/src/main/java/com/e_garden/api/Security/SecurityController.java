@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class SecurityController {
 
     @GetMapping("/csrf-token")

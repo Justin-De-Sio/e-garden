@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 @EnableWebSecurity
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConf {
 
