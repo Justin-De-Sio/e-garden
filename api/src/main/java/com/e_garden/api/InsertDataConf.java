@@ -43,9 +43,11 @@ public class InsertDataConf {
             // Insérer les utilisateurs s'ils n'existent pas déjà
             for (User user : users) {
                 user.setRole(String.valueOf(Roles.ADMINISTRATEUR));
+                user.setGroupNumber(3);
                 user = userService.saveUser(user);
                 // Ajouter un compte-rendu rempli
                 Report filledReport = new Report(user, "Compte-rendu rempli pour " + user.getName() + " " + user.getSurname());
+                filledReport.setValidated(true);
                 reportService.saveReport(filledReport);
                 // Ajouter un compte-rendu vide
                 Report emptyReport = new Report(user, "");
