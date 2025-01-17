@@ -1,8 +1,8 @@
 package com.e_garden.api.Report;
+
 import com.e_garden.api.Log.Levels;
 import com.e_garden.api.Log.LogService;
 import com.e_garden.api.PageDTO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,14 +44,18 @@ public class ReportService {
     }
 
     public PageDTO<Report> getPaginatedReports(int page, int size) {
-        Page<Report> reportPage = reportRepository.findAllByOrderByReportDateAsc(PageRequest.of(page, size));
+        Page<Report> reportPage = reportRepository.findAllByValidatedOrderByReportDateAsc(true, PageRequest.of(page, size));
 
-         return  (new PageDTO<>(
-                 reportPage.getContent(),
-                 reportPage.getNumber(),
-                 reportPage.getSize(),
-                 reportPage.getTotalElements(),
-                 reportPage.getTotalPages()
+        return (new PageDTO<>(
+                reportPage.getContent(),
+                reportPage.getNumber(),
+                reportPage.getSize(),
+                reportPage.getTotalElements(),
+                reportPage.getTotalPages()
         ));
+    }
+
+    public int getUnvalidatedReportsCount() {
+        return reportRepository.countAllByValidatedAndReportDateGreaterThan(false, LocalDateTime.now().minusDays(30));
     }
 }

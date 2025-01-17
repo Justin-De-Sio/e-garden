@@ -4,10 +4,11 @@ import com.e_garden.api.Log.Levels;
 import com.e_garden.api.Log.LogService;
 import com.e_garden.api.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -77,6 +78,10 @@ public class EventService {
                 yield eventDTO;
             }
         };
+    }
+
+    public int getEventTypeUserBadgeCount() {
+        return eventRepository.countAllByEventTypeAndCreatedAtGreaterThan(0, LocalDateTime.now().minusDays(30));
     }
 
 }

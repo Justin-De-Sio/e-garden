@@ -32,11 +32,13 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param filterChain
-     * @throws ServletException
-     * @throws IOException
+     * Méthode filtrant les requêtes avec un Token utilisateur.
+     *
+     * @param request     la requête.
+     * @param response    injection de l'objet HttpServletResponse
+     * @param filterChain injection de l'objet FilterChain
+     * @throws ServletException Exception
+     * @throws IOException      Exception
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -44,13 +46,16 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
+        // vérifie que le Bearer token est présent.
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             email = jwtService.extractEmail(token);
         }
 
+        // vérifie que l'email présent dans le Token n'est pas null
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserPrincipal userDetails = (UserPrincipal) applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(email);
+            // vérifie la validité du Token avec les informations de l'utilisateur
             if (jwtService.validateToken(token, userDetails)) {
                 String role = jwtService.extractRoles(token);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -58,6 +63,7 @@ public class JWTFilter extends OncePerRequestFilter {
                                 null, Collections.singleton(new SimpleGrantedAuthority(role)));
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                // Enregistre les informations d'authentification dans SecurityContextHolder.
             }
         }
         filterChain.doFilter(request, response);
