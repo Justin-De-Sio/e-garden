@@ -3,6 +3,7 @@ package com.e_garden.api.Videos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -20,6 +21,7 @@ public class MjpegController {
     }
 
     @GetMapping(value = "/start")
+    @Secured({"ADMINISTRATEUR"})
     public String startStream() {
         // Lance la capture
         String rtspUrl =    System.getenv("RTSP_URL");
@@ -30,6 +32,7 @@ public class MjpegController {
     }
 
     @GetMapping(value = "/stop")
+    @Secured({"ADMINISTRATEUR"})
     public String stopStream() {
         rtspReader.stopCapture();
         return "Capture arrêtée.";
@@ -39,6 +42,7 @@ public class MjpegController {
      * Ce endpoint diffuse un flux MJPEG.
      */
     @GetMapping(value = "/video", produces = MediaType.IMAGE_JPEG_VALUE)
+    @Secured({"ADMINISTRATEUR"})
     public void getVideo(HttpServletResponse response) throws IOException {
         // Type de contenu : multipart/x-mixed-replace
         response.setContentType("multipart/x-mixed-replace; boundary=frame");
