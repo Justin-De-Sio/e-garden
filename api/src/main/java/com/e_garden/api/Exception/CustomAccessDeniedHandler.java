@@ -13,11 +13,13 @@ import java.io.IOException;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     /**
-     * @param request
-     * @param response
-     * @param accessDeniedException
-     * @throws IOException
-     * @throws ServletException
+     * Fonction permettant de gérer manuellement les erreurs d'appel.
+     * Elle retourne un texte personnalisé dans la Response de l'appel.
+     * @param request la requête
+     * @param response la réponse
+     * @param accessDeniedException Injection de l'objet AccessDeniedException
+     * @throws IOException l'exception levée avec le message personnalisée
+     * @throws ServletException l'exception levée en cas de besoin
      */
     @Override
     public void handle(
