@@ -146,17 +146,9 @@ public class User {
     public List<Event> getEvents() {
         return events;
     }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
-
+    
     public List<Report> getReports() {
         return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     @Override
