@@ -67,4 +67,10 @@ public class EventController {
         reportService.saveReport(new Report(userByEmail));
         return ResponseEntity.ok(eventService.saveEvents(event));
     }
+
+    @GetMapping("/statistique")
+    @Secured({"ADMINISTRATEUR"})
+    public ResponseEntity<Integer> getEventStatistique() {
+        return ResponseEntity.ok(eventService.getEventTypeUserBadgeCount());
+    }
 }

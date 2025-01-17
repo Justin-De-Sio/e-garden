@@ -90,7 +90,7 @@ public class ReportController {
 
     @GetMapping("/statistique")
     @Secured({"ADMINISTRATEUR"})
-    public ResponseEntity<Integer> getStatistique() {
+    public ResponseEntity<Integer> getReportsStatistique() {
         return ResponseEntity.ok(reportService.getUnvalidatedReportsCount());
     }
 }
