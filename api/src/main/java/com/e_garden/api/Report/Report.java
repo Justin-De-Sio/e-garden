@@ -59,6 +59,18 @@ public class Report {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "Report{" +
+                "id=" + id +
+                ", user=" + user +
+                ", reportDate=" + reportDate +
+                ", content='" + content + '\'' +
+                ", validated=" + validated +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
     /**
      * Cette méthode est appelée automatiquement avant l'insertion dans la base de données.
      */

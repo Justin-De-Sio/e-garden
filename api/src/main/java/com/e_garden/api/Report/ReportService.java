@@ -34,7 +34,7 @@ public class ReportService {
 
     public Report saveReport(Report report) {
         report.setReportDate(LocalDateTime.now());
-        logService.createLog(String.valueOf(Levels.REPORT), "Enregistrement d'un rapport", "report id : " + report);
+        logService.createLog(String.valueOf(Levels.REPORT), "Enregistrement d'un rapport", "report id : " + report.toString());
         return reportRepository.save(report);
     }
 
