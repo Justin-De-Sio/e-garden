@@ -34,6 +34,14 @@ public class SecurityConf {
 
     }
 
+    /**
+     * Toutes les requêtes recues par l'API passe par cette fonction, l'appel est automatiquement géré par Spring Boot.
+     * La fonction requestMatchers() permet d'exclure le contrôle de sécurité.
+     * Il faut ajouter uniquement les contrôles nécessite aucune vérification.
+     * @param httpSecurity la requête
+     * @return HttpSecurity
+     * @throws Exception une exception est retourné en cas d'accès refusé
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         String url = "/api/";
@@ -55,6 +63,11 @@ public class SecurityConf {
         return new CustomAccessDeniedHandler();
     }
 
+    /**
+     * Fonction qui permet de vérifier l'authentification avec un email et un password.
+     * Elle définit l'encodeur qui permettra de hacher le password et de le comparer avec le password de la DB.
+     * @return AuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider ();
