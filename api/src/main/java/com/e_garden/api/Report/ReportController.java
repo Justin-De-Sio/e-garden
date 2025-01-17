@@ -87,4 +87,10 @@ public class ReportController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @GetMapping("/statistique")
+    @Secured({"ADMINISTRATEUR"})
+    public ResponseEntity<Integer> getStatistique() {
+        return ResponseEntity.ok(reportService.getUnvalidatedReportsCount());
+    }
 }

@@ -54,4 +54,8 @@ public class ReportService {
                 reportPage.getTotalPages()
         ));
     }
+
+    public int getUnvalidatedReportsCount() {
+        return reportRepository.countAllByValidatedAndReportDateGreaterThan(false, LocalDateTime.now().minusDays(30));
+    }
 }
