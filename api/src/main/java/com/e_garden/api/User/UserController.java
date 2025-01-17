@@ -6,8 +6,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -77,5 +79,13 @@ public class UserController {
     public String firstLogin() {
         return null;
         // tODO
+    }
+
+    @GetMapping("/roles")
+    @Secured({"ADMINISTRATEUR"})
+    public List<String> getRoles() {
+        return Arrays.stream(Roles.values())
+                .map(role -> role.name().substring(0, 1).toUpperCase() + role.name().substring(1).toLowerCase())
+                .collect(Collectors.toList()).reversed();
     }
 }
