@@ -2,7 +2,6 @@
 package com.e_garden.api.Security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +27,6 @@ public class AuthControllerTest {
     private ObjectMapper objectMapper;
 
     private String token;
-
-    @BeforeEach
-    void loginAndRetrieveToken() throws Exception {
-        // Préparer les informations de connexion (utiilelisateur et mot de passe)
-        Dotenv dotenv = Dotenv.configure().directory("./").filename(".env").load();
-        dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
-
-        // Effectuer une requête POST pour se connecter
-        MvcResult result = mockMvc.perform(post("/api/user/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"thomas.robert@ece.fr\",\"password\":\"thomas\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token", notNullValue())) // Vérifie que le token est présent
-                .andReturn();
-
-        // Extraire le token de la réponse
-        String responseBody = result.getResponse().getContentAsString();
-        LoginResponse loginResponse = objectMapper.readValue(responseBody, LoginResponse.class);
-        token = loginResponse.getToken();
-    }
 
     @Test
     void testGetAllUsersWithToken() throws Exception {
