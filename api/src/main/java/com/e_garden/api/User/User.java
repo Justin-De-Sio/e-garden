@@ -123,6 +123,14 @@ public class User {
         return String.valueOf(role);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setRole(String role) {
         this.role = role;
     }
