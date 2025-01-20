@@ -44,7 +44,7 @@ public class InsertDataConf {
             for (User user : users) {
                 user.setRole(String.valueOf(Roles.ADMINISTRATEUR));
                 user.setGroupNumber(3);
-                if (userService.saveUser(user) == null) {
+                if (userService.createUser(user) == null) {
                     continue;
                 }
                 //user = userService.saveUser(user);

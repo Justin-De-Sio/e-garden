@@ -39,11 +39,11 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User saveUser(User user) {
+    public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             return null;
         }
-        user = userRepository.save(encodePassword(user));
+        user = saveUser(encodePassword(user));
         log.createLog(String.valueOf(Levels.USER), "Utilisateur ajouté", user.toString());
         return user;
     }
@@ -56,9 +56,13 @@ public class UserService {
     public List<User> saveUsers(Iterable<User> users) {
         List<User> usersSaved = new ArrayList<>();
         for (User u: users) {
-            usersSaved.add(saveUser(u));
+            usersSaved.add(createUser(u));
         }
         return usersSaved;
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     public void deleteUSer(Long id) {

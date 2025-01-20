@@ -33,20 +33,39 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/profil/{id}")
+    public ResponseEntity<User> updateUserProfil(@PathVariable Long id, @RequestBody User newUser) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.saveUser(newUser));
+    }
+
     @PostMapping("/changePassword/{id}")
     public ResponseEntity<User> changeUserPassword(@PathVariable Long id,
-                                                   @RequestParam String currentPassword,
-                                                   @RequestParam String newPassword,
-                                                   @RequestParam String confirmNewPassword) {
+                                                   @RequestBody ObjectChangePassword objectChangePassword) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());
         if (!Objects.equals(userByEmail.getId(), id))
             return ResponseEntity.notFound().build();
-        if (!Objects.equals(newPassword, confirmNewPassword)) {
+        if (!Objects.equals(objectChangePassword.getNewPassword(), objectChangePassword.getConfirmNewPassword())) {
             return ResponseEntity.status(406).build(); // Not Acceptable
         }
-        return userService.updatePassword(userByEmail, currentPassword, newPassword) ?
+        return userService.updatePassword(userByEmail, objectChangePassword.getCurrentPassword(), objectChangePassword.getNewPassword()) ?
                 ResponseEntity.ok(userByEmail) : ResponseEntity.badRequest().build();
+    }
+
+    @DeleteMapping("/profil/{id}")
+    public ResponseEntity<Void> deleteUserProfil(@PathVariable Long id) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
+            return ResponseEntity.notFound().build();
+        return deleteUser(id);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody UserDTO user) {
+        return userService.verify(new User(user.getEmail(), user.getPassword()));
     }
 
     @GetMapping("/{id}")
@@ -66,15 +85,16 @@ public class UserController {
     @PostMapping
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public User createUser(@RequestBody User user) {
-        user.setPassword("MotDePasseParDefaultMerciDeChanger");
-        return userService.saveUser(user);
+        user.setPassword(System.getenv("DEFAULT_PASSWORD"));
+        return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        // TODO
-        return ResponseEntity.notFound().build();
+        if (userService.getUserById(id).isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.saveUser(user));
     }
 
     @DeleteMapping("/{id}")
@@ -88,16 +108,9 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody UserDTO user) {
-        return userService.verify(new User(user.getEmail(), user.getPassword()));
-    }
-
     @GetMapping("/roles")
     @Secured({"ADMINISTRATEUR"})
     public List<Roles> getRoles() {
         return Arrays.asList(Roles.values());
-        //.map(role -> role.name().substring(0, 1).toUpperCase() + role.name().substring(1).toLowerCase())
-        //.collect(Collectors.toList()).reversed();
     }
 }
