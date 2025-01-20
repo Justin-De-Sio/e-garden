@@ -33,6 +33,22 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/changePassword/{id}")
+    public ResponseEntity<User> changeUserPassword(@PathVariable Long id,
+                                                   @RequestParam String currentPassword,
+                                                   @RequestParam String newPassword,
+                                                   @RequestParam String confirmNewPassword) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userByEmail = userService.getUserByEmail(user.getUsername());
+        if (!Objects.equals(userByEmail.getId(), id))
+            return ResponseEntity.notFound().build();
+        if (!Objects.equals(newPassword, confirmNewPassword)) {
+            return ResponseEntity.status(406).build(); // Not Acceptable
+        }
+        return userService.updatePassword(userByEmail, currentPassword, newPassword) ?
+                ResponseEntity.ok(userByEmail) : ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> getUserById(@PathVariable Long id) {

@@ -40,12 +40,17 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
         if (userRepository.existsByEmail(user.getEmail())) {
             return null;
         }
+        user = userRepository.save(encodePassword(user));
         log.createLog(String.valueOf(Levels.USER), "Utilisateur ajouté", user.toString());
-        return userRepository.save(user);
+        return user;
+    }
+
+    private User encodePassword(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return user;
     }
 
     public List<User> saveUsers(Iterable<User> users) {
@@ -81,4 +86,20 @@ public class UserService {
             return "false";
         }
     }
+    public boolean updatePassword(User user, String currentPassword, String newPassword) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), currentPassword)
+        );
+        if (authentication.isAuthenticated()){
+            user.setPassword(newPassword);
+            user = userRepository.save(encodePassword(user));
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur a change de mot de passe", user.getEmail());
+            return true;
+        } else {
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur échec de changement de mot de passe", user.toString());
+            return false;
+        }
+    }
+
+
 }
