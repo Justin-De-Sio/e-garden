@@ -47,7 +47,7 @@ public class InsertDataConf {
                 if (userService.saveUser(user) == null) {
                     continue;
                 }
-                user = userService.saveUser(user);
+                //user = userService.saveUser(user);
                 // Ajouter un compte-rendu rempli
                 Report filledReport = new Report(user, "Compte-rendu rempli pour " + user.getName() + " " + user.getSurname());
                 filledReport.setValidated(true);
