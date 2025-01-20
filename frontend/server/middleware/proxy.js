@@ -5,9 +5,9 @@ export default defineEventHandler((event) => {
   console.log(`Requête interceptée : ${event.node.req.url}`);
 
   const proxy = createProxyMiddleware('/api', {
-    target: 'http://localhost:8080', // Adresse du backend
-    changeOrigin: true, // Modifie l'origine pour éviter les problèmes CORS
-    pathRewrite: { '^/api': '/api' }, // Facultatif : Réécrit les chemins si nécessaire
+    target: 'http://localhost:8080',
+    changeOrigin: true, 
+    pathRewrite: { '^/api': '/api' },
     onProxyReq: (proxyReq) => {
       console.log(`[Proxy] Requête envoyée vers le backend : ${proxyReq.path}`);
     },
