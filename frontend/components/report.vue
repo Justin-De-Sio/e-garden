@@ -17,7 +17,7 @@
 
           <div class="page_overlay" 
             v-if="hoveredIndex === index">
-        </div>
+          </div>
   
           <HoverCard 
             class="HoverTheCard" 
@@ -61,35 +61,28 @@
   </template>
   
   <script setup>
-    import { ref, onMounted, nextTick } from 'vue';
-    import HoverCard from "~/components/identityCard.vue";
-    
-
-    const hoveredIndex = ref(null);
-    
-    defineProps({
-      report: {
-        type: Object,
-      },
-    });
-    
+  import { ref, onMounted, nextTick } from 'vue';
+  import HoverCard from "~/components/identityCard.vue";
+  
   const expandedItems = ref([]);
   const calculatedHeights = ref([]);
+  const hoveredIndex = ref(null);
+  
+  defineProps({
+    report: {
+      type: Object,
+    },
+  });
+  
   const contentRefs = ref([]);
-
+  
   function calculateHeights() {
     nextTick(() => {
       calculatedHeights.value = contentRefs.value.map((ref) => {
-        if (ref) {
-          const elementWidth = ref.offsetWidth; 
-          return elementWidth * 0.6; 
-        }
-        return 0;
+        return ref ? ref.scrollHeight : 0;
       });
     });
   }
-
-
   
   function toggleExpand(index) {
     expandedItems.value[index] = !expandedItems.value[index];
@@ -129,6 +122,7 @@
   .wrapper_content {
     display: flex;
     flex-direction: row;
+
     padding: 1rem 0 0.5rem 1rem;
     width: 100%;
     height: 100%;
@@ -218,6 +212,7 @@
   }
   
   .separation_line {
+
     width: 85%;
     height: 1px;
     background-color: #c8c8c8;
