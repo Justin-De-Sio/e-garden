@@ -61,28 +61,35 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, nextTick } from 'vue';
-  import HoverCard from "~/components/identityCard.vue";
-  
+    import { ref, onMounted, nextTick } from 'vue';
+    import HoverCard from "~/components/identityCard.vue";
+    
+
+    const hoveredIndex = ref(null);
+    
+    defineProps({
+      report: {
+        type: Object,
+      },
+    });
+    
   const expandedItems = ref([]);
   const calculatedHeights = ref([]);
-  const hoveredIndex = ref(null);
-  
-  defineProps({
-    report: {
-      type: Object,
-    },
-  });
-  
   const contentRefs = ref([]);
-  
+
   function calculateHeights() {
     nextTick(() => {
       calculatedHeights.value = contentRefs.value.map((ref) => {
-        return ref ? ref.scrollHeight : 0;
+        if (ref) {
+          const elementWidth = ref.offsetWidth; 
+          return elementWidth * 0.6; 
+        }
+        return 0;
       });
     });
   }
+
+
   
   function toggleExpand(index) {
     expandedItems.value[index] = !expandedItems.value[index];
