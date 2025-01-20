@@ -7,7 +7,6 @@
       <div class="header_section">
         <!-- Component Header Title -->
         <Header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici même !" class="header_title"/>
-        <!-- Component Notification -->
         <!-- Component Add Report  -->
       </div>
       <div class="grid_indicators_camera_report_calendar">
@@ -36,7 +35,7 @@
             </div>
             <div class="report_section">
               <h2>Compte-rendus</h2>
-              <Report v-if="reportData" :report="reportData"></Report>
+              <Report />
             </div>
           </div>
         </div>
@@ -55,6 +54,7 @@
 <script setup lang="ts">
 import Indicators from "~/components/indicators.vue";
 import Header_title from "~/components/header_title.vue";
+import Notification_component from "~/components/notification.vue";
 import navbar from "~/components/navbar.vue";
 import Report from "~/components/report.vue";
 import Camera from "~/components/camera.vue";
