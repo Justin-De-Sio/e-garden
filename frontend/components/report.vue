@@ -1,29 +1,44 @@
 <template>
-    <div class="report_container">
+  <div class="report_container">
+    <!-- Si les données existent, affichez-les -->
+    <div 
+      v-if="reportData && reportData.content && reportData.content.length > 0"
+    >
+    <div class="pagination_controls">
+      <button 
+        @click="previousPage" 
+        :disabled="currentPage === 0"
+      ><img class="previous" src="@/assets/arrow_np.png" alt=""></button>
+      <!--<span>{{ currentPage + 1 }}</span>-->
+      <button 
+        @click="nextPage" 
+        :disabled="!reportData || !reportData.content || reportData.content.length < pageSize"
+      ><img class="next" src="@/assets/arrow_np.png" alt=""></button>
+    </div>
       <div 
         class="grid_report_person" 
-        v-for="(item, index) in report.content" 
+        v-for="(item, index) in reportData.content" 
         :key="item.id"
       >
-        <div 
-          class="wrapper_content" 
-
-        >
-          <div class="profil_card"           
-          @mouseenter="toggleHover(index, true)" 
-          @mouseleave="toggleHover(index, false)">
+        <div class="wrapper_content">
+          <div 
+            class="profil_card"           
+            @mouseenter="toggleHover(index, true)" 
+            @mouseleave="toggleHover(index, false)"
+          >
             <img src="~/assets/profil_cr.jpg" alt="profil" />
           </div>
 
-          <div class="page_overlay" 
+          <div 
+            class="page_overlay" 
             v-if="hoveredIndex === index">
           </div>
-  
+
           <HoverCard 
             class="HoverTheCard" 
             v-if="hoveredIndex === index"
           ></HoverCard>
-  
+
           <div class="content_profil_report">
             <div class="placement_cr_icon">
               <h3>{{ item.user.name }}</h3>
@@ -58,30 +73,38 @@
         <div class="separation_line"></div>
       </div>
     </div>
-  </template>
+
+    <div v-else>
+      <p>Aucun rapport disponible.</p>
+    </div>
+
+   
+  </div>
+</template>
+
   
   <script setup>
-  import { ref, onMounted, nextTick } from 'vue';
+  import { ref, onMounted, watch } from 'vue';
   import HoverCard from "~/components/identityCard.vue";
+  import { fetchBackend } from "~/services/call_backend";
   
+  const reportData = ref(null); 
+  const currentPage = ref(0); 
+  const pageSize = ref(5); 
   const expandedItems = ref([]);
   const calculatedHeights = ref([]);
   const hoveredIndex = ref(null);
-  
-  defineProps({
-    report: {
-      type: Object,
-    },
-  });
-  
   const contentRefs = ref([]);
   
-  function calculateHeights() {
-    nextTick(() => {
-      calculatedHeights.value = contentRefs.value.map((ref) => {
-        return ref ? ref.scrollHeight : 0;
-      });
-    });
+  // Fonction pour récupérer les données depuis le backend
+  async function fetchReports(page) {
+    try {
+      const data = await fetchBackend('/api/report/', page, pageSize.value);
+      reportData.value = data;
+      console.log("Données reçues :", reportData.value);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des rapports :', error);
+    }
   }
   
   function toggleExpand(index) {
@@ -92,10 +115,26 @@
     hoveredIndex.value = isHovering ? index : null;
   }
   
+
+  function nextPage() {
+    currentPage.value++;
+  }
+  
+  function previousPage() {
+    if (currentPage.value > 0) currentPage.value--;
+  }
+  
+  watch(currentPage, (newPage) => {
+    fetchReports(newPage);
+  });
+  
+
   onMounted(() => {
-    calculateHeights();
+    fetchReports(currentPage.value);
+    fetchReports(console.log(currentPage.value));
   });
   </script>
+  
   
   <style scoped>
   .report_container {
@@ -217,6 +256,32 @@
     height: 1px;
     background-color: #c8c8c8;
     margin: auto;
+  }
+  .pagination_controls {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    gap: 0.5rem; 
+    margin-top: 1rem; 
+    margin-right: 1rem; 
+  }
+
+  .pagination_controls button{
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .pagination_controls button img{
+    width: 1rem;
+  }
+
+  .previous{
+    transform: rotate(90deg);
+  }
+
+  .next{
+    transform: rotate(-90deg);
   }
   </style>
   
