@@ -51,7 +51,7 @@
     display: flex;
     flex-direction: row; 
     align-items: center;
-    padding: 1rem;
+    padding: 1.1rem;
     font-family: 'gilroy-medium', sans-serif; 
     border-radius: 0.8rem; 
   }
@@ -62,7 +62,7 @@
     margin-right: 15px; 
     width: 20%;
     height: auto;
-    padding: 0.08rem;
+    padding: 0.09rem;
     border-radius: 0.5rem; 
   }
   .icon-image {
@@ -77,12 +77,12 @@
     align-items: flex-start;
   }
   .custom-frame h1 {
-    font-size: clamp(0.7rem, 1.5vw, 1rem); 
+    font-size: clamp(0.7rem, 0.8vw, 1rem); 
     margin: 2px;
     color: #000000;
   }
   .custom-frame h2 {
-    font-size: clamp(0.6rem, 1.5vw, 0.9rem); 
+    font-size: clamp(0.6rem, 0.8vw, 0.9rem); 
     color: #7B7B7B;
     margin: 0;
   }

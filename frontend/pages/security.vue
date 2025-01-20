@@ -23,18 +23,20 @@
               subtitle="Nombre de passage"
             />
             <Indicators
-              iconPath="/_nuxt/assets/passages.png"
-              iconBackgroundColor="#95BD75"
-              title="XX passages"
-              subtitle="Nombre de passage"
+              iconPath="/_nuxt/assets/exclamation.png"
+              iconBackgroundColor="#e39695"
+              title="XX alertes"
+              subtitle="Alertes"
             />
           </div>
           <div class="placement_camera_report">
             <div class="camera_section">
-
+              <h2>Caméra</h2>
+                <Camera></Camera>
             </div>
             <div class="report_section">
-
+              <h2>Compte-rendus</h2>
+              <Report></Report>
             </div>
           </div>
         </div>
@@ -94,6 +96,7 @@ import Indicators from "~/components/indicators.vue";
 import Header_title from "~/components/header_title.vue";
 import navbar from "~/components/navbar.vue";
 import Report from "~/components/report.vue";
+import Camera from "~/components/camera.vue";
 import { JWTPayload } from "~/services/jwtpayload";
 import {Notification} from "~/services/notification";
 
@@ -105,13 +108,6 @@ const sessionCookie = useCookie("session");
 const token = sessionCookie.value;
 
 const rolePayload = JWTPayload(token);
-
-
-const content = ref({});
-onMounted(async () => {
-  content.value = await Notification(1, 10);
-  console.log(content.value);
-});
 
 </script>
 
@@ -144,7 +140,7 @@ body {
 
 .header_section{
   width: 100%;
-  height: 9rem;
+  height: clamp(5rem, 9vw , 10rem);
   margin-left: 4vw ;
   /*  background-color: blue; */  
 
@@ -206,15 +202,13 @@ h3 {
   display: flex;
   gap: 2rem;
   width: 100%;
-  background-color: red;  
-
   height: 5rem;
 }
 
 .camera_section{
   width: auto;
   /*  background-color: pink; */  
-  
+  margin-top: 2rem;
   height: 25rem;
 }
 
@@ -225,7 +219,7 @@ h3 {
 .report_section{
   width: auto;
   /*   background-color: black;*/  
-
+  margin-top: 2rem;
   height: 25rem;
 
 }
