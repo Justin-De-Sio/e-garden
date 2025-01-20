@@ -66,6 +66,7 @@ public class UserController {
     @PostMapping
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public User createUser(@RequestBody User user) {
+        user.setPassword("MotDePasseParDefaultMerciDeChanger");
         return userService.saveUser(user);
     }
 
