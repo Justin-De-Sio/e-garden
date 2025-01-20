@@ -1,13 +1,13 @@
 <template>
     <div class="main_part">    
       <div class="left_part">
-        <img src="../assets/potager_login.png" alt="Image d'un potager" class="responsive-img">
+        <img src="~/public/assets/potager_login.png" alt="Image d'un potager" class="responsive-img">
       </div>
       <div class="right_part">
         <div class="pos_white_card">
           <div class="logo_title_part">
             <div class="logo_pos">
-              <img class="logo" src="../assets/logo.png" alt="Logo">
+              <img class="logo" src="~/public/assets/logo.png" alt="Logo">
             </div>
             <div class="title_part">
               <h1>Bienvenue !</h1>
@@ -21,7 +21,7 @@
             <div class="password-wrapper">
               <input type="password" id="password" v-model="password" placeholder="Password">
               <span class="toggle-password" @click="togglePassword">
-                <img src="../assets/oeil.png" alt="Afficher/Cacher le mot de passe" class="eye-icon">
+                <img src="~/public/assets/oeil.png" alt="Afficher/Cacher le mot de passe" class="eye-icon">
               </span>
             </div>
             <div class="line"></div>
@@ -87,7 +87,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    width: 100%;
     height: 100%;
   }
   
@@ -100,7 +100,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    width: 80%;
     height: 100%;
     background-color: #F2F4EF;
   }
@@ -116,6 +116,13 @@
     align-items: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+  .logo_title_part{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   
   .logo {
     display: flex;
@@ -128,16 +135,22 @@
   
   .title_part h1 {
     font-family: "Gilroy-Bold", sans-serif;
-    font-size: 2.5em;
+    font-size: clamp(1.8rem, 2.5vw, 4rem); 
     padding-left: 25px;
+    text-align: center;
   }
   
   .title_part h6 {
     font-family: "Gilroy-Regular", sans-serif;
     color: #7B7B7B;
-    font-size: 0.9em;
+    font-size: clamp(1rem, 1.5vw, 1rem);
     margin-left: 18px;
     margin-top: 5px;
+    text-align: center;
+  }
+
+  input::placeholder {
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
   }
   
   form {
@@ -213,5 +226,14 @@
     transform: scale(1.03);
   }
   
+  @media screen and (max-width: 800px) {
+      .left_part {
+        display: none;
+      }
+
+      .right_part{
+        width: 100%;
+      }
+  }
   </style>
   

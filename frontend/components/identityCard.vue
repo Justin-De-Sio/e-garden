@@ -2,7 +2,7 @@
     <div class="CardProfilHover">
         <div class="header_card">
             <div class="iconCoverfit">
-                <img src="~/assets/profil_cr.jpg" alt="" width="20px" height="auto"/>
+                <img src="~/public/assets/profil_cr.jpg" alt="" width="20px" height="auto"/>
             </div>
             <div class="identity">
                 <div class="name_surname">

@@ -2,8 +2,9 @@ import {config} from 'dotenv'
 config();
 export default defineNuxtConfig({
   css: [
-    '~/assets/css/reset.css', // Inclure le fichier CSS global
+    '/public/assets/css/reset.css', // Inclure le fichier CSS global
   ],
+  
 
   runtimeConfig: {
     public: {

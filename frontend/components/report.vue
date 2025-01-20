@@ -8,12 +8,12 @@
       <button 
         @click="previousPage" 
         :disabled="currentPage === 0"
-      ><img class="previous" src="@/assets/arrow_np.png" alt=""></button>
+      ><img class="previous" src="~/public/assets/arrow_np.png" alt=""></button>
       <!--<span>{{ currentPage + 1 }}</span>-->
       <button 
         @click="nextPage" 
         :disabled="!reportData || !reportData.content || reportData.content.length < pageSize"
-      ><img class="next" src="@/assets/arrow_np.png" alt=""></button>
+      ><img class="next" src="~/public/assets/arrow_np.png" alt=""></button>
     </div>
       <div 
         class="grid_report_person" 
@@ -26,7 +26,7 @@
             @mouseenter="toggleHover(index, true)" 
             @mouseleave="toggleHover(index, false)"
           >
-            <img src="~/assets/profil_cr.jpg" alt="profil" />
+            <img src="~/public/assets/profil_cr.jpg" alt="profil" />
           </div>
 
           <div 
@@ -43,7 +43,7 @@
             <div class="placement_cr_icon">
               <h3>{{ item.user.name }}</h3>
               <img 
-                :src="item.content ? '/_nuxt/assets/cr_done.png' : '/_nuxt/assets/cr_empty.png'" 
+                :src="item.content ? '~/public/assets/cr_done.png' : '~/public/assets/cr_empty.png'" 
                 alt="icon" 
                 width="15vw" 
                 height="auto" 
@@ -53,7 +53,7 @@
                 @click="toggleExpand(index)"
               >
                 <img 
-                  src="../assets/angle-petit.png" 
+                  src="~/public/assets/angle-petit.png" 
                   :class="{ rotated: expandedItems[index] }" 
                   alt="angle" 
                   width="15px" 
@@ -131,7 +131,7 @@
 
   onMounted(() => {
     fetchReports(currentPage.value);
-    fetchReports(console.log(currentPage.value));
+    console.log(currentPage.value);
   });
   </script>
   

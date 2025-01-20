@@ -16,13 +16,13 @@
           </div>
           <div class="indicators_section">
             <Indicators
-              iconPath="/_nuxt/assets/passages.png"
+              iconPath="~/public/assets/passages.png"
               iconBackgroundColor="#95BD75"
               title="XX passages"
               subtitle="Nombre de passage"
             />
             <Indicators
-              iconPath="/_nuxt/assets/exclamation.png"
+              iconPath="~/public/assets/exclamation.png"
               iconBackgroundColor="#e39695"
               title="XX alertes"
               subtitle="Alertes"

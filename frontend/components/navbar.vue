@@ -5,7 +5,7 @@
           <img src="../assets/logo.png" alt="logo" width="80px" height="auto">
         </li>
         <li class="expandItem" @click="toggleMenu">
-          <img src="../assets/angle.png" :class="{ rotated: IsExpanded }" alt="angle" width="25px" height="auto">
+          <img src="~/public/assets/angle.png" :class="{ rotated: IsExpanded }" alt="angle" width="25px" height="auto">
         </li>
         <!-- Project profil -->
         <li v-if="currentRole" class="role" :class="{expanded : IsExpanded}">
@@ -56,25 +56,25 @@
     {
       name: 'administrateur',
       menuProject: [
-        { name: 'Security', icon: '/_nuxt/assets/camera.png' },
-        { name: 'Gestionnaires', icon: '/_nuxt/assets/gestion.png' },
-        { name: 'PPE1', icon: '/_nuxt/assets/capteur.png' },
-        { name: 'PPE2', icon: '/_nuxt/assets/applications.png' },
+        { name: 'Security', icon: '~/public/assets/camera.png' },
+        { name: 'Gestionnaires', icon: '~/public/assets/gestion.png' },
+        { name: 'PPE1', icon: '~/public/assets/capteur.png' },
+        { name: 'PPE2', icon: '~/public/assets/applications.png' },
       ],
       menuProfil: [
-        { name: 'Paramètre', icon: '/_nuxt/assets/parametres.png' },
-        { name: 'Profil', icon: '/_nuxt/assets/profil.png' },
+        { name: 'Paramètre', icon: '~/public/assets/parametres.png' },
+        { name: 'Profil', icon: '~/public/assets/profil.png' },
       ],
     },
     {
       name: 'utilisateur',
       menuProject: [
-        { name: 'PPE1', icon: '/_nuxt/assets/capteur.png' },
-        { name: 'PPE2', icon: '/_nuxt/assets/applications.png' },
+        { name: 'PPE1', icon: '~/public/assets/capteur.png' },
+        { name: 'PPE2', icon: '~/public/assets/applications.png' },
       ],
       menuProfil: [
-        { name: 'Paramètres', icon: '/_nuxt/assets/parametres.png' },
-        { name: 'Profil', icon: '/_nuxt/assets/profil.png' },
+        { name: 'Paramètres', icon: '~/public/assets/parametres.png' },
+        { name: 'Profil', icon: '~/public/assets/profil.png' },
       ],
     },
   ]);
