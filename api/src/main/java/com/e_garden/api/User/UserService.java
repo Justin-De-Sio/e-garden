@@ -48,6 +48,11 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Méthode privée permettant d'encoder le mot de passe de l'utilisateur.
+     * @param user avec un nouveau mot de passe
+     * @return user avec un mot de passe encodé
+     */
     private User encodePassword(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         return user;
@@ -61,8 +66,17 @@ public class UserService {
         return usersSaved;
     }
 
+    public User resetPassword(User user) {
+        user.setPassword(System.getenv("DEFAULT_PASSWORD"));
+        user = saveUser(encodePassword(user));
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur resetPassword", user.toString());
+        return user;
+    }
+
     public User saveUser(User user) {
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur mis à jour", user.toString());
+        return user;
     }
 
     public void deleteUSer(Long id) {
@@ -90,6 +104,7 @@ public class UserService {
             return "false";
         }
     }
+
     public boolean updatePassword(User user, String currentPassword, String newPassword) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), currentPassword)

@@ -89,6 +89,15 @@ public class UserController {
         return userService.createUser(user);
     }
 
+    @PostMapping("/resetPassword/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
+    public ResponseEntity<User> resetPassword(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .map(user ->
+                        ResponseEntity.ok(userService.resetPassword(user))).orElseGet(() ->
+                        ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
