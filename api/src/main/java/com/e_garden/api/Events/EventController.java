@@ -58,7 +58,7 @@ public class EventController {
     //   autorisée à accéder au potager.
 
     @GetMapping("/door/{id}")
-    public ResponseEntity<Event> saveEntry(@PathVariable Long id) {
+    public ResponseEntity<Report> saveEntry(@PathVariable Long id) {
         Event event = new Event();
         event.setTitle("Enregistrement de passage");
         event.setEventType(0);
@@ -69,8 +69,8 @@ public class EventController {
         if (userByEmail == null)
             return ResponseEntity.notFound().build();
         event.setUser(userByEmail);
-        reportService.saveReport(new Report(userByEmail));
-        return ResponseEntity.ok(eventService.saveEvents(event));
+        eventService.saveEvents(event);
+        return ResponseEntity.ok(reportService.saveReport(new Report(userByEmail)));
     }
 
     @GetMapping("/statistique")
