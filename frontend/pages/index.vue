@@ -16,7 +16,7 @@
             <h1>Bienvenue sur le site E-Garden</h1>
             <h3>Une application qui centralise tous vos besoins liés au potager</h3>
           </div>
-          <button @click="loginButton" class="button-login">Login</button>
+          <button @click="loginButton" class="button-login">Entrez dans le potager !</button>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
     .center_title h1 {
         font-family: "Gilroy-Medium";
         font-size: clamp(1.3rem, 2.5vw, 4rem); 
-    }
+    } 
     
     .center_title h3 {
         font-family: "Gilroy-Regular";
@@ -129,7 +129,7 @@
     .button-login {
         background: none;
         border: none;
-        width: 8rem;
+        width: 17rem;
         height: 5vh;
         background-color: #95bd75;
         font-family: "Gilroy-Regular";

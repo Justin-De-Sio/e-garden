@@ -43,7 +43,7 @@
             <div class="placement_cr_icon">
               <h3>{{ item.user.name }}</h3>
               <img 
-                :src="item.content ? '~/public/assets/cr_done.png' : '~/public/assets/cr_empty.png'" 
+                :src="item.content ? '/assets/cr_done.png' : '/assets/cr_empty.png'" 
                 alt="icon" 
                 width="15vw" 
                 height="auto" 

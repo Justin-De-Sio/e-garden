@@ -2,7 +2,7 @@
     <nav :class="{expanded : IsExpanded}">
       <ul>
         <li class="logoItem">
-          <img src="../assets/logo.png" alt="logo" width="80px" height="auto">
+          <img src="~/public/assets/logo.png" alt="logo" width="80px" height="auto">
         </li>
         <li class="expandItem" @click="toggleMenu">
           <img src="~/public/assets/angle.png" :class="{ rotated: IsExpanded }" alt="angle" width="25px" height="auto">
@@ -56,25 +56,25 @@
     {
       name: 'administrateur',
       menuProject: [
-        { name: 'Security', icon: '~/public/assets/camera.png' },
-        { name: 'Gestionnaires', icon: '~/public/assets/gestion.png' },
-        { name: 'PPE1', icon: '~/public/assets/capteur.png' },
-        { name: 'PPE2', icon: '~/public/assets/applications.png' },
+        { name: 'Security', icon: '/assets/camera.png' },
+        { name: 'Gestionnaires', icon: '/assets/gestion.png' },
+        { name: 'PPE1', icon: '/assets/capteur.png' },
+        { name: 'PPE2', icon: '/assets/applications.png' },
       ],
       menuProfil: [
-        { name: 'Paramètre', icon: '~/public/assets/parametres.png' },
-        { name: 'Profil', icon: '~/public/assets/profil.png' },
+        { name: 'Paramètre', icon: '/assets/parametres.png' },
+        { name: 'Profil', icon: '/assets/profil.png' },
       ],
     },
     {
       name: 'utilisateur',
       menuProject: [
-        { name: 'PPE1', icon: '~/public/assets/capteur.png' },
-        { name: 'PPE2', icon: '~/public/assets/applications.png' },
+        { name: 'PPE1', icon: '/assets/capteur.png' },
+        { name: 'PPE2', icon: '/assets/applications.png' },
       ],
       menuProfil: [
-        { name: 'Paramètres', icon: '~/public/assets/parametres.png' },
-        { name: 'Profil', icon: '~/public/assets/profil.png' },
+        { name: 'Paramètres', icon: '/assets/parametres.png' },
+        { name: 'Profil', icon: '/assets/profil.png' },
       ],
     },
   ]);
