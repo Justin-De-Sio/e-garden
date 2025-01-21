@@ -20,7 +20,7 @@ public class RtspRecorderController {
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     @PostMapping("/record")
-    public Response recordRtspStream() {
+    public Response recordRtspStream(@RequestParam(required = false, defaultValue = "5") int duration) {
         String rtspUrl = System.getenv(RTSP_URL_ENV);
         if (rtspUrl == null || rtspUrl.isEmpty()) {
             return new Response(false, "RTSP_URL environment variable is not set or empty.");
@@ -36,15 +36,15 @@ public class RtspRecorderController {
             }
         }
 
-        // Commande FFmpeg avec paramètres compatibles
+        // Commande FFmpeg avec durée spécifiée
         String command = String.format(
-                "ffmpeg -rtsp_transport tcp -timeout 10000000 -analyzeduration 100000000 -probesize 50000000 -i %s -s 2560x1920 -r 20 -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -f mp4 %s",
-                rtspUrl, outputFile
+                "ffmpeg -rtsp_transport tcp -timeout 10000000 -analyzeduration 100000000 -probesize 50000000 -i %s -t %d -s 2560x1920 -r 20 -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -f mp4 %s",
+                rtspUrl, duration, outputFile
         );
 
         executor.submit(() -> runRecordingProcess(command, outputFile));
 
-        return new Response(true, "Recording started in the background.");
+        return new Response(true, "Recording started for " + duration + " seconds.");
     }
 
     @Async
