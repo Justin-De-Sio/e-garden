@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -21,16 +22,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    // TODO : Un système de récupération de mot de passe
-    //  oublié sera également disponible.
-    @GetMapping("/profil/{id}")
-    public ResponseEntity<User> getUserProfil(@PathVariable Long id) {
+    @GetMapping("/profil")
+    public ResponseEntity<User> getUserProfil() {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
+        User userE = userService.getUserByEmail(user.getUsername());
+        if (userE != null) {
+            return ResponseEntity.ok(userE);
+        } else {
             return ResponseEntity.notFound().build();
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        }
     }
 
     @PutMapping("/profil/{id}")
