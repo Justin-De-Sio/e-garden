@@ -6,7 +6,7 @@
             </div>
             <div class="exit">
                 <button class="logout">Deconnexion</button>
-                <button class="button_exit"><img class="exit_profil" src="/public/assets/cancel.png" alt="" width="20px" height="auto"></button>
+                <button class="button_exit" @click="goBack"><img class="exit_profil" src="/public/assets/cancel.png" alt="" width="20px" height="auto"></button>
             </div>
         </div>
         <div class="wrapper_form">
@@ -40,13 +40,23 @@
 
 <script setup lang="ts">
     import { fetchBackend_URL } from '~/services/call_backend';
+    import { ref } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
+
+    const goBack = () => {
+        router.back(); 
+    };
+    const data = await fetchBackend_URL("api/user/profil")
+    console.log(data.name);
 
     const profil_params = ref([
-        { key: 'surname', name: 'Prénom', placeholder: 'Gabin' },
-        { key: 'name', name: 'Nom', placeholder: 'Cornaire' },
-        { key: 'email', name: 'Adresse email', placeholder: 'Email', readonly: true },
-        { key: 'class', name: 'Classe', placeholder: 'ING5' },
-        { key: 'group', name: 'Groupe', placeholder: 'Grp3' },
+        { key: 'name', name: 'Prénom', placeholder: data.name},
+        { key: 'surname', name: 'Nom', placeholder: data.surname },
+        { key: 'email', name: 'Adresse email', placeholder: data.email, readonly: true },
+        { key: 'class', name: 'Classe', placeholder: data.className},
+        { key: 'group', name: 'Groupe', placeholder: `Grp${data.groupNumber}` },
     ]);
 </script>
 

@@ -35,12 +35,7 @@
   
   
   <style scoped>
-  @font-face {
-    font-family: 'gilroy-medium';
-    src: url('@/assets/fonts/Gilroy-Medium.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+  
   
   .custom-frame {
     width: 30% ;
