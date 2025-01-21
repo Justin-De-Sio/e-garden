@@ -2,11 +2,11 @@
     <div class="wrapper_profil">
         <div class="header_log">
             <div class="logo">
-                <img class="profil_logo" src="/public/assets/logo.png" alt="" >
+                <img class="profil_logo" src="/assets/logo.png" alt="">
             </div>
             <div class="exit">
                 <button class="logout">Deconnexion</button>
-                <button class="button_exit" @click="goBack"><img class="exit_profil" src="/public/assets/cancel.png" alt="" width="20px" height="auto"></button>
+                <button class="button_exit" @click="goBack"><img class="exit_profil" src="/assets/cancel.png" alt="" width="20px" height="auto"></button>
             </div>
         </div>
         <div class="wrapper_form">
@@ -16,21 +16,21 @@
             </div>
             <div class="header_profil">
                 <h3>Votre photo de profil</h3>
-                <img src="/public/assets/user.png" alt="">
+                <img src="/assets/user.png" alt="">
             </div>
             <div class="formulaire">
                 <form action="" method="get">
                     <div class="foreach" v-for="(param, index) in profil_params" :key="index">
-                    <h4>{{ param.name }}</h4>
-                    <input
-                        :type="param.key === 'email' ? 'email' : 'text'"
-                        :name="param.key"
-                        :placeholder="param.placeholder"
-                        :readonly="param.readonly || false"
-                    />
+                        <h4>{{ param.name }}</h4>
+                        <input
+                            :type="param.key === 'email' ? 'email' : 'text'"
+                            :name="param.key"
+                            :placeholder="param.placeholder"
+                            :readonly="param.readonly || false"
+                        />
                     </div>
                 </form>
-                </div>
+            </div>
             <div class="footer_button">
                 <button>Supprimer votre compte</button>
             </div>
@@ -39,25 +39,40 @@
 </template>
 
 <script setup lang="ts">
-    import { fetchBackend_URL } from '~/services/call_backend';
-    import { ref } from 'vue';
-    import { useRouter } from 'vue-router';
+import { fetchBackend_URL } from '~/services/call_backend';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-    const router = useRouter();
+interface ProfilParam {
+  key: string;
+  name: string;
+  placeholder: string;
+  readonly?: boolean;
+}
+// Navigation
+const router = useRouter();
+const goBack = () => {
+    router.back();
+};
 
-    const goBack = () => {
-        router.back(); 
-    };
-    const data = await fetchBackend_URL("api/user/profil")
-    console.log(data.name);
+// Chargement des données
 
-    const profil_params = ref([
-        { key: 'name', name: 'Prénom', placeholder: data.name},
-        { key: 'surname', name: 'Nom', placeholder: data.surname },
-        { key: 'email', name: 'Adresse email', placeholder: data.email, readonly: true },
-        { key: 'class', name: 'Classe', placeholder: data.className},
-        { key: 'group', name: 'Groupe', placeholder: `Grp${data.groupNumber}` },
-    ]);
+const profil_params = ref<ProfilParam[]>([]);
+// Récupérer les données à l'initialisation
+onMounted(async () => {
+    try {
+        const data = await fetchBackend_URL('/api/user/profil');
+        profil_params.value = [
+            { key: 'name', name: 'Prénom', placeholder: data.name },
+            { key: 'surname', name: 'Nom', placeholder: data.surname },
+            { key: 'email', name: 'Adresse email', placeholder: data.email, readonly: true },
+            { key: 'class', name: 'Classe', placeholder: data.className },
+            { key: 'group', name: 'Groupe', placeholder: `Grp${data.groupNumber}` },
+        ];
+    } catch (error) {
+        console.error('Erreur lors du chargement des données du profil :', error);
+    }
+});
 </script>
 
 <style scoped>

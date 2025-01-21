@@ -31,7 +31,7 @@
               :class="['itemProfil', { lastItemProfil: index === currentRole.menuProfil.length - 1 }]"
             >
               <div class="hoverItemProject" :class="{expanded : IsExpanded}">
-                <img :src="project.icon" :alt="project.name" width="25" height="25" />
+                <img :src="project.icon" :alt="project.name" width="25" height="25"  @click="profilRedirection"/>
                 <h4 class="nameItemProject" :class="{expanded : IsExpanded}">{{ project.name }}</h4>
               </div>
             </li>
@@ -89,7 +89,9 @@
     return roles.value.find((role) => role.name.toLowerCase() === (rolePayload || "").toLowerCase()) || null;
   });
 
-
+  const profilRedirection = () => {
+      route.push('/profil'); 
+    };
 
   // Vérifie si l'élément est actif
   const isActive = (projectName) => {
