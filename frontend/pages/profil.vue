@@ -5,8 +5,10 @@
                 <img class="profil_logo" src="/assets/logo.png" alt="">
             </div>
             <div class="exit">
-                <button class="logout">Deconnexion</button>
-                <button class="button_exit" @click="goBack"><img class="exit_profil" src="/assets/cancel.png" alt="" width="20px" height="auto"></button>
+                <button class="logout" @click="logout">Deconnexion</button>
+                <button class="button_exit" @click="goBack">
+                    <img class="exit_profil" src="/assets/cancel.png" alt="" width="20px" height="auto" />
+                </button>
             </div>
         </div>
         <div class="wrapper_form">
@@ -19,16 +21,17 @@
                 <img src="/assets/user.png" alt="">
             </div>
             <div class="formulaire">
-                <form action="" method="get">
+                <form @submit.prevent="submitForm">
                     <div class="foreach" v-for="(param, index) in profil_params" :key="index">
-                        <h4>{{ param.name }}</h4>
+                        <h4 class="name_input">{{ param.name }}</h4>
                         <input
                             :type="param.key === 'email' ? 'email' : 'text'"
                             :name="param.key"
-                            :placeholder="param.placeholder"
+                            v-model="param.value"
                             :readonly="param.readonly || false"
                         />
                     </div>
+                    <button class="save_button" type="submit" :disabled="!isModified">Enregistrer</button>
                 </form>
             </div>
             <div class="footer_button">
@@ -39,40 +42,86 @@
 </template>
 
 <script setup lang="ts">
-import { fetchBackend_URL } from '~/services/call_backend';
-import { ref, onMounted } from 'vue';
+import { fetchBackend_URL, UpdateBackend_Profil } from '~/services/call_backend';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-interface ProfilParam {
-  key: string;
+// Définir un type pour l'utilisateur
+interface User {
+  id: string;
   name: string;
-  placeholder: string;
+  surname: string;
+  email: string;
+  className: string;
+  groupNumber: string;
+}
+
+interface ProfilParam {
+  key: keyof User;
+  name: string;
+  value: string;
+  originalValue: string;
   readonly?: boolean;
 }
-// Navigation
+
+
 const router = useRouter();
 const goBack = () => {
     router.back();
 };
 
-// Chargement des données
+const logout = () =>{
+    document.cookie="session=;"
+    router.push("/login");
+}
 
+// Paramètres du profil et ID utilisateur
 const profil_params = ref<ProfilParam[]>([]);
-// Récupérer les données à l'initialisation
+const userId = ref("");
+
+// Propriété calculée pour vérifier si un champ a été modifié
+const isModified = computed(() =>
+    profil_params.value.some(param => param.value !== param.originalValue)
+);
+
+// Charger les données du profil à l'initialisation
 onMounted(async () => {
     try {
         const data = await fetchBackend_URL('/api/user/profil');
+        userId.value = data.id; 
         profil_params.value = [
-            { key: 'name', name: 'Prénom', placeholder: data.name },
-            { key: 'surname', name: 'Nom', placeholder: data.surname },
-            { key: 'email', name: 'Adresse email', placeholder: data.email, readonly: true },
-            { key: 'class', name: 'Classe', placeholder: data.className },
-            { key: 'group', name: 'Groupe', placeholder: `Grp${data.groupNumber}` },
+            { key: 'name', name: 'Prénom', value: data.name, originalValue: data.name },
+            { key: 'surname', name: 'Nom', value: data.surname, originalValue: data.surname },
+            { key: 'email', name: 'Adresse email', value: data.email, originalValue: data.email, readonly: true },
+            { key: 'className', name: 'Classe', value: data.className, originalValue: data.className },
+            { key: 'groupNumber', name: 'Groupe', value: data.groupNumber, originalValue: data.groupNumber },
         ];
     } catch (error) {
         console.error('Erreur lors du chargement des données du profil :', error);
     }
 });
+
+
+const submitForm = async () => {
+
+    // Construire l'objet User attendu par le backend
+    const userPayload: User = profil_params.value.reduce((acc, param) => {
+        acc[param.key] = param.value;
+        return acc;
+    }, {id: userId.value } as User);
+    console.log(userPayload);
+    try {
+        const response = await UpdateBackend_Profil('/api/user/profil/', userId.value, userPayload);
+        console.log('Profil mis à jour avec succès :', response);
+
+        // Mettre à jour les valeurs originales après sauvegarde réussie
+        profil_params.value.forEach(param => {
+            param.originalValue = param.value;
+        });
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour du profil :', error);
+    }
+};
 </script>
 
 <style scoped>
@@ -129,7 +178,7 @@ onMounted(async () => {
         height: 2.5rem;
         width: min(25vw, 150px); 
         border-radius: 0.3rem;
-        background-color: #95bd75;
+        background-color: #ffbf69;
         font-family: "Gilroy-Medium";
         font-size: clamp(0.7rem, 2vw, 0.9rem); 
         cursor: pointer;
@@ -199,6 +248,13 @@ onMounted(async () => {
     
     }
 
+    .name_input {
+        font-family: "Gilroy-Regular";
+        font-size: 0.9rem;
+        color: #909399;
+    
+    }
+
     .formulaire form input::placeholder {
         font-family: "Gilroy-Medium";
         color: black;
@@ -206,20 +262,41 @@ onMounted(async () => {
 
     .footer_button{
         margin: auto;
-        margin-top: 5rem;
+        margin-top: 4rem;
     }
 
     .footer_button button{
         background: none;
         background-color: #e39695;
         border: none;
-        width: min(30vw, 200px); 
+        width: min(35vw, 200px); 
         height: 2.5rem;
         border-radius: 0.3rem;
         color: white;
         font-family: "Gilroy-Medium";
         font-size: clamp(0.7rem, 2vw, 0.9rem); 
         cursor: pointer;
+    }
+
+    .save_button{
+        background: none;
+        border: none;
+        background-color: #95bd75;
+        color: white;
+        width: min(25vw, 200px);
+        font-family: "Gilroy-Medium";
+        font-size: clamp(0.7rem, 2vw, 0.8rem); 
+        border-radius: 0.2rem;
+        height: 2rem;
+        margin: auto;
+        cursor: pointer;
+    }
+
+    .save_button:disabled {
+        background-color: #cccccc; 
+        color: #666666;           
+        cursor: not-allowed;      
+        opacity: 0.6;             
     }
 
     @media screen and (max-width: 800px) {
@@ -237,6 +314,11 @@ onMounted(async () => {
             justify-content: center;
             align-items: center;    
         }
+
+        .header_profil{
+            align-items: center;
+        }
+
   }
 
 </style>
