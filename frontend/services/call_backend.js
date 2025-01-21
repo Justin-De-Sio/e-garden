@@ -22,3 +22,25 @@ export async function fetchBackend(url, page, size) {
         throw error; 
     }
 }
+
+export async function fetchBackend_URL(url) { 
+    const sessionCookie = useCookie('session');
+    const token = sessionCookie?.value;
+
+    if (!token) {
+        console.warn('Le token est manquant dans le cookie session.');
+        throw new Error('Utilisateur non authentifié.');
+    }
+
+    try {
+        const data = await $fetch(url, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        });
+        return data;
+    } catch (error) {
+        console.error('Erreur lors de la requête API :', error);
+        throw error; 
+    }
+}

@@ -4,7 +4,7 @@
         <img :src="iconPath" alt="icon" class="icon-image" />
       </div>
       <div class="text-container">
-        <h1>{{ title }}</h1>
+        <h1>{{ title }} </h1>
         <h2>{{ subtitle }}</h2>
       </div>
     </div>

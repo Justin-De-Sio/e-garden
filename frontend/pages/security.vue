@@ -18,13 +18,13 @@
             <Indicators
               iconPath="/assets/passages.png"
               iconBackgroundColor="#95BD75"
-              title="XX passages"
+              :title="`${reportData} passages`"
               subtitle="Nombre de passage"
             />
             <Indicators
               iconPath="/assets/exclamation.png"
               iconBackgroundColor="#e39695"
-              title="XX alertes"
+              :title="`${reportData_report} alertes`"
               subtitle="Alertes"
             />
           </div>
@@ -59,19 +59,22 @@ import navbar from "~/components/navbar.vue";
 import Report from "~/components/report.vue";
 import Camera from "~/components/camera.vue";
 import { JWTPayload } from "~/services/jwtpayload";
-import {Notification} from "~/services/notification";
 import {fetchBackend} from "~/services/call_backend"
+import {fetchBackend_URL} from "~/services/call_backend"
 
-const reportData=ref();
+const reportData=ref(0);
+const reportData_report=ref(0);
 definePageMeta({
   middleware: "auth"
 });
 
 onMounted(async () => {
     try {
-        const data = await fetchBackend('/api/report/', 0, 5);
-        reportData.value = data;
-        console.log(reportData.value);
+        const data_stats = await fetchBackend_URL('/api/event/statistique');
+        const data_stats_report = await fetchBackend_URL('/api/report/statistique');
+        reportData.value = data_stats;
+        reportData_report.value = data_stats_report;
+        console.log("Stats:",data_stats);
     } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
     }
@@ -79,7 +82,7 @@ onMounted(async () => {
 
 </script>
 
-<style>
+<style scoped>
 
 
 body {

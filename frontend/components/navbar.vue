@@ -215,6 +215,8 @@
 
     .hoverItemProject h4{
         font-family: "Gilroy-Medium" , sans-serif;
+        color: white;
+        font-size: 0.9rem;
     }
 
     .hoverItemProject.expanded{
