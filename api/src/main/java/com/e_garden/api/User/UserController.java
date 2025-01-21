@@ -36,9 +36,10 @@ public class UserController {
     @PutMapping("/profil/{id}")
     public ResponseEntity<User> updateUserProfil(@PathVariable Long id, @RequestBody User newUser) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
+        User currentUser = userService.getUserByEmail(user.getUsername());
+        if (!Objects.equals(currentUser.getId(), id))
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(userService.saveUser(newUser));
+        return ResponseEntity.ok(userService.updateUser(currentUser, newUser));
     }
 
     @PostMapping("/changePassword/{id}")
@@ -101,9 +102,12 @@ public class UserController {
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        if (userService.getUserById(id).isEmpty())
+        Optional<User> userById = userService.getUserById(id);
+        if (userById.isEmpty()) {
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(userService.saveUser(user));
+        }
+        User existingUser = userById.get();
+        return ResponseEntity.ok(userService.updateUser(existingUser, user));
     }
 
     @DeleteMapping("/{id}")

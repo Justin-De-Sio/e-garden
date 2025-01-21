@@ -74,6 +74,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+
         user = userRepository.save(user);
         log.createLog(String.valueOf(Levels.USER), "Utilisateur mis à jour", user.toString());
         return user;
@@ -121,4 +122,13 @@ public class UserService {
     }
 
 
+    public User updateUser(User currentUser, User newUser) {
+        currentUser.setName(newUser.getName());
+        currentUser.setSurname(newUser.getSurname());
+        currentUser.setGroupNumber(newUser.getGroupNumber());
+        currentUser.setClassName(newUser.getClassName());
+        currentUser.setRole(newUser.getRole());
+
+        return saveUser(currentUser);
+    }
 }
