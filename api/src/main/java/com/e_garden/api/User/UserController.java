@@ -77,9 +77,7 @@ public class UserController {
 
     @GetMapping("/roles")
     @Secured({"ADMINISTRATEUR"})
-    public List<String> getRoles() {
-        return Arrays.stream(Roles.values())
-                .map(role -> role.name().substring(0, 1).toUpperCase() + role.name().substring(1).toLowerCase())
-                .collect(Collectors.toList()).reversed();
+    public List<Roles> getRoles() {
+        return Arrays.asList(Roles.values());
     }
 }
