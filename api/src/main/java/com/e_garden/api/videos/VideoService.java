@@ -1,9 +1,8 @@
-package com.e_garden.api.Videos;
+package com.e_garden.api.videos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 
 @Service
