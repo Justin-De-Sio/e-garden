@@ -1,41 +1,46 @@
 <template>
-    <div class="wrapper_profil">
+    <div class="main_wrapper">
         <div class="header_log">
-            <div class="logo">
-                <img class="profil_logo" src="/assets/logo.png" alt="">
+                <div class="logo">
+                    <img class="profil_logo" src="/assets/logo.png" alt="">
+                </div>
+                <div class="exit">
+                    <button class="logout" @click="logout">Deconnexion</button>
+                    <button class="button_exit" @click="goBack">
+                        <img class="exit_profil" src="/assets/cancel.png" alt="" width="20px" height="auto" />
+                    </button>
+                </div>
             </div>
-            <div class="exit">
-                <button class="logout" @click="logout">Deconnexion</button>
-                <button class="button_exit" @click="goBack">
-                    <img class="exit_profil" src="/assets/cancel.png" alt="" width="20px" height="auto" />
-                </button>
+        <div class="wrapper_profil">
+            <div class="wrapper_form">
+                <div class="text_header">
+                    <h2>Mon profil</h2>
+                    <h3>Gérez les paramètres de votre profil</h3>
+                </div>
+                <div class="header_profil">
+                    <h3>Votre photo de profil</h3>
+                    <img src="public/assets/user.png" alt="">
+                </div>
+                <div class="formulaire">
+                    <form @submit.prevent="submitForm">
+                        <div class="foreach" v-for="(param, index) in profil_params" :key="index">
+                            <h4 class="name_input">{{ param.name }}</h4>
+                            <input
+                                :type="param.key === 'email' ? 'email' : 'text'"
+                                :name="param.key"
+                                v-model="param.value"
+                                :readonly="param.readonly || false"
+                            />
+                        </div>
+                        <button class="save_button" type="submit" :disabled="!isModified">Enregistrer</button>
+                    </form>
+                </div>
+                <div class="footer_button">
+                    <p @click="changePassword">Changer de mot de passe</p>
+                </div>
             </div>
-        </div>
-        <div class="wrapper_form">
-            <div class="text_header">
-                <h2>Mon profil</h2>
-                <h3>Gérez les paramètres de votre profil</h3>
-            </div>
-            <div class="header_profil">
-                <h3>Votre photo de profil</h3>
-                <img src="public/assets/user.png" alt="">
-            </div>
-            <div class="formulaire">
-                <form @submit.prevent="submitForm">
-                    <div class="foreach" v-for="(param, index) in profil_params" :key="index">
-                        <h4 class="name_input">{{ param.name }}</h4>
-                        <input
-                            :type="param.key === 'email' ? 'email' : 'text'"
-                            :name="param.key"
-                            v-model="param.value"
-                            :readonly="param.readonly || false"
-                        />
-                    </div>
-                    <button class="save_button" type="submit" :disabled="!isModified">Enregistrer</button>
-                </form>
-            </div>
-            <div class="footer_button">
-                <p @click="changePassword">Changer de mot de passe</p>
+            <div class="illustration">
+                <img src="/public/assets/profil-illustration.jpg" alt="">
             </div>
         </div>
     </div>
@@ -134,9 +139,19 @@ const submitForm = async () => {
         background-color: #f2f4ef
     }
 
-    .wrapper_profil{
+    .main_wrapper {
         display: flex;
         flex-direction: column;
+        justify-content: space-between; 
+        align-items: center; 
+        width: 100%; 
+        padding: 2rem; 
+        box-sizing: border-box; 
+    }
+
+    .wrapper_profil{
+        display: flex;
+        flex-direction: row;
         justify-content: flex-start;
         align-items: flex-start;
         width: 100%;
@@ -304,6 +319,14 @@ const submitForm = async () => {
         opacity: 0.6;             
     }
 
+    .illustration{
+        margin: auto;
+    }
+
+    .illustration img{
+        width: min(40vw, 900px);
+    }
+
     @media screen and (max-width: 800px) {
 
         .wrapper_form{
@@ -322,6 +345,11 @@ const submitForm = async () => {
 
         .header_profil{
             align-items: center;
+        }
+
+
+        .illustration{
+            display: none;
         }
 
   }
