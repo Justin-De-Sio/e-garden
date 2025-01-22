@@ -1,10 +1,10 @@
 package com.e_garden.api;
 
-import com.e_garden.api.Report.Report;
-import com.e_garden.api.Report.ReportService;
-import com.e_garden.api.User.Roles;
-import com.e_garden.api.User.User;
-import com.e_garden.api.User.UserService;
+import com.e_garden.api.report.Report;
+import com.e_garden.api.report.ReportService;
+import com.e_garden.api.user.Roles;
+import com.e_garden.api.user.User;
+import com.e_garden.api.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
