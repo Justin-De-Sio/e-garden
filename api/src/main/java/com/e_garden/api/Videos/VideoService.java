@@ -24,9 +24,4 @@ public class VideoService {
         // TODO formater la date et réfléchir comment on nomme le fichier
         return videoRepository.findVideoByFileName(dateTime.toString());
     }
-
-    // TODO à tester
-    public List getAllPicture() {
-        return videoRepository.findAllByExtension(1);
-    }
 }

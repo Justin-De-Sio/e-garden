@@ -15,48 +15,30 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "year", nullable = false)
-    private Integer year;
-
-    @Column(name = "month", nullable = false)
-    private Integer month;
-
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
-    @Column(name = "file_type", nullable = false)
-    private Integer fileType;
+    @Column(name = "file_path", nullable = false)
+    private String filePath;
 
-    @Column(name = "extension", nullable = false)
-    private Integer extension;
+
+    @Column(name = "file_date", nullable = false)
+    private LocalDateTime fileDate;
 
     public Video() {
     }
 
-    public Video(Integer extension, Integer fileType, String fileName) {
-        this.extension = extension;
-        this.fileType = fileType;
+    public Video(String fileName, String filePath) {
         this.fileName = fileName;
+        this.filePath = filePath;
     }
 
-    @Override
-    public String toString() {
-        return "Video{" +
-                "id=" + id +
-                ", year=" + year +
-                ", month=" + month +
-                ", fileName='" + fileName + '\'' +
-                ", fileType=" + fileType +
-                ", extension=" + extension +
-                '}';
-    }
 
     /**
      * * Cette méthode est appelée automatiquement avant l'insertion dans la base de données.
      */
     @PrePersist
     public void prePersist() {
-        this.year = LocalDateTime.now().getYear();
-        this.month = LocalDateTime.now().getMonthValue();
+        this.fileDate = LocalDateTime.now();
     }
 }

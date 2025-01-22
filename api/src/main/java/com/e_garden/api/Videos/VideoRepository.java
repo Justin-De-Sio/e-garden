@@ -7,5 +7,5 @@ import java.awt.*;
 public interface VideoRepository extends JpaRepository<Video, Long> {
     Video findVideoByFileName(String fileName);
 
-    List findAllByExtension(Integer extension);
+    List findAllByFilePath(String filePath);
 }
