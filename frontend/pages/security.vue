@@ -18,13 +18,13 @@
           </div>
           <div class="indicators_section">
             <Indicators
-              iconPath="public/assets/passages.png"
+              iconPath="/assets/passages.png"
               iconBackgroundColor="#95BD75"
               :title="`${reportData} passages`"
               subtitle="Nombre de passage"
             />
             <Indicators
-              iconPath="public/assets/exclamation.png"
+              iconPath="/assets/exclamation.png"
               iconBackgroundColor="#e39695"
               :title="`${reportData_report} alertes`"
               subtitle="Alertes"
