@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Service
@@ -32,11 +33,11 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByEnable(true);
     }
 
     public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+        return userRepository.findByIdAndEnable(id, true);
     }
 
     public User createUser(User user) {
@@ -50,6 +51,7 @@ public class UserService {
 
     /**
      * Méthode privée permettant d'encoder le mot de passe de l'utilisateur.
+     *
      * @param user avec un nouveau mot de passe
      * @return user avec un mot de passe encodé
      */
@@ -60,7 +62,7 @@ public class UserService {
 
     public List<User> saveUsers(Iterable<User> users) {
         List<User> usersSaved = new ArrayList<>();
-        for (User u: users) {
+        for (User u : users) {
             usersSaved.add(createUser(u));
         }
         return usersSaved;
@@ -74,7 +76,6 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-
         user = userRepository.save(user);
         log.createLog(String.valueOf(Levels.USER), "Utilisateur mis à jour", user.toString());
         return user;
@@ -86,18 +87,18 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmailAndEnable(email, true);
     }
 
     public String verify(User user) {
         User userInfo = getUserByEmail(user.getEmail());
         if (userInfo == null) {
-            return "false";
+            return "user not found";
         }
         Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-                );
-        if (authentication.isAuthenticated()){
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+        );
+        if (authentication.isAuthenticated() && userInfo.isEnable() && userInfo.isLocked()) {
             log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
             return jwtService.generateToken(user.getEmail(), userInfo.getRole());
         } else {
@@ -110,7 +111,7 @@ public class UserService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), currentPassword)
         );
-        if (authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
             user.setPassword(newPassword);
             user = userRepository.save(encodePassword(user));
             log.createLog(String.valueOf(Levels.USER), "Utilisateur a change de mot de passe", user.getEmail());
@@ -130,5 +131,42 @@ public class UserService {
         currentUser.setRole(newUser.getRole());
 
         return saveUser(currentUser);
+    }
+
+    public void archiveUSer(Long id) {
+        Optional<User> user = getUserById(id);
+        if (user.isEmpty())
+            return;
+        User u = user.get();
+        u.setEnable(false);
+        saveUser(anonymisationUser(u));
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur archivé", "user id : " + id);
+    }
+
+    /**
+     * Efface les données personnelles d'un utilisateur
+     *
+     * @param user avec des données
+     * @return user anonymisé
+     */
+    public User anonymisationUser(User user) {
+        user.setName("name");
+        user.setSurname("surname");
+        user.setClassName("");
+        user.setGroupNumber(0);
+        user.setEmail("");
+        user.setPassword(new Random().toString());
+        return encodePassword(user);
+    }
+
+    public void blockUnBlock(Long id) {
+        Optional<User> user = getUserById(id);
+        if (user.isEmpty())
+            return;
+        User u = user.get();
+        boolean lockedState = u.isLocked();
+        u.setLocked(u.isLocked());
+        saveUser(u);
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur " + (lockedState ? "bloqué" : "débloquer"), "user id : " + id);
     }
 }

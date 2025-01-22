@@ -49,7 +49,17 @@ public class User {
     @Column(nullable = true, name = "class_number")
     private Integer groupNumber;
 
+    @JsonIgnore
+    @Column(nullable = false, name = "enable")
+    private boolean enable;
+
+    @JsonIgnore
+    @Column(nullable = false, name = "locked")
+    private boolean locked;
+
     public User() {
+        this.locked = false;
+        this.enable = true;
         this.name = "";
         this.surname = "";
         this.groupNumber = -1;
@@ -69,6 +79,22 @@ public class User {
         this.surname = surname;
         this.className = className;
 
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public boolean isLocked() {
+        return !locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     public String getSurname() {
@@ -123,16 +149,16 @@ public class User {
         return String.valueOf(role);
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public List<Event> getEvents() {

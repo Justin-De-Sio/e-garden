@@ -117,9 +117,21 @@ public class UserController {
         if (userService.getUserById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            userService.deleteUSer(id);
-            return ResponseEntity.noContent().build();
+            userService.archiveUSer(id);
+            return ResponseEntity.ok().build();
         }
+    }
+
+    @GetMapping("/block/{id}")
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
+    public ResponseEntity<Void> blockUnblockUSer(@PathVariable Long id) {
+        if (userService.getUserById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            userService.blockUnBlock(id);
+            return ResponseEntity.ok().build();
+        }
+
     }
 
     @GetMapping("/roles")
