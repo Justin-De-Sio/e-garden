@@ -26,7 +26,7 @@
           <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
             {{ errorMessage }}
           </div>
-          <UButton loading type="submit" class="Ubutton_custom">
+          <UButton :loading="isLoading" type="submit" class="Ubutton_custom">
             Connexion
           </UButton>
         </UForm>
@@ -41,6 +41,7 @@ import { z } from 'zod'
 import type {FormSubmitEvent} from "#ui/types";
 import { login } from '~/services/auth';
 
+const isLoading = ref(false);
 const router = useRouter();
 const formState = reactive({
   email: undefined,
@@ -56,6 +57,7 @@ type Schema = z.output<typeof formSchema>;
 const errorMessage = ref('');
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  isLoading.value = true;
   event.preventDefault?.();
 
   const { email, password } = formState;
@@ -64,7 +66,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     await login(email, password);
     router.push('/security'); 
   } catch (error) {
-
+    isLoading.value = false;
     if (error instanceof Error) {
       errorMessage.value = error.message;
     } else {
