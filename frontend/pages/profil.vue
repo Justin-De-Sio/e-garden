@@ -18,7 +18,7 @@
             </div>
             <div class="header_profil">
                 <h3>Votre photo de profil</h3>
-                <img src="/assets/user.png" alt="">
+                <img src="public/assets/user.png" alt="">
             </div>
             <div class="formulaire">
                 <form @submit.prevent="submitForm">

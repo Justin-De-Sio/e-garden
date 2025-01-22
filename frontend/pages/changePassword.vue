@@ -2,7 +2,7 @@
     <div class="wrapper_password">
         <div class="header_profil">
             <h3>Gabin Cornaire</h3>
-            <img src="/assets/user.png" alt="User Image">
+            <img src="public/assets/user.png" alt="User Image">
         </div>
         <div class="placement_forms">
             <p>Veuillez remplir les champs ci-dessous</p>

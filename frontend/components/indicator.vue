@@ -35,12 +35,7 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-  font-family: 'gilroy-medium';
-  src: url('@/assets/fonts/gilroy-medium.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+
 
 .custom-frame {
   width: 256px;
