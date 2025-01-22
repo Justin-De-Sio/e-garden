@@ -1,4 +1,4 @@
-package com.e_garden.api.Videos;
+package com.e_garden.api.videos;
 
 import jakarta.persistence.*;
 import lombok.Getter;
