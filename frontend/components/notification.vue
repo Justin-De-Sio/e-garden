@@ -1,15 +1,15 @@
 <template>
   <div class="button-container">
     <button class="custom-button" @click="toggleRectangle">
-      <img src="~/assets/cloche.png" alt="Button Image" class="button-image" />
+      <img src="public/assets/cloche.png" alt="Button Image" class="button-image" />
     </button>
     <div v-if="showRectangle" class="rectangle">
       <div class="icon-group">
         <button class="arrow-button" @click="fetchPreviousPage">
-          <img src="@/assets/up-arrow.png" alt="Up Arrow" class="arrow-image" />
+          <img src="public/assets/up-arrow.png" alt="Up Arrow" class="arrow-image" />
         </button>
         <button class="arrow-button" @click="fetchNextPage">
-          <img src="@/assets/down-arrow.png" alt="Down Arrow" class="arrow-image" />
+          <img src="public/assets/down-arrow.png" alt="Down Arrow" class="arrow-image" />
         </button>
       </div>
       <span class="rectangle-title">Notifications</span>
