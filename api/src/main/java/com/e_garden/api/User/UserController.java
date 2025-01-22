@@ -39,6 +39,7 @@ public class UserController {
         User currentUser = userService.getUserByEmail(user.getUsername());
         if (!Objects.equals(currentUser.getId(), id))
             return ResponseEntity.notFound().build();
+        newUser.setRole(currentUser.getRole());
         return ResponseEntity.ok(userService.updateUser(currentUser, newUser));
     }
 
