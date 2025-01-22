@@ -35,14 +35,14 @@
                 </form>
             </div>
             <div class="footer_button">
-                <button>Supprimer votre compte</button>
+                <p @click="changePassword">Changer de mot de passe</p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { fetchBackend_URL, UpdateBackend_Profil } from '~/services/call_backend';
+import { fetchBackend_URL, UpdateBackend } from '~/services/call_backend';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -111,7 +111,7 @@ const submitForm = async () => {
     }, {id: userId.value } as User);
     console.log(userPayload);
     try {
-        const response = await UpdateBackend_Profil('/api/user/profil/', userId.value, userPayload);
+        const response = await UpdateBackend('/api/user/profil/', userId.value, userPayload);
         console.log('Profil mis à jour avec succès :', response);
 
         // Mettre à jour les valeurs originales après sauvegarde réussie
@@ -122,6 +122,10 @@ const submitForm = async () => {
         console.error('Erreur lors de la mise à jour du profil :', error);
     }
 };
+
+    const changePassword =  () => {
+        router.push("/changePassword");
+    }; 
 </script>
 
 <style scoped>
@@ -265,17 +269,18 @@ const submitForm = async () => {
         margin-top: 4rem;
     }
 
-    .footer_button button{
+    .footer_button p{
         background: none;
-        background-color: #e39695;
         border: none;
         width: min(35vw, 200px); 
         height: 2.5rem;
         border-radius: 0.3rem;
-        color: white;
-        font-family: "Gilroy-Medium";
+        color: black;
+        font-family: "Gilroy-Regular";
         font-size: clamp(0.7rem, 2vw, 0.9rem); 
         cursor: pointer;
+        text-decoration: underline;
+        font-style: italic;
     }
 
     .save_button{

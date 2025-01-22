@@ -45,7 +45,7 @@ export async function fetchBackend_URL(url) {
     }
 }
 
-export async function UpdateBackend_Profil(url, id, payload) { 
+export async function UpdateBackend(url, id, payload) { 
     const sessionCookie = useCookie('session');
     const token = sessionCookie?.value;
 
@@ -53,10 +53,33 @@ export async function UpdateBackend_Profil(url, id, payload) {
         console.warn('Le token est manquant dans le cookie session.');
         throw new Error('Utilisateur non authentifié.');
     }
-
     try {
         const response = await $fetch(`${url}/${id}`, {
         method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+        });
+        return response;
+    } catch (error) {
+        console.error('Erreur lors de la requête API :', error);
+        throw error; 
+    }
+}
+
+export async function PostBackend(url, id, payload) { 
+    const sessionCookie = useCookie('session');
+    const token = sessionCookie?.value;
+
+    if (!token) {
+        console.warn('Le token est manquant dans le cookie session.');
+        throw new Error('Utilisateur non authentifié.');
+    }
+    try {
+        const response = await $fetch(`${url}/${id}`, {
+        method: 'POST',
         headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
