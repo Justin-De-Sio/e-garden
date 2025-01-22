@@ -106,6 +106,7 @@ public class UserService {
             }
         }catch (Exception e) {
             System.err.println(e);
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
             return false;
         }
         log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
