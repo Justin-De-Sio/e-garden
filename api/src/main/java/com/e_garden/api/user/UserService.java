@@ -53,7 +53,7 @@ public class UserService {
      * Méthode privée permettant d'encoder le mot de passe de l'utilisateur.
      *
      * @param user avec un nouveau mot de passe
-     * @return user avec un mot de passe encodé
+     * @return user avec un mot de passe encodéan
      */
     private User encodePassword(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
