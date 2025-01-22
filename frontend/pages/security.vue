@@ -5,7 +5,9 @@
     </div>
     <div class="main_right_container">
       <div class="header_section">
-        <!-- Component Header Title -->
+        <div class="wrapper_notification_component">
+          <notification></notification>
+        </div>
         <Header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici même !" class="header_title"/>
         <!-- Component Add Report  -->
       </div>
@@ -46,12 +48,11 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script setup lang="ts">
+import { Notification } from "~/services/notification";
 import Indicators from "~/components/indicators.vue";
 import Header_title from "~/components/header_title.vue";
 import Notification_component from "~/components/notification.vue";
@@ -59,6 +60,12 @@ import navbar from "~/components/navbar.vue";
 import Report from "~/components/report.vue";
 import Camera from "~/components/camera.vue";
 import { JWTPayload } from "~/services/jwtpayload";
+import notification from "~/components/notification.vue"
+
+
+
+const result = Notification(1, 10);
+
 import {fetchBackend} from "~/services/call_backend"
 import {fetchBackend_URL} from "~/services/call_backend"
 
@@ -89,6 +96,12 @@ body {
   background-color: #f2f4ef;
 }
 
+.wrapper_notification_component{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
 .wrapper_page {
   display: flex;
   width: 100%;
@@ -97,16 +110,15 @@ body {
   height: 100dvh;
 }
 
-
 .left_side {
 
   height: 100%;
-  /*background-color: aqua;*/ 
+  /*background-color: aqua;*/
 }
 
 
 .main_right_container{
-  /*background-color: blueviolet;*/ 
+  /*background-color: blueviolet;*/
   width: 100%;
   height: 100vh;
 }
@@ -115,30 +127,30 @@ body {
   width: 100%;
   height: clamp(5rem, 9vw , 10rem);
   margin-left: 4vw ;
-  /*  background-color: blue; */  
+  /*  background-color: blue; */
 
 }
 
 .header_title{
-  margin-top: 5vh; 
+  margin-top: 5vh;
 }
 
 h1 {
   font-family: "Gilroy-Medium", sans-serif;
   color: black;
-  font-size: 2rem; 
+  font-size: 2rem;
 }
 
 h2{
   font-family: "Gilroy-Medium", sans-serif;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
   margin-bottom: 2vh;
 }
 
 h3 {
   font-family: "Gilroy-Regular", sans-serif;
   color: #969696;
-  font-size: 1rem; 
+  font-size: 1rem;
 }
 
 
@@ -161,7 +173,7 @@ h3 {
   width: auto;
   height: 100vh;
 
-  /*  background-color: aqua;*/  
+  /*  background-color: aqua;*/
 
 }
 
@@ -181,7 +193,7 @@ h3 {
 
 .camera_section{
   width: auto;
-  /*  background-color: pink; */  
+  /*  background-color: pink; */
   margin-top: 2rem;
   height: 25rem;
 }
@@ -192,7 +204,7 @@ h3 {
 
 .report_section{
   width: auto;
-  /*   background-color: black;*/  
+  /*   background-color: black;*/
   margin-top: 2rem;
 
   height: 25rem;
@@ -203,65 +215,41 @@ h3 {
 /*
 .right_side {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 2vw; 
   flex: 1;
   margin-left: 2vw
 }
 
 .placement_header_title {
-  margin-top: 2.5vh; 
+  margin-top: 2.5vw; 
 }
 
 h1 {
-  font-family: "Gilroy-Medium", sans-serif;
+  font-family: "Gilroy-Bold";
   color: black;
   font-size: 2rem; 
 }
 
 h3 {
-  font-family: "Gilroy-Regular", sans-serif;
+  font-family: "Gilroy-Medium";
   color: #969696;
   font-size: 1rem; 
 }
 
 h2{
-  font-family: "Gilroy-Medium", sans-serif;
+  font-family: "Gilroy-Medium";
 }
 
 .placement_indicators_header h2{
-  margin-top: 5vh; 
-  font-size: clamp(1rem, 1.5vw, 1.5rem); 
+  margin-top: 4vw; 
+  font-size: 1.6rem;
   margin-bottom: 1rem;
 }
 
-.placement_indicators_components {
-
+.placement_indicators_components{
   display: flex;
-  flex-direction: row;
   gap: 1.5rem;
-  width: 100% ;
-  max-width: 90%;
 }
 
-
-.sub_camera_report_placement{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 4vh;
-}
-.flux_video{
-  margin-top: 1.5vh;
-  width: 35rem;
-  height: 25rem;
-  background-color: #dad7cd;
-  border-radius: 20px;
-}
-
-.right_right_side{
-  background-color: red;
-  height: 100vh;
-  width: 100%;
-}
-  */
 </style>
