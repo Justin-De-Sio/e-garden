@@ -66,8 +66,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO user) {
-        return userService.verify(new User(user.getEmail(), user.getPassword()));
+    public ResponseEntity<String> login(@RequestBody UserDTO user) {
+        Object verify = userService.verify(new User(user.getEmail(), user.getPassword()));
+        if (verify.equals(false))
+            return ResponseEntity.status(403).body("Identifiant ou mot de passe incorrecte");
+        return ResponseEntity.ok(verify.toString());
     }
 
     @GetMapping("/{id}")

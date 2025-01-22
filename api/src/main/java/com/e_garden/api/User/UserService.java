@@ -90,21 +90,26 @@ public class UserService {
         return userRepository.findByEmailAndEnable(email, true);
     }
 
-    public String verify(User user) {
+    public Object verify(User user) {
         User userInfo = getUserByEmail(user.getEmail());
         if (userInfo == null) {
-            return "user not found";
-        }
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-        );
-        if (authentication.isAuthenticated() && userInfo.isEnable() && userInfo.isLocked()) {
-            log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
-            return jwtService.generateToken(user.getEmail(), userInfo.getRole());
-        } else {
             log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
-            return "false";
+            return false;
         }
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+            );
+            if (authentication.isAuthenticated() && userInfo.isEnable() && userInfo.isLocked()) {
+                log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
+                return jwtService.generateToken(user.getEmail(), userInfo.getRole());
+            }
+        }catch (Exception e) {
+            System.err.println(e);
+            return false;
+        }
+        log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
+        return false;
     }
 
     public boolean updatePassword(User user, String currentPassword, String newPassword) {
