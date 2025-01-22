@@ -63,7 +63,6 @@ import { JWTPayload } from "~/services/jwtpayload";
 import notification from "~/components/notification.vue"
 
 
-
 const result = Notification(1, 10);
 
 import {fetchBackend} from "~/services/call_backend"

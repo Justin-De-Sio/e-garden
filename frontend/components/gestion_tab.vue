@@ -21,10 +21,10 @@
       <td>
         <div class="action-icons">
           <div class="icon-background" :style="{ backgroundColor: '#F4A261' }">
-            <img src="~/assets/stylo.png" alt="Modifier" class="icon-image" />
+            <img src="public/assets/stylo.png" alt="Modifier" class="icon-image" />
           </div>
           <div class="icon-background" :style="{ backgroundColor: '#DA5552' }">
-            <img src="~/assets/croix.png" alt="Supprimer" class="icon-image" />
+            <img src="public/assets/croix.png" alt="Supprimer" class="icon-image" />
           </div>
         </div>
       </td>

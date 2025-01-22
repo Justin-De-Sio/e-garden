@@ -1,4 +1,4 @@
-import { useCookie } from '#app';
+
 
 export async function fetchBackend(url, page, size) {
     const url_complete = `${url}paginated?page=${page}&size=${size}`;  

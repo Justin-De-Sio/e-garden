@@ -1,4 +1,4 @@
-import { useCookie } from 'vue-composable';
+
 
 export async function Notification(page, size) {    
     const url = `http://localhost:8080/api/event/1`;    
