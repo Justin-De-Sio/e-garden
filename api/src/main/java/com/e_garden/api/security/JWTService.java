@@ -23,15 +23,6 @@ public class JWTService {
      */
     public JWTService() {
         this.secretKey = System.getenv("JWT_SECRET");
-        /*
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = keyGen.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
 
     /**
@@ -71,7 +62,7 @@ public class JWTService {
      * @param token en texte
      * @return l'email de l'utilisateur
      */
-    public String extractEmail(String token) {
+    public String extractEmail(CharSequence token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -81,7 +72,7 @@ public class JWTService {
      * @param token de l'utilisateur en texte
      * @return le role de l'utilisateur
      */
-    public String extractRoles(String token) {
+    public String extractRoles(CharSequence token) {
         return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
@@ -90,10 +81,9 @@ public class JWTService {
      *
      * @param token         de l'utilisateur en texte
      * @param claimResolver le Résolver
-     * @param <T>
      * @return Un objet de Typ Claims
      */
-    private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
+    private <T> T extractClaim(CharSequence token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
         return claimResolver.apply(claims);
     }
@@ -104,7 +94,7 @@ public class JWTService {
      * @param token de l'utilisateur en texte
      * @return un object Claims
      */
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(CharSequence token) {
         return Jwts.parser()
                 .verifyWith(getKey())
                 .build()
@@ -119,7 +109,7 @@ public class JWTService {
      * @param userDetails utilisateur courant
      * @return un boolean true si le token est valide, false sinon
      */
-    public boolean validateToken(String token, UserPrincipal userDetails) {
+    public boolean validateToken(CharSequence token, UserPrincipal userDetails) {
         final String userName = extractEmail(token);
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
@@ -130,7 +120,7 @@ public class JWTService {
      * @param token de l'utilisateur en texte
      * @return true si valide, false sinon
      */
-    private boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(CharSequence token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -140,7 +130,7 @@ public class JWTService {
      * @param token de l'utilisateur en texte
      * @return la date d'expiration
      */
-    private Date extractExpiration(String token) {
+    private Date extractExpiration(CharSequence token) {
         return extractClaim(token, Claims::getExpiration);
     }
 }

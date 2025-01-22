@@ -20,7 +20,7 @@ public class InsertDataConf {
      * TODO : A retirer pour la mise en production.
      *
      * @param userService injection de l'objet UserService
-     * @return|
+     * @return commande
      */
     @Bean
     CommandLineRunner commandLineRunner(UserService userService, ReportService reportService) {

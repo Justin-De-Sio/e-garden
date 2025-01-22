@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    //Page<Report> findAllByValidatedOrderByReportDateAsc(boolean validated, Pageable pageable);
     Integer countAllByValidatedAndReportDateGreaterThan(boolean validated, LocalDateTime reportDate);
     Page<Report> findAllByOrderByReportDateAsc(Pageable of);
 }

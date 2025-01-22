@@ -105,7 +105,7 @@ public class UserService {
                 return jwtService.generateToken(user.getEmail(), userInfo.getRole());
             }
         }catch (Exception e) {
-            System.err.println(e);
+            System.err.println(e.getMessage());
             log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
             return false;
         }

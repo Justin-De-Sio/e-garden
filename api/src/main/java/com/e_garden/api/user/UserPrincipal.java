@@ -17,7 +17,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * @return Collections
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -25,7 +25,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * @return le mot de passe
      */
     @Override
     public String getPassword() {
@@ -33,7 +33,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * Méthode qui retourne l'username, dans ce projet l'username unique correspond à l'email.
+     * Méthode qui retourne username, dans ce projet username unique correspond à l'email.
      *
      * @return Email de l'utilisateur
      */
@@ -43,7 +43,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * @return true
      */
     @Override
     public boolean isAccountNonExpired() {
@@ -51,7 +51,10 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * Return True user non bloqué.
+     * Return False user bloqué.
+     *
+     * @return un boolean indiquant si le compte est bloqué ou non.
      */
     @Override
     public boolean isAccountNonLocked() {
@@ -59,7 +62,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * @return true
      */
     @Override
     public boolean isCredentialsNonExpired() {
@@ -67,7 +70,8 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return
+     * True l'utilisateur est activé, False l'utilisateur est archivé.
+     * @return un boolean si l'utilisateur est activé ou archivé
      */
     @Override
     public boolean isEnabled() {

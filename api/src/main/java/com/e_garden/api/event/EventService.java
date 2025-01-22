@@ -46,13 +46,13 @@ public class EventService {
     }
 
     public Event saveEvents(Event event) {
-        log.createLog(String.valueOf(Levels.EVENT), "Evenement ajouté", event.toString());
+        log.createLog(String.valueOf(Levels.EVENT), "Événement ajouté", event.toString());
         return eventRepository.save(event);
     }
 
     public void deleteEvents(Long id) {
         eventRepository.deleteById(id);
-        log.createLog(String.valueOf(Levels.EVENT), "Evenement supprimé", "event id :" + id);
+        log.createLog(String.valueOf(Levels.EVENT), "Événement supprimé", "event id :" + id);
     }
 
     private EventDTO getEventDTOFromEvent(Event event) {

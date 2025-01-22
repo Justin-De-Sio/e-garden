@@ -37,7 +37,7 @@ public class SecurityConf {
     /**
      * Toutes les requêtes recues par l'API passe par cette fonction, l'appel est automatiquement géré par Spring Boot.
      * La fonction requestMatchers() permet d'exclure le contrôle de sécurité.
-     * Il faut ajouter uniquement les contrôles nécessite aucune vérification.
+     * Il faut ajouter uniquement les routes nécessitant aucune vérification.
      *
      * @param httpSecurity la requête
      * @return HttpSecurity
@@ -50,9 +50,7 @@ public class SecurityConf {
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(url + "user/login", url + "csrf-token", "/swagger-ui.html", "/api-docs").permitAll()
-                        // .anyRequest().permitAll())
                         .anyRequest().authenticated())
-                //.httpBasic(Customizer.withDefaults())
                 .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandlers()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
