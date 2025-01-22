@@ -42,19 +42,6 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getPaginatedReports(page, size));
     }
 
-    // TODO : a revoir si necessaire ?? Tu rentres tu badges on te prépare un rapport
-    @PostMapping
-    @Secured({"ADMINISTRATEUR"})
-    public ResponseEntity<Report> createReport(@RequestBody ReportDTO report) {
-        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userByEmail = userService.getUserByEmail(user.getUsername());
-        if (userByEmail == null)
-            return ResponseEntity.notFound().build();
-        Report reportToSave = new Report(userByEmail, report.getContent());
-        reportToSave.setValidated(report.isValidated());
-        return ResponseEntity.ok(reportService.saveReport(reportToSave));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
         Optional<Report> currentReport = reportService.getReportById(id);
@@ -76,7 +63,6 @@ public class ReportController {
         return ResponseEntity.ok(reportService.saveReport(updatedReport));
     }
 
-    // TODO à revoir si on supprime
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
