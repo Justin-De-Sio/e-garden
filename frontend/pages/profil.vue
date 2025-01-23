@@ -140,7 +140,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 // Fonction pour récupérer les données utilisateur
 const fetchUserData = async () => {
   try {
-    const response = await api.fetchAPIGet('/api/user/profil') as UserProfileResponse; 
+    const response = await api.fetchAPIGet('user/profil') as UserProfileResponse; 
     id.value = response.id;
     formState.surname = response.surname || '';
     formState.name = response.name || '';
