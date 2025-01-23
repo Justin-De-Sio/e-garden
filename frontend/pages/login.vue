@@ -17,11 +17,11 @@
 
         <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
           <UFormGroup label="Email" name="email">
-            <UInput v-model="formState.email" class="Uinput_custom" color="gray"/>
+            <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray"/>
           </UFormGroup>
 
           <UFormGroup label="Password" name="password">
-            <UInput v-model="formState.password" type="password" class="Uinput_custom" color="gray"/>
+            <UInput v-model="formState.password" type="password" class="!bg-white rounded-md" color="gray"/>
           </UFormGroup>
           <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
             {{ errorMessage }}
@@ -181,9 +181,9 @@ form {
 
 
 
-
 .Ubutton_custom:hover{
   transform: scale(1.03);
+  background-color: #49DC82;
   color: white;
 }
 .Ubutton_custom{

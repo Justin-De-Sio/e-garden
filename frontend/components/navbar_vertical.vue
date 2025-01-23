@@ -9,7 +9,7 @@
           base: 'py-7 focus:outline-none',
           wrapper: 'justify-center',
           container: 'items-center justify-between w-10/12',
-          label: 'text-white dark:text-black',
+          label: 'text-white dark:text-black hidden md:block',
           before: 'before:inset-y-3 hover:before:bg-[#95bd75] dark:hover:before:bg-gray-800/50',
           icon:{
             inactive: 'text-white dark:text-gray-500 group-hover:text-white dark:group-hover:text-gray-200',
@@ -40,7 +40,7 @@
     {
       label: 'Sécurité',
       icon: 'i-heroicons-video-camera',
-      to: '/test',
+      to: '/security',
     },
     {
       label: 'PPE1',
@@ -104,5 +104,13 @@
   .notif_button{
     margin: auto;
   }
+
+  @media screen and (max-width: 800px) {
+    .wrapper img {
+      display: none;
+    }
+
+
+}
   </style>
   
