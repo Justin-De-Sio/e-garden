@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/report")
@@ -30,9 +29,7 @@ public class ReportController {
     @GetMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Report> getReportById(@PathVariable Long id) {
-        return reportService.getReportById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(reportService.getReportById(id));
     }
 
     @GetMapping("/paginated")
@@ -44,10 +41,7 @@ public class ReportController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
-        Optional<Report> currentReport = reportService.getReportById(id);
-        if (currentReport.isEmpty())
-            return ResponseEntity.notFound().build();
-        Report updatedReport = currentReport.get();
+        Report updatedReport = reportService.getReportById(id);
 
         if (updatedReport.isValidated())
             return ResponseEntity.badRequest().build();
@@ -66,12 +60,8 @@ public class ReportController {
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
-        if (reportService.getReportById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            reportService.deleteReport(id);
-            return ResponseEntity.noContent().build();
-        }
+        reportService.deleteReport(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/statistique")

@@ -1,5 +1,6 @@
 package com.e_garden.api.report;
 
+import com.e_garden.api.exception.ObjectNotFoundException;
 import com.e_garden.api.log.Levels;
 import com.e_garden.api.log.LogService;
 import com.e_garden.api.PageDTO;
@@ -28,8 +29,12 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public Optional<Report> getReportById(Long id) {
-        return reportRepository.findById(id);
+    public Report getReportById(Long id) {
+        Optional<Report> report = reportRepository.findById(id);
+        if (report.isEmpty())
+            throw new ObjectNotFoundException("Report non trouvé avec l'ID : " + id);
+        else
+            return report.get();
     }
 
     public Report saveReport(Report report) {

@@ -1,5 +1,6 @@
 package com.e_garden.api.user;
 
+import com.e_garden.api.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -25,12 +25,7 @@ public class UserController {
     @GetMapping("/profil")
     public ResponseEntity<User> getUserProfil() {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userE = userService.getUserByEmail(user.getUsername());
-        if (userE != null) {
-            return ResponseEntity.ok(userE);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(userService.getUserByEmail(user.getUsername()));
     }
 
     @PutMapping("/profil/{id}")
@@ -38,7 +33,7 @@ public class UserController {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.getUserByEmail(user.getUsername());
         if (!Objects.equals(currentUser.getId(), id))
-            return ResponseEntity.notFound().build();
+            throw new ObjectNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
         newUser.setRole(currentUser.getRole());
         return ResponseEntity.ok(userService.updateUser(currentUser, newUser));
     }
@@ -49,7 +44,7 @@ public class UserController {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());
         if (!Objects.equals(userByEmail.getId(), id))
-            return ResponseEntity.notFound().build();
+            throw new ObjectNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
         if (!Objects.equals(objectChangePassword.getNewPassword(), objectChangePassword.getConfirmNewPassword())) {
             return ResponseEntity.status(406).build(); // Not Acceptable
         }
@@ -61,7 +56,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUserProfil(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!Objects.equals(userService.getUserByEmail(user.getUsername()).getId(), id))
-            return ResponseEntity.notFound().build();
+            throw new ObjectNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
         return deleteUser(id);
     }
 
@@ -76,9 +71,7 @@ public class UserController {
     @GetMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/all")
@@ -97,44 +90,28 @@ public class UserController {
     @PostMapping("/resetPassword/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> resetPassword(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(user ->
-                        ResponseEntity.ok(userService.resetPassword(user))).orElseGet(() ->
-                        ResponseEntity.notFound().build());
+        userService.resetPassword(userService.getUserById(id));
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        Optional<User> userById = userService.getUserById(id);
-        if (userById.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        User existingUser = userById.get();
-        return ResponseEntity.ok(userService.updateUser(existingUser, user));
+        return ResponseEntity.ok(userService.updateUser(userService.getUserById(id), user));
     }
 
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (userService.getUserById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            userService.archiveUSer(id);
-            return ResponseEntity.ok().build();
-        }
+        userService.archiveUSer(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/block/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<Void> blockUnblockUSer(@PathVariable Long id) {
-        if (userService.getUserById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            userService.blockUnBlock(id);
-            return ResponseEntity.ok().build();
-        }
-
+        userService.blockUnBlock(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/roles")

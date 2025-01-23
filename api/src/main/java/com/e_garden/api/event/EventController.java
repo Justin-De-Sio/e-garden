@@ -29,9 +29,7 @@ public class EventController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventsById(@PathVariable Long id) {
-        return eventService.getEventsById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(eventService.getEventsById(id));
     }
 
     @GetMapping("/paginated")
@@ -44,12 +42,8 @@ public class EventController {
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Void> deleteEvents(@PathVariable Long id) {
-        if (eventService.getEventsById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            eventService.deleteEvents(id);
-            return ResponseEntity.noContent().build();
-        }
+        eventService.deleteEvents(id);
+        return ResponseEntity.noContent().build();
     }
 
     //  TODO Lors du badge-age via le site web de notre application,
@@ -66,8 +60,6 @@ public class EventController {
 
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());
-        if (userByEmail == null)
-            return ResponseEntity.notFound().build();
         event.setUser(userByEmail);
         eventService.saveEvents(event);
         return ResponseEntity.ok(reportService.saveReport(new Report(userByEmail)));

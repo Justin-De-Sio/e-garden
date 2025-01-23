@@ -1,5 +1,6 @@
 package com.e_garden.api.user;
 
+import com.e_garden.api.exception.ObjectNotFoundException;
 import com.e_garden.api.log.Levels;
 import com.e_garden.api.log.LogService;
 import com.e_garden.api.security.JWTService;
@@ -36,8 +37,11 @@ public class UserService {
         return userRepository.findAllByEnable(true);
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findByIdAndEnable(id, true);
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findByIdAndEnable(id, true);
+        if (user.isEmpty())
+            throw new ObjectNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
+        return user.get();
     }
 
     public User createUser(User user) {
@@ -87,15 +91,16 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmailAndEnable(email, true);
+        Optional<User> user = userRepository.findByEmailAndEnable(email, true);
+        if (user.isEmpty()) {
+            log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
+            throw new ObjectNotFoundException("Utilisateur non trouvé avec l'email : " + email);
+        } else
+            return user.get();
     }
 
     public Object verify(User user) {
         User userInfo = getUserByEmail(user.getEmail());
-        if (userInfo == null) {
-            log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
-            return false;
-        }
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
@@ -104,7 +109,7 @@ public class UserService {
                 log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
                 return jwtService.generateToken(user.getEmail(), userInfo.getRole());
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             log.createLog(String.valueOf(Levels.USER), "Utilisateur échec d'authentification", user.toString());
             return false;
@@ -140,10 +145,7 @@ public class UserService {
     }
 
     public void archiveUSer(Long id) {
-        Optional<User> user = getUserById(id);
-        if (user.isEmpty())
-            return;
-        User u = user.get();
+        User u = getUserById(id);
         u.setEnable(false);
         saveUser(anonymisationUser(u));
         log.createLog(String.valueOf(Levels.USER), "Utilisateur archivé", "user id : " + id);
@@ -166,10 +168,7 @@ public class UserService {
     }
 
     public void blockUnBlock(Long id) {
-        Optional<User> user = getUserById(id);
-        if (user.isEmpty())
-            return;
-        User u = user.get();
+        User u = getUserById(id);
         boolean lockedState = u.isLocked();
         u.setLocked(u.isLocked());
         saveUser(u);

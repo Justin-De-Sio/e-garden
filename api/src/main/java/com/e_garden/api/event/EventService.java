@@ -1,5 +1,6 @@
 package com.e_garden.api.event;
 
+import com.e_garden.api.exception.ObjectNotFoundException;
 import com.e_garden.api.log.Levels;
 import com.e_garden.api.log.LogService;
 import com.e_garden.api.PageDTO;
@@ -41,8 +42,12 @@ public class EventService {
         ));
     }
 
-    public Optional<Event> getEventsById(Long id) {
-        return eventRepository.findById(id);
+    public Event getEventsById(Long id) {
+        Optional<Event> event = eventRepository.findById(id);
+        if (event.isEmpty())
+            throw new ObjectNotFoundException("Event non trouvé avec l'ID : " + id);
+        else
+            return event.get();
     }
 
     public Event saveEvents(Event event) {
