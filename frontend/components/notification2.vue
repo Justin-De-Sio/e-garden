@@ -57,18 +57,25 @@
 <script setup lang="ts">
 import { callAPI } from '~/services/callAPI';
 const isOpen = ref(false);
-const notifications = ref<Notification[]>([]);
+const notifications = ref();
 const api = new callAPI();
 
-interface Notification {
+interface UserProfileContent {
   id: number;
   title: string;
   description: string;
 }
 
+interface ApiResponse {
+  content: UserProfileContent[]; 
+}
+
+
+
 const fetchNotif = async () => {
-  const response = await api.fetchAPIGetPaginated("/api/event", 0, 5);
+  const response = await api.fetchAPIGetPaginated("event", 0, 5) as ApiResponse;
   notifications.value = response.content;
+  console.log(response);
 };
 
 onMounted(() => {

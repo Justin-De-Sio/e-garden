@@ -36,7 +36,7 @@
                             <UInput v-model="formState.class" type="text" class="!bg-white rounded-md" color="gray"/>
                         </UFormGroup>
                         <UFormGroup label="Groupe" name="group">
-                            <UInput v-model="formState.group" type="number" class="!bg-white rounded-md" color="gray"/>
+                            <UInput v-model.number="formState.group" type="number" class="!bg-white rounded-md" color="gray"/>
                         </UFormGroup>
                         <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
                             {{ errorMessage }}
@@ -67,6 +67,16 @@ import type { FormSubmitEvent } from "#ui/types";
 const api = new callAPI();
 const isLoading = ref(false);
 const id = ref();
+
+interface UserProfileResponse {
+  id: number;
+  surname: string;
+  name: string;
+  email: string;
+  className: string;
+  groupNumber: number;
+}
+
 
 const formState = reactive({
   surname: '',
@@ -130,13 +140,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 // Fonction pour récupérer les données utilisateur
 const fetchUserData = async () => {
   try {
-    const response = await api.fetchAPIGet('/api/user/profil'); 
+    const response = await api.fetchAPIGet('/api/user/profil') as UserProfileResponse; 
     id.value = response.id;
     formState.surname = response.surname || '';
     formState.name = response.name || '';
     formState.email = response.email || '';
     formState.class = response.className || '';
-    formState.group = response.groupNumber || '';
+    formState.group = response.groupNumber || undefined;
   } catch (error) {
     console.error("Erreur lors de la récupération des données utilisateur :", error);
   }
