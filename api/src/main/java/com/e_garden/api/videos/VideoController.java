@@ -35,11 +35,13 @@ public class VideoController {
         return videoService.startRecording(request.getDuration());
     }
 
+    @Secured("ADMINISTRATEUR")
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> getVideo(@PathVariable String fileName) {
         return videoService.getVideo(fileName);
     }
 
+    @Secured("ADMINISTRATEUR")
     @GetMapping("/")
     public List<Video> getAllVideos() {
         return videoService.getAllVideos();
