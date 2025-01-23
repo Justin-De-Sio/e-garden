@@ -41,6 +41,7 @@ import { fetchBackendPost } from '~/services/call_backend.js';
 import { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 
+
 const showForm = ref(false);
 
 const formState = reactive({
@@ -94,11 +95,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     // Envoi de la requête POST
     const response = await fetchBackendPost('/api/user', validData);
+
+    console.log('Response:', response);
     showForm.value = false;
     resetForm();
-    requetUser();
-    console.log('Response:', response);
-
   } catch (error) {
     if (error instanceof z.ZodError) {
       errorMessage.value = error.errors.map(err => err.message).join(', ');

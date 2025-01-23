@@ -46,15 +46,27 @@ import { callAPI } from '~/services/callAPI';
 const api = new callAPI();
 
 // Déclarez une variable réactive pour les données
-const people = ref([]);
 
+interface Person {
+
+      id: number,
+      name: string,
+      surname: string,
+      email: string,
+      role: string,
+      className: string,
+      groupNumber: number
+
+}
+
+const people = ref<Person[]>([]);
 // Requête vers le back pour les personnes
 onMounted(async () => {
   requetUser();
 });
 
 // nom et clef des colonnes
-const columns = [
+const columns: { key: keyof Person; label: string }[] = [
   { key: 'surname', label: 'Nom' },
   { key: 'name', label: 'Prénom' },
   { key: 'email', label: 'Email' },
@@ -91,8 +103,9 @@ const sortColumn = (key: string) => {
 
 async function requetUser(){
   try {
-    const response = await api.fetchAPIGet('/user/all');
+    const response = await api.fetchAPIGet('/user/all') as Person[];
     people.value = response; // Assignez les données récupérées à `people`
+
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
@@ -131,6 +144,7 @@ table {
   border-collapse: collapse;
   background-color: #FFFFFF;
   border-radius: 5px;
+  z-index: 999;
 }
 
 th, td {
@@ -143,6 +157,7 @@ th, td {
 th {
   position: sticky;
   top: -0.5px;
+  z-index: 1; /* Pour s'assurer que le `thead` reste au-dessus des autres éléments */
   background-color: #FFFFFF; /* Garder le fond blanc pour une meilleure lisibilité */
   text-align: left;
   padding: 8px;
