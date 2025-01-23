@@ -160,7 +160,7 @@ public class UserService {
         user.setSurname("surname");
         user.setClassName("");
         user.setGroupNumber(0);
-        user.setEmail("");
+        user.setEmail(new Random().toString());
         user.setPassword(new Random().toString());
         return encodePassword(user);
     }

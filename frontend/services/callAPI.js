@@ -25,7 +25,7 @@ export class callAPI {
 
     async fetchAPIDelete(url, id) {
         try {
-            const data = await $fetch(`${url}/${id}`, {
+            const data = await $fetch(`/api/${url}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${this.#getSession()}`,
@@ -40,7 +40,7 @@ export class callAPI {
 
     async #fetchGet(url) {
         try {
-            const data = await $fetch(url, {
+            const data = await $fetch("/api/" + url, {
                 headers: {
                     Authorization: `Bearer ${this.#getSession()}`,
                 },
@@ -54,7 +54,7 @@ export class callAPI {
 
     async #fetchPostPut(url, body, methode) {
         try {
-            const data = await $fetch(`${url}`, {
+            const data = await $fetch(`/api/${url}`, {
                 method: methode,
                 headers: {
                     Authorization: `Bearer ${this.#getSession()}`,

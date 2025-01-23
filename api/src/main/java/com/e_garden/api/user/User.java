@@ -53,7 +53,6 @@ public class User {
     @Column(nullable = false, name = "enable")
     private boolean enable;
 
-    @JsonIgnore
     @Column(nullable = false, name = "locked")
     private boolean locked;
 
