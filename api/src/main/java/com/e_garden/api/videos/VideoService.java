@@ -1,6 +1,5 @@
 package com.e_garden.api.videos;
 
-import com.e_garden.api.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -16,7 +15,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Service principal pour gérer les vidéos.
@@ -58,7 +56,7 @@ public class VideoService {
         }
 
         // Génération d'un nom de fichier unique
-        String fileName = UUID.randomUUID().toString() + ".mp4";
+        String fileName = UUID.randomUUID() + ".mp4";
         String filePath = OUTPUT_DIRECTORY + File.separator + fileName;
 
         // Création du répertoire de sortie
@@ -71,8 +69,8 @@ public class VideoService {
         startRecordingAsync(rtspUrl, filePath, fileName, duration);
 
         // Retourne une réponse immédiate
-        return ResponseEntity.ok(String.format("Enregistrement démarré pour %d secondes. ID: %s", 
-            duration.getSeconds(), fileName));
+        return ResponseEntity.ok(String.format("Enregistrement démarré pour %d secondes. ID: %s",
+                duration.getSeconds(), fileName));
     }
 
     @Async
