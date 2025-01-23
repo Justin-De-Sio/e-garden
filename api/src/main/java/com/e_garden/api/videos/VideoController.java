@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/videos")
 @CrossOrigin
+@Secured("ADMINISTRATEUR")
 public class VideoController {
 
     private final VideoService videoService;
@@ -28,19 +29,16 @@ public class VideoController {
      * - PT1H (1 heure)
      * - PT1H30M (1 heure et 30 minutes)
      */
-    @Secured("ADMINISTRATEUR")
     @PostMapping("/record")
     public ResponseEntity<String> recordVideo(@RequestBody RecordingRequest request) {
         return videoService.startRecording(request.getDuration());
     }
 
-    @Secured("ADMINISTRATEUR")
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> getVideo(@PathVariable String fileName) {
         return videoService.getVideo(fileName);
     }
 
-    @Secured("ADMINISTRATEUR")
     @GetMapping("/")
     public List<Video> getAllVideos() {
         return videoService.getAllVideos();
