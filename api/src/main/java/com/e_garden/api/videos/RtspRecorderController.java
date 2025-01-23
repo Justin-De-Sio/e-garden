@@ -1,11 +1,17 @@
 package com.e_garden.api.videos;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,6 +64,41 @@ public class RtspRecorderController {
 
         return new Response(true, "Recording started for " + duration + " seconds.");
     }
+
+    @GetMapping("/video/{fileName}")
+    public ResponseEntity<Resource> getVideo(@PathVariable String fileName) {
+        try {
+            // Construire le chemin du fichier vidéo
+            File videoFile = new File(OUTPUT_DIRECTORY + File.separator + fileName);
+
+            if (!videoFile.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+
+            // Charger la vidéo en tant que ressource
+            Path videoPath = videoFile.toPath();
+            Resource videoResource = new UrlResource(videoPath.toUri());
+
+            // Vérifier que le fichier est lisible
+            if (!videoResource.exists() || !videoResource.isReadable()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+
+            // Définir les en-têtes HTTP pour le streaming
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + videoFile.getName() + "\"")
+                    .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                    .body(videoResource);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
 
     @Async
     private void runRecordingProcess(String command, String fileName, String filePath) {
