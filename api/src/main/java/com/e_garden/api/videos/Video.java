@@ -3,8 +3,11 @@ package com.e_garden.api.videos;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.bytedeco.javacpp.chrono.Hours;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Entity
 @Table(name = "videos")
@@ -19,8 +22,8 @@ public class Video {
     private String fileName;
 
     @Setter
-    @Column(name = "file_path", nullable = false)
-    private String filePath;
+    @Column(name = "file_duration", nullable = false)
+    private Duration fileDuration;
 
     @Column(name = "file_date", nullable = false)
     private LocalDateTime fileDate;
@@ -28,9 +31,9 @@ public class Video {
     public Video() {
     }
 
-    public Video(String fileName, String filePath) {
+    public Video(String fileName, Duration fileDuration) {
         this.fileName = fileName;
-        this.filePath = filePath;
+        this.fileDuration = fileDuration;
         this.fileDate = LocalDateTime.now();
     }
 }

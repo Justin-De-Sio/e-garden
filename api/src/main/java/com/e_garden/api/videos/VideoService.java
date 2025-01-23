@@ -7,12 +7,16 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Service principal pour gérer les vidéos.
@@ -23,7 +27,7 @@ import java.util.UUID;
 public class VideoService {
 
     // Répertoire de sortie pour stocker les vidéos enregistrées
-    private static final String OUTPUT_DIRECTORY = "rtsp" + File.separator + "videos";
+    private static final String OUTPUT_DIRECTORY = "videos";
 
     private final VideoRepository videoRepository; // Accès au dépôt des vidéos
     private final FfmpegService ffmpegService;     // Service dédié à l'exécution des commandes FFmpeg
@@ -41,42 +45,49 @@ public class VideoService {
     }
 
     /**
-     * Lance l'enregistrement d'un flux RTSP pour une durée donnée.
+     * Lance l'enregistrement d'un flux RTSP pour une durée donnée de manière asynchrone.
      *
-     * @param duration Durée de l'enregistrement en secondes
-     * @return Réponse HTTP avec un message de succès ou une erreur
+     * @param duration Durée de l'enregistrement
+     * @return Réponse HTTP immédiate avec le nom du fichier
      */
-    public ResponseEntity<String> startRecording(int duration) {
-        // Récupération de l'URL RTSP à partir de la variable d'environnement
+    public ResponseEntity<String> startRecording(Duration duration) {
+        // Vérification de l'URL RTSP
         String rtspUrl = System.getenv("RTSP_URL");
         if (rtspUrl == null || rtspUrl.isEmpty()) {
             return ResponseEntity.badRequest().body("RTSP_URL environment variable is not set or empty.");
         }
 
-        // Génération d'un nom de fichier unique pour la vidéo
+        // Génération d'un nom de fichier unique
         String fileName = UUID.randomUUID().toString() + ".mp4";
         String filePath = OUTPUT_DIRECTORY + File.separator + fileName;
 
-        // Création du répertoire de sortie s'il n'existe pas
+        // Création du répertoire de sortie
         File outputDir = new File(OUTPUT_DIRECTORY);
         if (!outputDir.exists() && !outputDir.mkdirs()) {
             return ResponseEntity.internalServerError().body("Failed to create output directory.");
         }
 
-        // Construction de la commande FFmpeg pour enregistrer la vidéo
+        // Démarrage de l'enregistrement en arrière-plan
+        startRecordingAsync(rtspUrl, filePath, fileName, duration);
+
+        // Retourne une réponse immédiate
+        return ResponseEntity.ok(String.format("Enregistrement démarré pour %d secondes. ID: %s", 
+            duration.getSeconds(), fileName));
+    }
+
+    @Async
+    protected void startRecordingAsync(String rtspUrl, String filePath, String fileName, Duration duration) {
+        // Construction de la commande FFmpeg
         String command = String.format(
                 "ffmpeg -rtsp_transport tcp -timeout 10000000 -i %s -t %d -s 1920x1080 -r 30 -c:v libx264 -preset ultrafast -f mp4 %s",
-                rtspUrl, duration, filePath
+                rtspUrl, duration.getSeconds(), filePath
         );
 
-        // Exécution de la commande FFmpeg via le service dédié
+        // Exécution de la commande FFmpeg
         ffmpegService.executeFfmpegCommand(command);
 
-        // Sauvegarde des métadonnées de la vidéo dans le dépôt
-        videoRepository.save(new Video(fileName, filePath));
-
-        // Retourne une réponse HTTP de succès
-        return ResponseEntity.ok("Recording started for " + duration + " seconds.");
+        // Sauvegarde des métadonnées
+        videoRepository.save(new Video(fileName, duration));
     }
 
     /**
@@ -88,7 +99,7 @@ public class VideoService {
     public ResponseEntity<Resource> getVideo(String fileName) {
         try {
             // Construire le chemin complet du fichier vidéo
-            Path filePath = Path.of(OUTPUT_DIRECTORY, fileName);
+            Path filePath = Paths.get(OUTPUT_DIRECTORY, fileName);
             File videoFile = filePath.toFile();
 
             // Vérifier que le fichier existe

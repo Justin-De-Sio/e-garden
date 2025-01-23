@@ -5,5 +5,4 @@ import java.util.List;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
     Video findVideoByFileName(String fileName);
-    List<Video> findAllByFilePath(String filePath);
 }

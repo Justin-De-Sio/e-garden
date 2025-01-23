@@ -1,11 +1,14 @@
 package com.e_garden.api.videos;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -20,10 +23,18 @@ public class VideoController {
         this.videoService = videoService;
     }
 
+    /**
+     * Démarre l'enregistrement d'une vidéo.
+     * La durée doit être au format ISO-8601. Exemples:
+     * - PT5M (5 minutes)
+     * - PT30S (30 secondes)
+     * - PT1H (1 heure)
+     * - PT1H30M (1 heure et 30 minutes)
+     */
     @Secured("ADMINISTRATEUR")
     @PostMapping("/record")
-    public ResponseEntity<String> recordVideo(@RequestParam(defaultValue = "5") int duration) {
-        return videoService.startRecording(duration);
+    public ResponseEntity<String> recordVideo(@RequestBody RecordingRequest request) {
+        return videoService.startRecording(request.getDuration());
     }
 
     @GetMapping("/{fileName}")
@@ -36,3 +47,5 @@ public class VideoController {
         return videoService.getAllVideos();
     }
 }
+
+
