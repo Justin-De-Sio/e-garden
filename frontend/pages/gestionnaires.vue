@@ -16,7 +16,7 @@
         </div>
         <div class="tab_gestion scrollable">
           <!-- Passez les données et les colonnes au composant gestion_tab -->
-          <gestion_tab :columns="columns" :rows="people" />
+          <gestion_tab/>
         </div>
       </div>
     </div>
@@ -30,24 +30,9 @@ import navbar from '~/components/navbar.vue';
 import gestion_tab from '~/components/gestion_tab.vue';
 import { fetchBackend2 } from '~/services/call_backend';
 
-const people = ref([]); // Déclarez une variable réactive pour les données
-const columns = [
-  { key: 'surname', label: 'Nom' },
-  { key: 'name', label: 'Prénom' },
-  { key: 'email', label: 'Email' },
-  { key: 'className', label: 'Classe' },
-  { key: 'groupNumber', label: 'Groupe' },
-  { key: 'role', label: 'Rôle' },
-];
 
-onMounted(async () => {
-  try {
-    const response = await fetchBackend2('/api/user/all');
-    people.value = response; // Assignez les données récupérées à `people`
-  } catch (error) {
-    console.error('Erreur lors de la récupération des données :', error);
-  }
-});
+
+
 </script>
 
 <style>
