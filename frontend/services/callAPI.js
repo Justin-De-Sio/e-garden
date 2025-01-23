@@ -1,5 +1,44 @@
 export class callAPI {
     async fetchAPIGet(url) {
+        return this.#fetchGet(url);
+    }
+
+    async fetchAPIGetPaginated(url, page, size) {
+       return this.#fetchGet(`${url}/paginated?page=${page}&size=${size}`);
+    }
+
+    async fetchAPIPost(url, body) {
+        return this.#fetchPostPut(`${url}`, body, 'POST');
+    }
+
+    async fetchAPIPostWithId(url, id, body) {
+        return this.#fetchPostPut(`${url}/${id}`, body, 'POST');
+    }
+
+    async fetchAPIPut(url, body) {
+        return this.#fetchPostPut(`${url}`, body, 'PUT');
+    }
+
+    async fetchAPIPutWithId(url, id, body) {
+        return this.#fetchPostPut(`${url}/${id}`, body, 'PUT');
+    }
+
+    async fetchAPIDelete(url, id) {
+        try {
+            const data = await $fetch(`${url}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${this.#getSession()}`,
+                },
+            });
+            return data;
+        } catch (error) {
+            console.error('Erreur lors de la requête API :', error);
+            throw error;
+        }
+    }
+
+    async #fetchGet(url) {
         try {
             const data = await $fetch(url, {
                 headers: {
@@ -13,95 +52,15 @@ export class callAPI {
         }
     }
 
-    async fetchAPIGetPaginated(url, page, size) {
-        try {
-            const data = await $fetch(`${url}paginated?page=${page}&size=${size}`, {
-                headers: {
-                    Authorization: `Bearer ${this.#getSession()}`,
-                },
-            });
-            return data;
-        } catch (error) {
-            console.error('Erreur lors de la requête API :', error);
-            throw error;
-        }
-    }
-
-    async fetchAPIPost(url, body) {
+    async #fetchPostPut(url, body, methode) {
         try {
             const data = await $fetch(`${url}`, {
-                method: 'POST',
+                method: methode,
                 headers: {
                     Authorization: `Bearer ${this.#getSession()}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
-            });
-            return data;
-        } catch (error) {
-            console.error('Erreur lors de la requête API :', error);
-            throw error;
-        }
-    }
-
-    async fetchAPIPostWithId(url, id, body) {
-        try {
-            const data = await $fetch(`${url}/${id}`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${this.#getSession()}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-            return data;
-        } catch (error) {
-            console.error('Erreur lors de la requête API :', error);
-            throw error;
-        }
-    }
-
-    async fetchAPIPut(url, body) {
-        try {
-            const data = await $fetch(`${url}`, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `Bearer ${this.#getSession()}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-            return data;
-        } catch (error) {
-            console.error('Erreur lors de la requête API :', error);
-            throw error;
-        }
-    }
-
-    async fetchAPIPutWithId(url, id, body) {
-        try {
-            const data = await $fetch(`${url}/${id}`, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `Bearer ${this.#getSession()}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-            return data;
-        } catch (error) {
-            console.error('Erreur lors de la requête API :', error);
-            throw error;
-        }
-    }
-
-    async fetchAPIDelete(url, id) {
-        try {
-            const data = await $fetch(`${url}/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${this.#getSession()}`,
-                },
             });
             return data;
         } catch (error) {
