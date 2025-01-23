@@ -115,8 +115,17 @@ public class UserController {
     }
 
     @GetMapping("/roles")
-    @Secured({"ADMINISTRATEUR"})
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public List<Roles> getRoles() {
-        return Arrays.asList(Roles.values());
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.getUserByEmail(user.getUsername());
+        Roles roles = Roles.valueOf(currentUser.getRole());
+
+        if (roles == Roles.RESPONSABLE)
+            return Arrays.asList(Roles.UTILISATEUR, Roles.RESPONSABLE);
+        if (roles == Roles.ADMINISTRATEUR)
+            return Arrays.asList(Roles.values());
+        else
+            return List.of(Roles.UTILISATEUR);
     }
 }
