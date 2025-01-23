@@ -1,7 +1,9 @@
 package com.e_garden.api.event;
 
 import com.e_garden.api.user.User;
+import com.e_garden.api.videos.Video;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -46,6 +48,13 @@ public class Event {
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
+    /**
+     * Un event peut être lié à un fichier vidéo
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "video_id", nullable = true)
+    private Video video;
+
     public Event() {
         this.eventType = -1;
         this.title = "";
@@ -56,6 +65,14 @@ public class Event {
     public Event(String title) {
         this();
         this.title = title;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
     }
 
     /**
