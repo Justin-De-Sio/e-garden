@@ -1,10 +1,21 @@
 <template>
   <div>
   <h1>Table de tous les rapports</h1>
-    <div v-if="!report.length">Loading...</div>
+    <div v-if="!report.length">
+      <UTable
+          loading
+          :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+          :progress="{ color: 'primary', animation: 'carousel' }"
+          class="w-full"
+          :columns="columns"
+      />
+    </div>
     <UTable v-else :columns="columns" :rows="report">
       <template #user="{ row }">
         {{ row.user.email }}
+      </template>
+      <template #actions-data="{ row }">
+        <UButton @click="deleteReport(row.id)"><span>Supprimer</span></UButton>
       </template>
     </UTable>
     <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
@@ -36,6 +47,7 @@ const columns = [
   {key: "createdAt", label: "Date de création", sortable: true},
   {key: "reportDate", label: "Date d'enregistrement", sortable: true},
   {key: "user", label: "Utilisateur (Email)", sortable: true},
+  {key: "actions", label: "Actions"}
 ];
 
 const api = new callAPI();
@@ -57,6 +69,15 @@ async function fetchReport() {
     } else {
       console.warn("No content found in API response");
     }
+  } catch (error) {
+    console.error("Error fetching report data:", error);
+  }
+}
+
+async function deleteReport(id: number) {
+  try {
+    await api.fetchAPIDelete("report", id);
+    await fetchReport();
   } catch (error) {
     console.error("Error fetching report data:", error);
   }
