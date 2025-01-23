@@ -1,5 +1,6 @@
 package com.e_garden.api.videos;
 
+import com.e_garden.api.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -113,5 +115,14 @@ public class VideoService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
         }
+    }
+
+    /**
+     * Récupère la liste de toutes les vidéos enregistrées.
+     *
+     * @return Liste des vidéos avec leurs métadonnées
+     */
+    public List<Video> getAllVideos() {
+        return videoRepository.findAll();
     }
 }

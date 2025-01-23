@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "videos")
 @Getter
-@Setter
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
+    @Setter
     @Column(name = "file_path", nullable = false)
     private String filePath;
-
 
     @Column(name = "file_date", nullable = false)
     private LocalDateTime fileDate;
@@ -31,14 +31,6 @@ public class Video {
     public Video(String fileName, String filePath) {
         this.fileName = fileName;
         this.filePath = filePath;
-    }
-
-
-    /**
-     * * Cette méthode est appelée automatiquement avant l'insertion dans la base de données.
-     */
-    @PrePersist
-    public void prePersist() {
         this.fileDate = LocalDateTime.now();
     }
 }
