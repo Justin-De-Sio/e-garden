@@ -4,8 +4,6 @@ import com.e_garden.api.event.Event;
 import com.e_garden.api.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,24 +19,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private final List<Event> events = new ArrayList<>();
     @Id
-    @Getter
-    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter
-    @Getter
     @Column(nullable = true, length = 255)
     private String name;
-    @Setter
-    @Getter
     @Column(nullable = true, length = 255)
     private String surname;
-    @Setter
-    @Getter
     @Column(nullable = false, length = 255, unique = true)
     private String email;
-    @Setter
-    @Getter
     @Column(nullable = false, name = "roles")
     private String role;
     @JsonIgnore

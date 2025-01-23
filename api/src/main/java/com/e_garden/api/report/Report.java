@@ -2,15 +2,11 @@ package com.e_garden.api.report;
 
 import com.e_garden.api.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reports")
-@Getter
-@Setter
 public class Report {
 
     @Id
