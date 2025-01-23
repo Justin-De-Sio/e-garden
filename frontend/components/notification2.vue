@@ -29,11 +29,11 @@
           <div class="header_placement">
             <h2>Notifications</h2>
             <div class="chevron">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('prev')" >
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
-
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <h2>{{ currentPage }}</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('next')" >
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </div>
@@ -72,6 +72,7 @@ import { callAPI } from '~/services/callAPI';
 const isOpen = ref(false);
 const notifications = ref();
 const api = new callAPI();
+const currentPage = ref(0);
 
 interface UserProfileContent {
   id: number;
@@ -83,16 +84,23 @@ interface ApiResponse {
   content: UserProfileContent[]; 
 }
 
+const changePage = (direction: 'prev' | 'next') => {
+  if (direction === 'prev' && currentPage.value > 0) {
+    currentPage.value--;
+  } else if (direction === 'next') {
+    currentPage.value++;
+  }
+  fetchNotif(currentPage.value);
+};
 
-
-const fetchNotif = async () => {
-  const response = await api.fetchAPIGetPaginated("event", 0, 5) as ApiResponse;
+const fetchNotif = async (page: number) => {
+  const response = await api.fetchAPIGetPaginated("event", page, 5) as ApiResponse;
   notifications.value = response.content;
   console.log(response);
 };
 
 onMounted(() => {
-  fetchNotif();
+  fetchNotif(currentPage.value);
 });
 </script>
 
@@ -158,8 +166,12 @@ onMounted(() => {
 .chevron{
   display: flex;
   margin-left: auto;
+  gap: 1rem;
 }
 
+.chevron svg{
+  cursor: pointer;
+}
 
 @media (max-width: 640px) {
   .notification-item {

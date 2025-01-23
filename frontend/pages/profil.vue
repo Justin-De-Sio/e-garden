@@ -68,15 +68,6 @@ const api = new callAPI();
 const isLoading = ref(false);
 const id = ref();
 
-interface UserProfileResponse {
-  id: number;
-  surname: string;
-  name: string;
-  email: string;
-  className: string;
-  groupNumber: number;
-}
-
 
 const formState = reactive({
   surname: '',
@@ -151,6 +142,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     }
   }
 }
+
+definePageMeta({
+  middleware: 'auth', // Applique le middleware
+  roles: ['UTILISATEUR'], // Rôles requis pour cette page
+});
 
 // Fonction pour récupérer les données utilisateur
 const fetchUserData = async () => {
