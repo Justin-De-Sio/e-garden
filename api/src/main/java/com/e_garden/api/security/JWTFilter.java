@@ -56,7 +56,7 @@ public class JWTFilter extends OncePerRequestFilter {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserPrincipal userDetails = (UserPrincipal) applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(email);
             // vérifie la validité du Token avec les informations de l'utilisateur
-            if (jwtService.validateToken(token, userDetails)) {
+            if (jwtService.validateToken(token, userDetails) && userDetails.isEnabled() && userDetails.isAccountNonLocked()) {
                 String role = jwtService.extractRoles(token);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails,
