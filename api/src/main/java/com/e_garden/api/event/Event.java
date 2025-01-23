@@ -2,15 +2,10 @@ package com.e_garden.api.event;
 
 import com.e_garden.api.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
-@Setter
-@Getter
 public class Event {
 
     @Id
