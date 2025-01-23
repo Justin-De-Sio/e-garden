@@ -1,7 +1,18 @@
 <template>
   <div>
-    <UButton label="Open" @click="isOpen = true" />
 
+    <UButton
+    icon="i-heroicons-bell-alert"
+    size="lg"
+    color="white"
+    square
+    variant="solid"
+    :ui="{rounded:'rounded-[0.8rem]', color:{white: {
+      solid: 'shadow-sm text-white dark:text-gray-900 bg-gray-900 hover:bg-[#95bd75] disabled:bg-gray-900 aria-disabled:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 dark:disabled:bg-white dark:aria-disabled:bg-white focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400',
+      link: 'text-gray-900 dark:text-white underline-offset-4 hover:underline focus-visible:ring-inset focus-visible:ring-green-100 focus-visible:ring-green-100 dark:focus-visible:ring-primary-400'
+    }}}"
+    @click="isOpen = true"
+  />
     <USlideover v-model="isOpen">
       <UCard
         class="flex flex-col flex-1"

@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div class="">
     <NavbarVertical></NavbarVertical>
-    <Notification></Notification>
   </div>
 </template>
 
@@ -12,4 +11,7 @@
 
 <style scoped>
 
+::v-deep(body) {
+  background-color: green;
+}
 </style>

@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/rtsp")
 public class RtspRecorderController {
 
-    private static final String OUTPUT_DIRECTORY = "rtsp";
+    private static final String OUTPUT_DIRECTORY = "rtsp" + File.separator + "videos";
+
     private static final String RTSP_URL_ENV = "RTSP_URL";
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -53,7 +54,7 @@ public class RtspRecorderController {
                 rtspUrl, duration, filePath
         );
 
-        executor.submit(() -> runRecordingProcess(command, fileName, outputDir.getAbsolutePath()));
+        executor.submit(() -> runRecordingProcess(command, fileName, OUTPUT_DIRECTORY + File.separator + fileName));
 
         return new Response(true, "Recording started for " + duration + " seconds.");
     }
@@ -90,7 +91,7 @@ public class RtspRecorderController {
                 System.out.println("Recording completed successfully! Saved to: " + fileName);
                 Video video = new Video(fileName, filePath);
                 videoService.saveVideo(video);
-                
+
             } else {
                 System.err.println("Recording failed with exit code: " + exitCode);
             }

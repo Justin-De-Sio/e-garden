@@ -6,17 +6,25 @@
         class="border-b border-gray-200 dark:border-gray-800"
         :ui="{
           after: 'after:h-[2px]',
-          base: 'py-7',
+          base: 'py-7 focus:outline-none',
           wrapper: 'justify-center',
-          container: 'items-center justify-between w-10/12'
+          container: 'items-center justify-between w-10/12',
+          label: 'text-white dark:text-black',
+          before: 'before:inset-y-3 hover:before:bg-[#95bd75] dark:hover:before:bg-gray-800/50',
+          icon:{
+            inactive: 'text-white dark:text-gray-500 group-hover:text-white dark:group-hover:text-gray-200',
+            active: 'text-white dark:text-gray-200',
+          }
         }"
       />
+      <Notification class="notif_button"></Notification>
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { fetchBackend_URL, UpdateBackend } from '~/services/call_backend';
+  import Notification from "~/components/notification2.vue"
   // Structure des données pour les liens
   interface Link {
     label: string;
@@ -32,7 +40,7 @@
     {
       label: 'Sécurité',
       icon: 'i-heroicons-video-camera',
-      to: '/security',
+      to: '/test',
     },
     {
       label: 'PPE1',
@@ -91,6 +99,10 @@
   
   .wrapper img {
     margin: 0 3rem 0 1rem;
+  }
+
+  .notif_button{
+    margin: auto;
   }
   </style>
   
