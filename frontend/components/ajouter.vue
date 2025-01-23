@@ -1,76 +1,81 @@
 <template>
-  <div @click="handleClickOutside">
-    <button @click.stop="showForm = !showForm" class="add-button">Ajouter</button>
-    <div v-if="showForm" class="form-container" ref="formContainer">
-      <form @submit.prevent="addMember">
-        <div>
-          <label for="name">Nom :</label>
-          <input type="text" id="name" v-model="newMember.name" required />
-        </div>
-        <div>
-          <label for="surname">Prénom :</label>
-          <input type="text" id="surname" v-model="newMember.surname" required />
-        </div>
-        <div>
-          <label for="email">Email :</label>
-          <input type="email" id="email" v-model="newMember.email" required />
-        </div>
-        <div>
-          <label for="role">Rôle :</label>
-          <input type="text" id="role" v-model="newMember.role" required />
-        </div>
-        <div>
-          <label for="className">Classe :</label>
-          <input type="text" id="className" v-model="newMember.className" required />
-        </div>
-        <div>
-          <label for="groupNumber">Groupe :</label>
-          <input type="text" id="groupNumber" v-model="newMember.groupNumber" required />
-        </div>
-        <button @click="addMember">Ajouter le membre</button>
-      </form>
+  <div>
+    <button class="add-button" @click.stop="showForm = true">Ajouter un utilisateur</button>
+    <div v-if="showForm" class="form-overlay">
+      <div class="form-container" @click.stop>
+        <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
+          <UFormGroup label="Prénom" name="name">
+            <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
+          </UFormGroup>
+
+          <UFormGroup label="Nom" name="surname">
+            <UInput v-model="formState.surname" type="text" class="Uinput_custom" color="gray"/>
+          </UFormGroup>
+
+          <UFormGroup label="Email" name="email">
+            <UInput v-model="formState.email" type="email" class="Uinput_custom" color="gray"/>
+          </UFormGroup>
+
+          <UFormGroup label="Année scolaire" name="className">
+            <UInput v-model="formState.className" type="text" class="Uinput_custom" color="gray"/>
+          </UFormGroup>
+
+          <UFormGroup label="Groupe classe" name="groupNumber">
+            <UInput v-model="formState.groupNumber" type="number" class="Uinput_custom" color="gray"/>
+          </UFormGroup>
+          <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
+            {{ errorMessage }}
+          </div>
+          <UButton type="submit" class="Ubutton_custom">
+            Ajouter le membre
+          </UButton>
+        </UForm>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import {fetchBackendPost} from '~/services/call_backend.js';
+<script setup lang="ts">
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { fetchBackendPost } from '~/services/call_backend.js';
+import { z } from "zod";
+import type { FormSubmitEvent } from "#ui/types";
+
 
 const showForm = ref(false);
-const newMember = ref({
+
+const formState = reactive({
   name: '',
   surname: '',
   email: '',
   className: '',
-  groupNumber: '',
+  groupNumber: null,
 });
-const formContainer = ref(null);
 
-const addMember = async () => {
-  try {
-    const response = await fetchBackendPost("/api/user",newMember)
+const formSchema = z.object({
+  name: z.string(),
+  surname: z.string(),
+  email: z.string().email("Must be a valid email"),
+  className: z.string(),
+  groupNumber: z.number().int(),
+});
 
-    const data = await response.json();
-    console.log('Membre ajouté avec succès :', data);
-    // Réinitialisez le formulaire après un ajout réussi
-    newMember.value = {
-      name: '',
-      surname: '',
-      email: '',
-      role: '',
-      className: '',
-      groupNumber: null,
-    };
-    showForm.value = false;
-  } catch (error) {
-    console.error('Erreur lors de l’ajout du membre :', error);
-  }
+type Schema = z.output<typeof formSchema>;
+const errorMessage = ref('');
+
+const resetForm = () => {
+  formState.name = '';
+  formState.surname = '';
+  formState.email = '';
+  formState.className = '';
+  formState.groupNumber = null;
 };
 
-const handleClickOutside = (event) => {
-  if (formContainer.value && !formContainer.value.contains(event.target)) {
+const handleClickOutside = (event: MouseEvent) => {
+  const formContainer = document.querySelector('.form-container');
+  if (formContainer && !formContainer.contains(event.target as Node)) {
     showForm.value = false;
+    resetForm();
   }
 };
 
@@ -81,6 +86,30 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
 });
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  event.preventDefault?.();
+  try {
+    // Validation avec Zod
+    const validData = formSchema.parse(formState);
+
+    // Envoi de la requête POST
+    const response = await fetchBackendPost('/api/user', validData);
+
+    console.log('Response:', response);
+    showForm.value = false;
+    resetForm();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      errorMessage.value = error.errors.map(err => err.message).join(', ');
+    } else {
+      console.error('Submission failed:', error);
+      errorMessage.value = 'Failed to submit the form.';
+    }
+  }
+
+  console.log(event.data);
+}
 </script>
 
 <style scoped>
@@ -91,23 +120,33 @@ onBeforeUnmount(() => {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  z-index:999;
+  z-index: 999;
+}
+
+.form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .form-container {
-  margin-top: 20px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 15px;
   background-color: #f9f9f9;
   width: 411px;
-  z-index:1;
-
+  z-index: 1001;
 }
 
 form div {
   margin-bottom: 10px;
-  z-index:1;
 }
 
 form label {

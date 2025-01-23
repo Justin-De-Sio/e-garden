@@ -20,11 +20,17 @@
       </td>
       <td>
         <div class="action-icons">
-          <div class="icon-background" :style="{ backgroundColor: '#F4A261' }">
+          <div class="icon-background" :style="{ backgroundColor: '#87CEEB' }" @click="modifierUtilisateur(row.id)">
             <img src="public/assets/stylo.png" alt="Modifier" class="icon-image" />
           </div>
-          <div class="icon-background" :style="{ backgroundColor: '#DA5552' }">
+          <div class="icon-background" :style="{ backgroundColor: '#DA5552' }" @click="supprimerUtilisateur(row.id)">
             <img src="public/assets/croix.png" alt="Supprimer" class="icon-image" />
+          </div>
+          <div class="icon-background" :style="{ backgroundColor: '#F4A261' }" @click="verouillerUtilisateur(row.id)">
+            <img src="public/assets/croix.png" alt="Verouiller" class="icon-image" />
+          </div>
+          <div class="icon-background" :style="{ backgroundColor: '#95BD75' }" @click="resetMdp(row.id)">
+            <img src="public/assets/croix.png" alt="Initialiser" class="icon-image" />
           </div>
         </div>
       </td>
@@ -34,20 +40,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { callAPI } from '~/services/callAPI';
 
-const props = defineProps<{
-  columns: Array<{ key: string, label: string }>,
-  rows: Array<Record<string, any>>
-}>();
+const api = new callAPI();
+
+// Déclarez une variable réactive pour les données
+const people = ref([]);
+
+// Requête vers le back pour les personnes
+onMounted(async () => {
+  requetUser();
+});
+
+// nom et clef des colonnes
+const columns = [
+  { key: 'surname', label: 'Nom' },
+  { key: 'name', label: 'Prénom' },
+  { key: 'email', label: 'Email' },
+  { key: 'className', label: 'Classe' },
+  { key: 'groupNumber', label: 'Groupe' },
+  { key: 'role', label: 'Rôle' },
+];
 
 const sortKey = ref<string | null>(null);
 const sortOrder = ref<'asc' | 'desc'>('asc');
 
 const sortedRows = computed(() => {
-  if (!sortKey.value) return props.rows;
+  if (!sortKey.value) return people.value;
 
-  return [...props.rows].sort((a, b) => {
+  return [...people.value].sort((a, b) => {
     const aValue = a[sortKey.value as keyof typeof a];
     const bValue = b[sortKey.value as keyof typeof b];
 
@@ -67,6 +89,39 @@ const sortColumn = (key: string) => {
   }
 };
 
+async function requetUser(){
+  try {
+    const response = await api.fetchAPIGet('/user/all');
+    people['value'] = response; // Assignez les données récupérées à `people`
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données :', error);
+  }
+}
+
+//supprimer OK
+async function supprimerUtilisateur(id: number) {
+  const response = await api.fetchAPIDelete('user', id);
+  requetUser();
+}
+
+//modifier pas ok
+async function modifierUtilisateur(id: number) {
+  const response = await api.fetchAPIDelete('user', id);
+  requetUser();
+}
+
+//init pas ok
+async function resetMdp(id: number) {
+  const response = await api.fetchAPIPostWithId('user/resetPassword/',id, {});
+  requetUser();
+}
+
+//verrouiller ok
+async function verouillerUtilisateur(id: number) {
+  const response = await api.fetchAPIGet('user/block/'+id);
+  requetUser();
+
+}
 
 </script>
 
@@ -76,7 +131,7 @@ table {
   border-collapse: collapse;
   background-color: #FFFFFF;
   border-radius: 5px;
-  z-index:999;
+  z-index: 999;
 }
 
 th, td {
@@ -85,7 +140,6 @@ th, td {
   cursor: pointer;
   border-radius: 5px;
 }
-
 
 th {
   position: sticky;
@@ -97,7 +151,6 @@ th {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
 
 .column-header {
   display: flex;
