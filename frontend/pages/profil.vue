@@ -41,7 +41,7 @@
                         <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
                             {{ errorMessage }}
                         </div>
-                        <UButton :loading="isLoading" type="submit" class="align-center">
+                        <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="align-center">
                             Enregistrer
                         </UButton>
                         </UForm>
@@ -86,6 +86,14 @@ const formState = reactive({
   group: undefined as number | undefined,
 });
 
+const originalFormState = reactive({
+  surname: '',
+  name: '',
+  email: '',
+  class: '',
+  group: undefined as number | undefined,
+});
+
 const formSchema = z.object({
   surname: z.string().min(1),
   name: z.string().min(1),
@@ -120,13 +128,20 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   console.log(requestBody);
   try {
-    const response = (await api.fetchAPIPutWithId("/api/user/profil", id.value, requestBody)) as UserProfileResponse;
+    const response = (await api.fetchAPIPutWithId("user/profil", id.value, requestBody)) as UserProfileResponse;
     formState.surname = response.surname || formState.surname; 
     formState.name = response.name || formState.name;
     formState.email = response.email || formState.email;
     formState.class = response.className || formState.class;
     formState.group = response.groupNumber || formState.group;
+
+    originalFormState.surname = response.surname || '';
+    originalFormState.name = response.name || '';
+    originalFormState.email = response.email || '';
+    originalFormState.class = response.className || '';
+    originalFormState.group = response.groupNumber || undefined;
     isLoading.value = false;
+    
   } catch (error) {
     isLoading.value = false;
     if (error instanceof Error) {
@@ -147,11 +162,26 @@ const fetchUserData = async () => {
     formState.email = response.email || '';
     formState.class = response.className || '';
     formState.group = response.groupNumber || undefined;
+
+    originalFormState.surname = response.surname || '';
+    originalFormState.name = response.name || '';
+    originalFormState.email = response.email || '';
+    originalFormState.class = response.className || '';
+    originalFormState.group = response.groupNumber || undefined;
   } catch (error) {
     console.error("Erreur lors de la récupération des données utilisateur :", error);
   }
 };
 
+const hasChanges = computed(() => {
+  return (
+    formState.surname !== originalFormState.surname ||
+    formState.name !== originalFormState.name ||
+    formState.email !== originalFormState.email || // Si vous permettez de modifier l'email à l'avenir
+    formState.class !== originalFormState.class ||
+    formState.group !== originalFormState.group
+  );
+});
 
 onMounted(() => {
   fetchUserData();
