@@ -1,8 +1,6 @@
 package com.e_garden.api.videos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Duration;
 
@@ -32,4 +30,7 @@ public class RecordingRequest {
         return duration;
     }
 
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
 }

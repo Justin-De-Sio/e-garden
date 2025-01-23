@@ -1,27 +1,52 @@
 package com.e_garden.api.videos;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.bytedeco.javacpp.chrono.Hours;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 
 @Entity
 @Table(name = "videos")
-@Getter
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
-    @Setter
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Duration getFileDuration() {
+        return fileDuration;
+    }
+
+    public void setFileDuration(Duration fileDuration) {
+        this.fileDuration = fileDuration;
+    }
+
+    public LocalDateTime getFileDate() {
+        return fileDate;
+    }
+
+    public void setFileDate(LocalDateTime fileDate) {
+        this.fileDate = fileDate;
+    }
+
     @Column(name = "file_duration", nullable = false)
     private Duration fileDuration;
 
