@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -80,6 +77,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        user.setSurname(user.getSurname().toUpperCase(Locale.ROOT));
         user = userRepository.save(user);
         log.createLog(String.valueOf(Levels.USER), "Utilisateur mis à jour", user.toString());
         return user;
@@ -124,7 +122,7 @@ public class UserService {
         );
         if (authentication.isAuthenticated()) {
             user.setPassword(newPassword);
-            user = userRepository.save(encodePassword(user));
+            user = saveUser(encodePassword(user));
             log.createLog(String.valueOf(Levels.USER), "Utilisateur a change de mot de passe", user.getEmail());
             return true;
         } else {
