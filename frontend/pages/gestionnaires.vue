@@ -1,7 +1,8 @@
 <template>
+  <NavbarVertical></NavbarVertical>
   <div class="wrapper_page">
     <div class="left_side">
-      <navbar />
+
     </div>
     <div class="main_right_container">
       <div class="header_section">
@@ -26,9 +27,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import Header_title from '~/components/header_title.vue';
-import navbar from '~/components/navbar.vue';
 import gestion_tab from '~/components/gestion_tab.vue';
 import { fetchBackend2 } from '~/services/call_backend';
+import NavbarVertical from "~/components/navbar_vertical.vue";
 
 
 
