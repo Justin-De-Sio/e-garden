@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @CrossOrigin
 @RestController
 @RequestMapping("/rtsp")
-public class RtspRecorderController {
+public class VideoRecorderController {
 
     private static final String OUTPUT_DIRECTORY = "rtsp" + File.separator + "videos";
 
@@ -30,7 +30,7 @@ public class RtspRecorderController {
     private final VideoService videoService;
 
     @Autowired
-    public RtspRecorderController(VideoService videoService) {
+    public VideoRecorderController(VideoService videoService) {
         this.videoService = videoService;
     }
 
