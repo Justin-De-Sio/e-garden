@@ -26,7 +26,20 @@
             @click="isOpen = false"
           />
           <Placeholder class="h-8" />
-          Notification
+          <div class="header_placement">
+            <h2>Notifications</h2>
+            <div class="chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+
+          </div>
+
         </template>
 
         <ul>
@@ -137,7 +150,17 @@ onMounted(() => {
   color: #6b7280;
 }
 
-/* Responsive Styles */
+.header_placement{
+  display: flex;
+  flex-direction: row;
+}
+
+.chevron{
+  display: flex;
+  margin-left: auto;
+}
+
+
 @media (max-width: 640px) {
   .notification-item {
     flex-direction: column;
