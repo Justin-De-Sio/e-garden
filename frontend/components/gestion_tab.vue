@@ -21,51 +21,50 @@
       <td>
         <div class="action-icons">
           <div class="icon-background" :style="{ backgroundColor: '#87CEEB' }" @click="modifierUtilisateur(row.id)">
-            <img src="public/assets/stylo.png" alt="Modifier" class="icon-image" />
+            <span>Modifier</span>
           </div>
           <div class="icon-background" :style="{ backgroundColor: '#DA5552' }" @click="supprimerUtilisateur(row.id)">
-            <img src="public/assets/croix.png" alt="Supprimer" class="icon-image" />
+            <span>suppr</span>
           </div>
           <div class="icon-background" :style="{ backgroundColor: '#F4A261' }" @click="verouillerUtilisateur(row.id)">
-            <img src="public/assets/croix.png" alt="Verouiller" class="icon-image" />
+            <span>verou</span>
           </div>
           <div class="icon-background" :style="{ backgroundColor: '#95BD75' }" @click="resetMdp(row.id)">
-            <img src="public/assets/croix.png" alt="Initialiser" class="icon-image" />
+            <span>resMDP</span>
           </div>
         </div>
       </td>
     </tr>
     </tbody>
   </table>
+  <modifUser v-if="showModifUser" :userId="selectedUserId" @close="showModifUser = false" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { callAPI } from '~/services/callAPI';
+import modifUser from '~/components/modifUser.vue'; // Importer le composant
 
 const api = new callAPI();
 
-// Déclarez une variable réactive pour les données
-
 interface Person {
-
-      id: number,
-      name: string,
-      surname: string,
-      email: string,
-      role: string,
-      className: string,
-      groupNumber: number
-
+  id: number,
+  name: string,
+  surname: string,
+  email: string,
+  role: string,
+  className: string,
+  groupNumber: number
 }
 
 const people = ref<Person[]>([]);
-// Requête vers le back pour les personnes
+const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
+const selectedUserId = ref<number | null>(null); // Variable pour stocker l'ID de l'utilisateur sélectionné
+
 onMounted(async () => {
   requetUser();
 });
 
-// nom et clef des colonnes
 const columns: { key: keyof Person; label: string }[] = [
   { key: 'surname', label: 'Nom' },
   { key: 'name', label: 'Prénom' },
@@ -104,38 +103,34 @@ const sortColumn = (key: string) => {
 async function requetUser(){
   try {
     const response = await api.fetchAPIGet('/user/all') as Person[];
-    people.value = response; // Assignez les données récupérées à `people`
-
+    people.value = response;
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
 }
 
-//supprimer OK
 async function supprimerUtilisateur(id: number) {
   const response = await api.fetchAPIDelete('user', id);
   requetUser();
 }
 
-//modifier pas ok
 async function modifierUtilisateur(id: number) {
-  const response = await api.fetchAPIDelete('user', id);
-  requetUser();
+
+  console.log("Modif user funct",id);
+  selectedUserId.value = id; // Stocker l'ID de l'utilisateur sélectionné
+  console.log("Modif user funct2");
+  showModifUser.value = true; // Afficher le composant modifUser
 }
 
-//init pas ok
 async function resetMdp(id: number) {
-  const response = await api.fetchAPIPostWithId('user/resetPassword/',id, {});
+  const response = await api.fetchAPIPostWithId('user/resetPassword/', id, {});
   requetUser();
 }
 
-//verrouiller ok
 async function verouillerUtilisateur(id: number) {
-  const response = await api.fetchAPIGet('user/block/'+id);
+  const response = await api.fetchAPIGet('user/block/' + id);
   requetUser();
-
 }
-
 </script>
 
 <style scoped>
@@ -144,7 +139,6 @@ table {
   border-collapse: collapse;
   background-color: #FFFFFF;
   border-radius: 5px;
-  z-index: 999;
 }
 
 th, td {
@@ -157,8 +151,7 @@ th, td {
 th {
   position: sticky;
   top: -0.5px;
-  z-index: 1; /* Pour s'assurer que le `thead` reste au-dessus des autres éléments */
-  background-color: #FFFFFF; /* Garder le fond blanc pour une meilleure lisibilité */
+  background-color: #FFFFFF;
   text-align: left;
   padding: 8px;
   border: 1px solid #ddd;
@@ -181,7 +174,7 @@ th {
   align-items: center;
   justify-content: center;
   margin-right: 5px;
-  width: 19px;
+  width: auto;
   height: 19px;
   padding: 0.09rem;
   border-radius: 5px;

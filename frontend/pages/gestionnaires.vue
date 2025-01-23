@@ -17,7 +17,7 @@
         </div>
         <div class="tab_gestion scrollable">
           <!-- Passez les données et les colonnes au composant gestion_tab -->
-          <gestion_tab/>
+          <!--<gestion_tab/>-->
         </div>
       </div>
     </div>
