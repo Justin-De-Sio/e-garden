@@ -46,15 +46,27 @@ import { callAPI } from '~/services/callAPI';
 const api = new callAPI();
 
 // Déclarez une variable réactive pour les données
-const people = ref([]);
 
+interface Person {
+
+      id: number,
+      name: string,
+      surname: string,
+      email: string,
+      role: string,
+      className: string,
+      groupNumber: number
+
+}
+
+const people = ref<Person[]>([]);
 // Requête vers le back pour les personnes
 onMounted(async () => {
   requetUser();
 });
 
 // nom et clef des colonnes
-const columns = [
+const columns: { key: keyof Person; label: string }[] = [
   { key: 'surname', label: 'Nom' },
   { key: 'name', label: 'Prénom' },
   { key: 'email', label: 'Email' },
@@ -91,8 +103,9 @@ const sortColumn = (key: string) => {
 
 async function requetUser(){
   try {
-    const response = await api.fetchAPIGet('/user/all');
-    people['value'] = response; // Assignez les données récupérées à `people`
+    const response = await api.fetchAPIGet('/user/all') as Person[];
+    people.value = response; // Assignez les données récupérées à `people`
+
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
