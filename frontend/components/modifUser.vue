@@ -44,7 +44,7 @@ const props = defineProps<{ userId: number }>();
 const emit = defineEmits(['close']);
 
 const api = new callAPI();
-const user = ref({ name: '', surname: '', email: '', role: '', className: '', groupNumber:'' });
+const user = ref({ name: '', surname: '', email: '', role: '', className: '', groupNumber: '' });
 
 const fetchUser = async (id: number) => {
   try {
@@ -82,7 +82,7 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
-  width:100%;
+  width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -94,7 +94,6 @@ onMounted(() => {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
-
   width: 400px;
   height: 500px;
 }
@@ -102,7 +101,6 @@ onMounted(() => {
 u-form {
   display: flex;
   flex-direction: column;
-
 }
 
 u-form-item {
@@ -116,7 +114,7 @@ u-input {
 }
 
 u-button {
-  margin-right: 2rem;
+  margin-right: 0.5rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;

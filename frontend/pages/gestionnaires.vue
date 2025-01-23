@@ -17,7 +17,8 @@
         </div>
         <div class="tab_gestion scrollable">
           <!-- Passez les données et les colonnes au composant gestion_tab -->
-          <!--<gestion_tab/>-->
+          <gestion_tab/>
+
         </div>
       </div>
     </div>
@@ -30,6 +31,7 @@ import Header_title from '~/components/header_title.vue';
 import gestion_tab from '~/components/gestion_tab.vue';
 import { fetchBackend2 } from '~/services/call_backend';
 import NavbarVertical from "~/components/navbar_vertical.vue";
+import Augustin from "~/pages/augustin.vue";
 
 
 

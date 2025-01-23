@@ -1,51 +1,39 @@
 <template>
-  <table>
-    <thead>
-    <tr>
-      <th v-for="column in columns" :key="column.key" @click="sortColumn(column.key)">
-        <div class="column-header">
-          {{ column.label }}
-          <span>
-              {{ sortKey === column.key ? (sortOrder === 'asc' ? '🔼' : '🔽') : '🔽' }}
-            </span>
-        </div>
-      </th>
-      <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="row in sortedRows" :key="row.id">
-      <td v-for="column in columns" :key="column.key">
-        {{ row[column.key] }}
-      </td>
-      <td>
-        <div class="action-icons">
-          <div class="icon-background" :style="{ backgroundColor: '#87CEEB' }" @click="modifierUtilisateur(row.id)">
-            <span>Modifier</span>
-          </div>
-          <div class="icon-background" :style="{ backgroundColor: '#DA5552' }" @click="supprimerUtilisateur(row.id)">
-            <span>suppr</span>
-          </div>
-          <div class="icon-background" :style="{ backgroundColor: '#F4A261' }" @click="verouillerUtilisateur(row.id)">
-            <span>verou</span>
-          </div>
-          <div class="icon-background" :style="{ backgroundColor: '#95BD75' }" @click="resetMdp(row.id)">
-            <span>resMDP</span>
-          </div>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <modifUser v-if="showModifUser" :userId="selectedUserId" @close="showModifUser = false" />
+  <UTable v-model="selected" :rows="people" :columns="columns">
+    <template #name-data="{ row }">
+      <span :class="[selected.find(person => person.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.name }}</span>
+    </template>
+
+    <template #actions-data="{ row }">
+      <UDropdown :items="items(row)">
+        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+      </UDropdown>
+    </template>
+  </UTable>
 </template>
 
 <script setup lang="ts">
+
 import { ref, computed, onMounted } from 'vue';
 import { callAPI } from '~/services/callAPI';
-import modifUser from '~/components/modifUser.vue'; // Importer le composant
+import modifUser from '~/components/modifUser.vue';
 
 const api = new callAPI();
+
+
+onMounted(async () => {
+  requetUser();
+});
+
+let columns: { key: keyof Person; label: string }[];
+columns = [
+  {key: 'surname', label: 'Nom'},
+  {key: 'name', label: 'Prénom'},
+  {key: 'email', label: 'Email'},
+  {key: 'className', label: 'Classe'},
+  {key: 'groupNumber', label: 'Groupe'},
+  {key: 'role', label: 'Rôle'},
+  {key: 'actions', label: 'Actions'}];
 
 interface Person {
   id: number,
@@ -54,71 +42,57 @@ interface Person {
   email: string,
   role: string,
   className: string,
-  groupNumber: number
+  groupNumber: number,
+  locked: boolean
 }
 
 const people = ref<Person[]>([]);
-const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
-const selectedUserId = ref<number | null>(null); // Variable pour stocker l'ID de l'utilisateur sélectionné
-
-onMounted(async () => {
-  requetUser();
-});
-
-const columns: { key: keyof Person; label: string }[] = [
-  { key: 'surname', label: 'Nom' },
-  { key: 'name', label: 'Prénom' },
-  { key: 'email', label: 'Email' },
-  { key: 'className', label: 'Classe' },
-  { key: 'groupNumber', label: 'Groupe' },
-  { key: 'role', label: 'Rôle' },
-];
-
-const sortKey = ref<string | null>(null);
-const sortOrder = ref<'asc' | 'desc'>('asc');
-
-const sortedRows = computed(() => {
-  if (!sortKey.value) return people.value;
-
-  return [...people.value].sort((a, b) => {
-    const aValue = a[sortKey.value as keyof typeof a];
-    const bValue = b[sortKey.value as keyof typeof b];
-
-    if (aValue === bValue) return 0;
-
-    const order = sortOrder.value === 'asc' ? 1 : -1;
-    return aValue > bValue ? order : -order;
-  });
-});
-
-const sortColumn = (key: string) => {
-  if (sortKey.value === key) {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
-  } else {
-    sortKey.value = key;
-    sortOrder.value = 'asc';
-  }
-};
+const selected = ref<Person[]>([]);
 
 async function requetUser(){
   try {
-    const response = await api.fetchAPIGet('/user/all') as Person[];
+    console.log("requetUser");
+    const response = await api.fetchAPIGet('/user/all') as Person;
     people.value = response;
+    console.log("---------------",response);
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
 }
+
+const items = row => [
+  [{
+    label: 'Modifier',
+    icon: '~/public/assets/stylo.png',
+    click: () => modifierUtilisateur(row.id)
+  }, {
+    label: 'Supprimer',
+    icon: '~/public/assets/croix.png',
+    click: () => supprimerUtilisateur(row.id)
+  }, {
+    label: 'Verouiller',
+    icon: '🔼',
+    click: () => verouillerUtilisateur(row.id)
+  }, {
+    label: 'Réinitialiser le mot de passe',
+    icon: '🔼',
+    click: () => resetMdp (row.id)
+  }],
+]
 
 async function supprimerUtilisateur(id: number) {
   const response = await api.fetchAPIDelete('user', id);
   requetUser();
 }
 
-async function modifierUtilisateur(id: number) {
+const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
+const selectedUserId = ref<number | null>(null); // Variable pour stocker l'ID de l'utilisateur sélectionné
 
+async function modifierUtilisateur(id: number) {
   console.log("Modif user funct",id);
   selectedUserId.value = id; // Stocker l'ID de l'utilisateur sélectionné
   console.log("Modif user funct2");
+
   showModifUser.value = true; // Afficher le composant modifUser
 }
 
@@ -131,7 +105,9 @@ async function verouillerUtilisateur(id: number) {
   const response = await api.fetchAPIGet('user/block/' + id);
   requetUser();
 }
+
 </script>
+
 
 <style scoped>
 table {

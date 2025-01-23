@@ -47,11 +47,13 @@ interface Person {
 }
 
 const people = ref<Person[]>([]);
+const selected = ref<Person[]>([]);
+
 async function requetUser(){
   try {
     console.log("requetUser");
     const response = await api.fetchAPIGet('/user/all') as Person;
-    people = response;
+    people.value = response;
     console.log("---------------",response);
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
@@ -61,21 +63,102 @@ async function requetUser(){
 const items = row => [
   [{
     label: 'Modifier',
-    icon: '🔼',
-    click: () => console.log('Edit', row.id)
+    icon: '~/public/assets/stylo.png',
+    click: () => modifierUtilisateur(row.id)
   }, {
     label: 'Supprimer',
-    icon: '🔼'
+    icon: '~/public/assets/croix.png',
+    click: () => supprimerUtilisateur(row.id)
   }, {
     label: 'Verouiller',
-    icon: '🔼'
+    icon: '🔼',
+    click: () => verouillerUtilisateur(row.id)
   }, {
     label: 'Réinitialiser le mot de passe',
-    icon: '🔼'
+    icon: '🔼',
+    click: () => resetMdp (row.id)
   }],
 ]
 
-const selected = ref([people[1]])
+async function supprimerUtilisateur(id: number) {
+  const response = await api.fetchAPIDelete('user', id);
+  requetUser();
+}
 
+const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
+const selectedUserId = ref<number | null>(null); // Variable pour stocker l'ID de l'utilisateur sélectionné
+
+async function modifierUtilisateur(id: number) {
+
+  console.log("Modif user funct",id);
+  selectedUserId.value = id; // Stocker l'ID de l'utilisateur sélectionné
+  console.log("Modif user funct2");
+  showModifUser.value = true; // Afficher le composant modifUser
+}
+
+async function resetMdp(id: number) {
+  const response = await api.fetchAPIPostWithId('user/resetPassword/', id, {});
+  requetUser();
+}
+
+async function verouillerUtilisateur(id: number) {
+  const response = await api.fetchAPIGet('user/block/' + id);
+  requetUser();
+}
 
 </script>
+
+
+<style scoped>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+th {
+  position: sticky;
+  top: -0.5px;
+  background-color: #FFFFFF;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  width: auto;
+  height: 19px;
+  padding: 0.09rem;
+  border-radius: 5px;
+}
+
+.icon-image {
+  width: 35px;
+  height: 35px;
+  padding: clamp(0.3rem, 0.7vw, 3rem);
+}
+</style>
