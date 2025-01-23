@@ -45,9 +45,29 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             return null;
         }
+        user.setRole(verificationOfUserRoles(user).getRole());
         user = saveUser(encodePassword(user));
         log.createLog(String.valueOf(Levels.USER), "Utilisateur ajouté", user.toString());
         return user;
+    }
+
+    /**
+     * Méthode permettant de contrôler le champ role, en cas de rôle incorrecte, le rôle par défaut est appliqué.
+     * Le role par défaut est UTILISATEUR.
+     *
+     * @param user utilisateur à vérifier
+     * @return utilisateur avec un rôle valide
+     */
+    private User verificationOfUserRoles(User user) {
+        user.setRole(user.getRole().toUpperCase());
+        String userRole = user.getRole();
+        try {
+            Roles role = Roles.valueOf(userRole);
+            return user;
+        } catch (IllegalArgumentException e) {
+            user.setRole(Roles.UTILISATEUR.name());
+            return user;
+        }
     }
 
     /**
@@ -138,6 +158,7 @@ public class UserService {
         currentUser.setGroupNumber(newUser.getGroupNumber());
         currentUser.setClassName(newUser.getClassName());
         currentUser.setRole(newUser.getRole());
+        currentUser.setRole(verificationOfUserRoles(newUser).getRole());
 
         return saveUser(currentUser);
     }
