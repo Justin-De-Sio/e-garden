@@ -47,7 +47,7 @@ public class StreamController {
                 .body(resource);
     }
 
-    @GetMapping("/segments/{filename}")
+    @GetMapping("/{filename}")
     public ResponseEntity<InputStreamResource> getHlsSegment(@PathVariable String filename) throws IOException {
         File file = new File(OUTPUT_DIRECTORY + File.separator + filename);
         if (!file.exists()) {

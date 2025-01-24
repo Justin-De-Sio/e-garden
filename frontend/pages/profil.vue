@@ -120,7 +120,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   console.log(requestBody);
   try {
-    const response = (await api.fetchAPIPutWithId("/api/user/profil", id.value, requestBody)) as UserProfileResponse;
+    const response = (await api.fetchAPIPutWithId("user/profil", id.value, requestBody)) as UserProfileResponse;
     formState.surname = response.surname || formState.surname; 
     formState.name = response.name || formState.name;
     formState.email = response.email || formState.email;
