@@ -48,7 +48,8 @@ const user = ref({ name: '', surname: '', email: '', role: '', className: '', gr
 
 const fetchUser = async (id: number) => {
   try {
-    const response = await api.fetchAPIGet(`/user/${id}`);
+    console.log(id)
+    const response = await api.fetchAPIGet(`user/`+id);
     user.value = response;
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);

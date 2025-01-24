@@ -6,6 +6,7 @@
       </UDropdown>
     </template>
   </UTable>
+  <modif-user v-if="showModifUser" :user-id="selectedUserId"></modif-user>
 </template>
 
 <script setup lang="ts">
@@ -15,11 +16,13 @@ import { callAPI } from '~/services/callAPI';
 import modifUser from '~/components/modifUser.vue';
 
 const api = new callAPI();
+const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
 
 
 onMounted(async () => {
   requetUser();
 });
+let selectedUserId = null; // Variable pour stocker l'ID de l'utilisateur sélectionné
 
 let columns: { key: keyof Person; label: string }[];
 columns = [
@@ -81,13 +84,12 @@ async function supprimerUtilisateur(id: number) {
   requetUser();
 }
 
-const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
-const selectedUserId = ref<number | null>(null); // Variable pour stocker l'ID de l'utilisateur sélectionné
 
-async function modifierUtilisateur(id: number) {
+async function modifierUtilisateur(id: string) {
   console.log("Modif user funct",id);
-  selectedUserId.value = id; // Stocker l'ID de l'utilisateur sélectionné
-  console.log("Modif user funct2");
+  selectedUserId = id;
+
+  console.log("Modif user funct2" + selectedUserId);
 
   showModifUser.value = true; // Afficher le composant modifUser
 }
