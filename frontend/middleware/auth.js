@@ -13,7 +13,8 @@ export default defineNuxtRouteMiddleware( async (to, from) => {
 
   const currentTime = Math.floor(Date.now() / 1000);
   if (token_payload.exp && token_payload.exp < currentTime) {
-    return navigateTo("/login"); 
+      document.cookie = "session=;";
+      return navigateTo("/login"); 
   }
 
   if (Array.isArray(to.meta.role) && !to.meta.role.includes(token_payload.role)) {
