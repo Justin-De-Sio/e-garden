@@ -2,7 +2,6 @@
 import {JWTPayload} from "~/services/jwtpayload"
 export default defineNuxtRouteMiddleware( async (to, from) => {
   const token = useCookie('session').value;
-  const router = useRouter();
 
   if (!token) {
     return navigateTo('/login'); 
@@ -13,7 +12,8 @@ export default defineNuxtRouteMiddleware( async (to, from) => {
 
   const currentTime = Math.floor(Date.now() / 1000);
   if (token_payload.exp && token_payload.exp < currentTime) {
-      document.cookie = "session=;";
+      const jwtCookie = useCookie('session');
+      jwtCookie.value = null;
       return navigateTo("/login"); 
   }
 

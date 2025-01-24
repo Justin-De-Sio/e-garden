@@ -35,6 +35,16 @@
     };
   }
 
+
+  interface UserProfileResponse {
+  id: number;
+  surname: string;
+  name: string;
+  email: string;
+  className: string;
+  groupNumber: number;
+}
+
   const api = new callAPI();
   
   // Tableau de liens initial
@@ -75,7 +85,7 @@
   
   const fetchProfile = async () => {
     try {
-      const response = await api.fetchAPIGet('user/profil');
+      const response = await api.fetchAPIGet('user/profil') as UserProfileResponse;
 
 
       // Mise à jour dynamique du dernier lien
