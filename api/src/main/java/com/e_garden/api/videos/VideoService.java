@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Service principal pour gérer les vidéos.
  * Contient les fonctionnalités d'enregistrement de vidéos via RTSP
@@ -25,7 +26,9 @@ import java.util.UUID;
 public class VideoService {
 
     // Répertoire de sortie pour stocker les vidéos enregistrées
-    private static final String OUTPUT_DIRECTORY = "videos";
+    protected static final String OUTPUT_DIRECTORY = "videos";
+    private static final String RTSP_URL = System.getenv("RTSP_URL");
+
 
     private final VideoRepository videoRepository; // Accès au dépôt des vidéos
     private final FfmpegService ffmpegService;     // Service dédié à l'exécution des commandes FFmpeg
@@ -50,8 +53,8 @@ public class VideoService {
      */
     public ResponseEntity<String> startRecording(Duration duration) {
         // Vérification de l'URL RTSP
-        String rtspUrl = System.getenv("RTSP_URL");
-        if (rtspUrl == null || rtspUrl.isEmpty()) {
+
+        if (RTSP_URL == null || RTSP_URL.isEmpty()) {
             return ResponseEntity.badRequest().body("RTSP_URL environment variable is not set or empty.");
         }
 
@@ -66,18 +69,17 @@ public class VideoService {
         }
 
         // Démarrage de l'enregistrement en arrière-plan
-        startRecordingAsync(rtspUrl, filePath, fileName, duration);
+        startRecordingAsync(RTSP_URL, filePath, fileName, duration);
 
         // Retourne une réponse immédiate
-        return ResponseEntity.ok(String.format("Enregistrement démarré pour %d secondes. ID: %s",
-                duration.getSeconds(), fileName));
+        return ResponseEntity.ok(String.format("Enregistrement démarré pour %d secondes. ID: %s", duration.getSeconds(), fileName));
     }
 
     @Async
     protected void startRecordingAsync(String rtspUrl, String filePath, String fileName, Duration duration) {
         // Construction de la commande FFmpeg
         String command = String.format(
-                "ffmpeg -rtsp_transport tcp -timeout 10000000 -i %s -t %d -s 1920x1080 -r 30 -c:v libx264 -preset ultrafast -f mp4 %s",
+                "ffmpeg -rtsp_transport tcp -timeout 10 -i %s -t %d -s 1920x1080 -r 30 -c:v libx264 -preset ultrafast -f mp4 %s",
                 rtspUrl, duration.getSeconds(), filePath
         );
 
@@ -102,27 +104,21 @@ public class VideoService {
 
             // Vérifier que le fichier existe
             if (!videoFile.exists()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
             // Charger le fichier en tant que ressource
             Resource videoResource = new UrlResource(filePath.toUri());
             if (!videoResource.exists() || !videoResource.isReadable()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
             // Retourner la ressource avec les en-têtes HTTP appropriés
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + videoFile.getName() + "\"")
-                    .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                    .body(videoResource);
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + videoFile.getName() + "\"").header(HttpHeaders.CONTENT_TYPE, "video/mp4").body(videoResource);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

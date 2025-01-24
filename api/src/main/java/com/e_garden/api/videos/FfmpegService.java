@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
-
+// TODO utiliser processBuilder
 /**
  * Service dédié à l'exécution de commandes FFmpeg.
  * Permet de lancer des processus FFmpeg de manière asynchrone pour
@@ -40,8 +40,8 @@ public class FfmpegService {
                 }
             }).start();
 
-            // Attend que le processus se termine avec un timeout de 120 secondes
-            boolean finished = process.waitFor(120, TimeUnit.SECONDS);
+            // Attend que le processus se termine avec un timeout de 240 heures
+            boolean finished = process.waitFor(240, TimeUnit.HOURS);
             if (!finished) {
                 // Si le processus dépasse le timeout, il est forcé à se terminer
                 process.destroy();
