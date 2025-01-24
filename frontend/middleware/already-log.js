@@ -1,9 +1,12 @@
 
 
-export default defineNuxtRouteMiddleware((to, from) => {
+
+export default defineNuxtRouteMiddleware(  (to, from) => {
   const token = useCookie('session').value;
 
   if (token) {
-    return navigateTo('/security'); 
+    return navigateTo('/dashboard'); 
   }
+
+
 });

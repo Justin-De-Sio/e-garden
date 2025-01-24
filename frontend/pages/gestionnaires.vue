@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import Header_title from '~/components/header_title.vue';
-import navbar from '~/components/navbar.vue';
 import gestion_tab from '~/components/gestion_tab.vue';
 import { fetchBackend2 } from '~/services/call_backend';
 
@@ -48,6 +47,11 @@ onMounted(async () => {
     console.error('Erreur lors de la récupération des données :', error);
   }
 });
+
+definePageMeta({
+    middleware: "auth",
+    role: ["ADMINISTRATEUR","UTILISATEUR"],
+  })
 </script>
 
 <style>

@@ -76,10 +76,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
 }
 
-
 definePageMeta({
-  middleware: 'already-log', 
-});
+    middleware: "already-log",
+  })
+
 </script>
 
 

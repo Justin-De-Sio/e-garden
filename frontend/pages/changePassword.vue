@@ -92,6 +92,11 @@ const router = useRouter();
 const goBack = () => {
     router.back();
 };
+
+definePageMeta({
+    middleware: "auth",
+    role: ["ADMINISTRATEUR","UTILISATEUR"],
+  })
 </script>
 
 <style scoped>

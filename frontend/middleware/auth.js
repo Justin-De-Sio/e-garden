@@ -1,34 +1,23 @@
 
-import jwt from 'jsonwebtoken';
-
-
-export default function ({ route }) {
-
-  const token = useCookie('session').value; 
+import {JWTPayload} from "~/services/jwtpayload"
+export default defineNuxtRouteMiddleware( async (to, from) => {
+  const token = useCookie('session').value;
+  const router = useRouter();
 
   if (!token) {
-    return navigateTo('/login');  
+    return navigateTo('/login'); 
   }
 
-  try {
-    const decoded = jwt.decode(token);
-    console.log(decoded)
 
-    // Vérifier si le token est expiré
-    const currentTime = Math.floor(Date.now() / 1000); 
-    if (decoded.exp && decoded.exp < currentTime) {
-      return navigateTo('/login');  
-    }
+  const token_payload = JWTPayload(token);
 
-    // Vérifier les rôles si nécessaires
-    const requiredRoles = route.meta.roles || [];
-    const userRole = decoded.role;
-
-    if (requiredRoles.length && !requiredRoles.includes(userRole)) {
-      return navigateTo('/unauthorized');  
-    }
-  } catch (err) {
-    console.error("Invalid token:", err);
-    return navigateTo('/login');  
+  const currentTime = Math.floor(Date.now() / 1000);
+  if (token_payload.exp && token_payload.exp < currentTime) {
+    return navigateTo("/login"); 
   }
-}
+
+  if (Array.isArray(to.meta.role) && !to.meta.role.includes(token_payload.role)) {
+      return navigateTo('/unauthorized'); 
+  }
+
+});
