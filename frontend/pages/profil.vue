@@ -1,62 +1,84 @@
 <template>
     <div class="main_wrapper">
-        <div class="header_log">
-                <div class="logo">
-                    <img class="profil_logo" src="/assets/logo.png" alt="">
-                </div>
-                <div class="exit">
-                    <button class="logout" @click="logout">Deconnexion</button>
-                    <button class="button_exit" @click="goBack">
-                        <img class="exit_profil" src="/assets/cancel.png" alt="" width="20px" height="auto" />
-                    </button>
-                </div>
-            </div>
-        <div class="wrapper_profil">
-            <div class="wrapper_form">
-                <div class="text_header">
-                    <h2>Mon profil</h2>
-                    <h3>Gérez les paramètres de votre profil</h3>
-                </div>
-                <div class="header_profil">
-                    <h3>Votre photo de profil</h3>
-                    <img src="public/assets/user.png" alt="">
-                </div>
-                <div class="formulaire">
-                    <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
-                        <UFormGroup label="Nom" name="surname">
-                            <UInput v-model="formState.surname" class="!bg-white rounded-md" color="gray"/>
-                        </UFormGroup>
-                        <UFormGroup label="Prénom" name="name">
-                            <UInput v-model="formState.name" class="!bg-white rounded-md" color="gray"/>
-                        </UFormGroup>
-                        <UFormGroup label="Email" name="email">
-                            <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray" readonly />
-                        </UFormGroup>
-                        <UFormGroup label="Classe" name="class">
-                            <UInput v-model="formState.class" type="text" class="!bg-white rounded-md" color="gray"/>
-                        </UFormGroup>
-                        <UFormGroup label="Groupe" name="group">
-                            <UInput v-model.number="formState.group" type="number" class="!bg-white rounded-md" color="gray"/>
-                        </UFormGroup>
-                        <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
-                            {{ errorMessage }}
-                        </div>
-                        <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="align-center">
-                            Enregistrer
-                        </UButton>
-                        </UForm>
-                </div>
-                <div class="footer_button">
-                    <p @click="changePassword">Changer de mot de passe</p>
-                </div>
-            </div>
-            <div class="illustration">
-                <img src="/public/assets/profil-illustration.png" alt="">
-            </div>
+      <div class="header_log">
+        <div class="logo">
+          <img class="profil_logo" src="/assets/logo.png" alt="" />
         </div>
+        <div class="exit">
+          <button class="logout" @click="logout">Deconnexion</button>
+          <button class="button_exit" @click="goBack">
+            <img
+              class="exit_profil"
+              src="/assets/cancel.png"
+              alt=""
+              width="20px"
+              height="auto"
+            />
+          </button>
+        </div>
+      </div>
+      <div class="wrapper_profil">
+        <div class="wrapper_form">
+          <div class="text_header">
+            <h2>Mon profil</h2>
+            <h3>Gérez les paramètres de votre profil</h3>
+          </div>
+          <div class="header_profil">
+            <h3>Votre photo de profil</h3>
+            <img src="public/assets/user.png" alt="" />
+          </div>
+          <div class="formulaire">
+            <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
+              <UFormGroup label="Nom" name="surname">
+                <UInput v-model="formState.surname" class="!bg-white rounded-md" color="gray" />
+              </UFormGroup>
+              <UFormGroup label="Prénom" name="name">
+                <UInput v-model="formState.name" class="!bg-white rounded-md" color="gray" />
+              </UFormGroup>
+              <UFormGroup label="Email" name="email">
+                <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray" readonly />
+              </UFormGroup>
+              <UFormGroup label="Classe" name="class">
+                <UInput v-model="formState.class" type="text" class="!bg-white rounded-md" color="gray" />
+              </UFormGroup>
+              <UFormGroup label="Groupe" name="group">
+                <UInput
+                  v-model.number="formState.group"
+                  type="number"
+                  class="!bg-white rounded-md"
+                  color="gray"
+                />
+              </UFormGroup>
+              <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
+                {{ errorMessage }}
+              </div>
+              <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="align-center">
+                Enregistrer
+              </UButton>
+            </UForm>
+          </div>
+          <div class="footer_button">
+            <p @click="changePassword">Changer de mot de passe</p>
+          </div>
+        </div>
+        <div class="illustration">
+          <img src="/public/assets/profil-illustration.png" alt="" />
+        </div>
+      </div>
     </div>
-</template>
-
+      <UNotification
+        v-if="notificationVisible"
+        icon="i-heroicons-check-badge"
+        color="primary"
+        :id="6"
+        :title="notificationTitle"
+        :description="notificationMessage"
+        :timeout="6000"
+        class="custom-notification"
+        
+        />
+  </template>
+  
 <script setup lang="ts">
 import { callAPI } from '~/services/callAPI';
 import { ref, onMounted, reactive } from 'vue';
@@ -67,6 +89,9 @@ import type { FormSubmitEvent } from "#ui/types";
 const api = new callAPI();
 const isLoading = ref(false);
 const id = ref();
+const notificationVisible = ref(false);
+const notificationTitle = ref(""); // Titre dynamique
+const notificationMessage = ref(""); // Description dynamique
 
 
 const formState = reactive({
@@ -117,10 +142,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     groupNumber: formState.group,
   };
 
-  console.log(requestBody);
   try {
-    const response = (await api.fetchAPIPutWithId("user/profil", id.value, requestBody)) as UserProfileResponse;
-    formState.surname = response.surname || formState.surname; 
+    const response = await api.fetchAPIPutWithId("user/profil", id.value, requestBody) as UserProfileResponse;
+    formState.surname = response.surname || formState.surname;
     formState.name = response.name || formState.name;
     formState.email = response.email || formState.email;
     formState.class = response.className || formState.class;
@@ -131,15 +155,30 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     originalFormState.email = response.email || '';
     originalFormState.class = response.className || '';
     originalFormState.group = response.groupNumber || undefined;
+
     isLoading.value = false;
-    
+
+    notificationTitle.value = "Succès"; 
+    notificationMessage.value = "Votre profil a été mis à jour avec succès !"; 
+    notificationVisible.value = true;
+
+
+
+    setTimeout(() => {
+      notificationVisible.value = false;
+    }, 6000);
+
+
   } catch (error) {
     isLoading.value = false;
-    if (error instanceof Error) {
-      errorMessage.value = error.message;
-    } else {
-      errorMessage.value = "Une erreur inattendue s'est produite.";
-    }
+
+    notificationTitle.value = "Erreur"; 
+    notificationMessage.value = "Une erreur est survenue lors de la mise à jour du profil.";
+    notificationVisible.value = true;
+
+    setTimeout(() => {
+      notificationVisible.value = false;
+    }, 6000);
   }
 }
 
@@ -217,7 +256,6 @@ definePageMeta({
         justify-content: space-between; 
         align-items: center; 
         width: 100%; 
-        padding: 1rem; 
         box-sizing: border-box; 
     }
 
@@ -400,11 +438,21 @@ definePageMeta({
     }
 
     .align-center {
-        display: flex; /* Active le mode flexbox */
-        justify-content: center; /* Centre horizontalement */
-        align-items: center; /* Centre verticalement */
-        text-align: center; /* Centre le texte (utile dans certains cas) */
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        text-align: center; 
         }
+
+        .custom-notification {
+        position: fixed;
+        bottom: 20px; 
+        right: 20px; 
+        z-index: 1000; 
+        width: min(50vw, 30rem);
+        max-width: 30rem; 
+        }
+
 
     @media screen and (max-width: 800px) {
 
