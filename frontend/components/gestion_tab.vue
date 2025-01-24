@@ -1,9 +1,5 @@
 <template>
-  <UTable v-model="selected" :rows="people" :columns="columns">
-    <template #name-data="{ row }">
-      <span :class="[selected.find(person => person.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.name }}</span>
-    </template>
-
+  <UTable  :rows="people" :columns="columns">
     <template #actions-data="{ row }">
       <UDropdown :items="items(row)">
         <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
