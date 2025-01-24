@@ -86,8 +86,8 @@
   <script setup>
   import { ref, onMounted, watch } from 'vue';
   import HoverCard from "~/components/identityCard.vue";
-  import { fetchBackend } from "~/services/call_backend";
-  
+  import {callAPI} from "~/services/callAPI.js";
+
   const reportData = ref(null); 
   const currentPage = ref(0); 
   const pageSize = ref(5); 
@@ -95,11 +95,12 @@
   const calculatedHeights = ref([]);
   const hoveredIndex = ref(null);
   const contentRefs = ref([]);
+  const api = new callAPI();
   
   // Fonction pour récupérer les données depuis le backend
   async function fetchReports(page) {
     try {
-      const data = await fetchBackend('/api/report/', page, pageSize.value);
+      const data = await api.fetchAPIGetPaginated('report', page, pageSize.value);
       reportData.value = data;
       console.log("Données reçues :", reportData.value);
     } catch (error) {
