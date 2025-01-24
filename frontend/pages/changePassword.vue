@@ -44,13 +44,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { fetchBackend_URL, PostBackend } from '~/services/call_backend';
+import { ref } from 'vue';
+import { callAPI } from "~/services/callAPI";
 
+const api = new callAPI();
 const userId = ref()
 onMounted(async () => {
     try {
-        const data = await fetchBackend_URL('/api/user/profil');
+        const data = await api.fetchAPIGet('user/profil');
         userId.value = data.id; 
     } catch (error) {
         console.error('Erreur lors du chargement des données du profil :', error);
@@ -79,7 +80,7 @@ const submitForm = async()  => {
         return acc;
     }, {} as Record<string, string>);
     try {
-        const response = await PostBackend('/api/user/changePassword', userId.value, passwordPayload);
+        const response = await api.fetchAPIPostWithId('user/changePassword', userId.value, passwordPayload);
         console.log('Profil mis à jour avec succès :', response);
 
     } catch (error) {
