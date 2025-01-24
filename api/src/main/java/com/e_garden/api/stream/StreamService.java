@@ -48,7 +48,7 @@ public class StreamService {
      * @return true if the playlist exists, false otherwise
      */
     public boolean isPlaylistAvailable() {
-        File playlist = new File(OUTPUT_DIRECTORY + "/output.m3u8");
+        File playlist = new File(OUTPUT_DIRECTORY + File.separator + "output.m3u8");
         return playlist.exists();
     }
 }
