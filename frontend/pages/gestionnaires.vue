@@ -1,24 +1,20 @@
 <template>
   <NavbarVertical></NavbarVertical>
-  <div class="wrapper_page">
-    <div class="left_side">
-
-    </div>
-    <div class="main_right_container">
-      <div class="header_section">
-        <Header_title title="Section Gestion" subtitle="Gestion des Utilisateurs / Rôle" class="header_title" />
-      </div>
-  <div class="component_ajouter">
+  <div class="header_section">
+  <Header_title title="Section Gestion" subtitle="Gestion des Utilisateurs / Rôle" class="header_title" />
+  </div>
+  <!--
+    <div class="component_ajouter">
     <ajouter/>
   </div>
-      <div class="left_section">
-        <div class="title_indicator">
-          <h2>Tableau de gestion</h2>
-        </div>
-        <div class="tab_gestion scrollable">
-          <gestion_tab/>
-        </div>
-      </div>
+-->
+
+  <div class="left_section">
+    <div class="title_indicator">
+      <h2>Tableau de gestion</h2>
+    </div>
+    <div class="tab_gestion scrollable">
+      <gestion_tab/>
     </div>
   </div>
 </template>
@@ -27,12 +23,7 @@
 import { ref, onMounted } from 'vue';
 import Header_title from '~/components/header_title.vue';
 import gestion_tab from '~/components/gestion_tab.vue';
-import { fetchBackend2 } from '~/services/call_backend';
 import NavbarVertical from "~/components/navbar_vertical.vue";
-import Augustin from "~/pages/augustin.vue";
-
-
-
 
 </script>
 
@@ -42,30 +33,10 @@ body {
   background-color: #f2f4ef;
 }
 
-.wrapper_page {
-  display: flex;
-  width: 100%;
-  max-width: 100%;
-  height: 100vh;
-  height: 100dvh;
-}
-
-.left_side {
-  height: 100%;
-  /*background-color: aqua;*/
-}
-
-.main_right_container {
-  /*background-color: blueviolet;*/
-  width: 100%;
-  height: 100vh;
-}
-
 .header_section {
   width: 100%;
   height: clamp(5rem, 9vw, 10rem);
   margin-left: 4vw;
-  /*  background-color: blue; */
 }
 
 .header_title {
@@ -90,12 +61,13 @@ h3 {
 }
 
 .left_section {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   margin-left: 4vw;
 }
 
 .component_ajouter{
+
   z-index:1;
 }
 

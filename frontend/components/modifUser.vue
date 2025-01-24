@@ -29,7 +29,7 @@
 
         <UFormGroup label="Validation">
           <u-button type="primary" native-type="submit">Enregistrer</u-button>
-          <u-button @click="$emit('close')">Annuler</u-button>
+          <u-button @click="handleCancel">Annuler</u-button>
         </UFormGroup>
       </u-form>
     </div>
@@ -40,7 +40,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { callAPI } from '~/services/callAPI';
 
-const props = defineProps<{ userId: number }>();
+const props = defineProps<{ userId: number, requetUser: () => void }>();
 const emit = defineEmits(['close']);
 
 const api = new callAPI();
@@ -48,8 +48,8 @@ const user = ref({ name: '', surname: '', email: '', role: '', className: '', gr
 
 const fetchUser = async (id: number) => {
   try {
-    console.log(id)
-    const response = await api.fetchAPIGet(`user/`+id);
+    console.log(id);
+    const response = await api.fetchAPIGet(`user/` + id);
     user.value = response;
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
@@ -66,9 +66,15 @@ const submitForm = async () => {
   try {
     await api.fetchAPIPut(`/user/${props.userId}`, user.value);
     emit('close');
+    props.requetUser();
   } catch (error) {
     console.error('Erreur lors de la mise à jour des données :', error);
   }
+};
+
+const handleCancel = () => {
+  props.requetUser();
+  emit('close');
 };
 
 onMounted(() => {

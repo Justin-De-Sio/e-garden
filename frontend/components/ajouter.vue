@@ -1,48 +1,42 @@
 <template>
-  <div>
-    <button class="add-button" @click.stop="showForm = true">Ajouter un utilisateur</button>
-    <div v-if="showForm" class="form-overlay">
-      <div class="form-container" @click.stop>
-        <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
-          <UFormGroup label="Prénom" name="name">
-            <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
-          </UFormGroup>
+  <div class="modal-overlay" @click.self="$emit('close')">
+    <div class="modal-content">
+      <h2>Ajouter Utilisateur</h2>
+      <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="submitForm">
+        <UFormGroup label="Prénom" name="name">
+          <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
+        </UFormGroup>
 
-          <UFormGroup label="Nom" name="surname">
-            <UInput v-model="formState.surname" type="text" class="Uinput_custom" color="gray"/>
-          </UFormGroup>
+        <UFormGroup label="Nom" name="surname">
+          <UInput v-model="formState.surname" type="text" class="Uinput_custom" color="gray"/>
+        </UFormGroup>
 
-          <UFormGroup label="Email" name="email">
-            <UInput v-model="formState.email" type="email" class="Uinput_custom" color="gray"/>
-          </UFormGroup>
+        <UFormGroup label="Email" name="email">
+          <UInput v-model="formState.email" type="email" class="Uinput_custom" color="gray"/>
+        </UFormGroup>
 
-          <UFormGroup label="Année scolaire" name="className">
-            <UInput v-model="formState.className" type="text" class="Uinput_custom" color="gray"/>
-          </UFormGroup>
+        <UFormGroup label="Année scolaire" name="className">
+          <UInput v-model="formState.className" type="text" class="Uinput_custom" color="gray"/>
+        </UFormGroup>
 
-          <UFormGroup label="Groupe classe" name="groupNumber">
-            <UInput v-model="formState.groupNumber" type="number" class="Uinput_custom" color="gray"/>
-          </UFormGroup>
-          <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
-            {{ errorMessage }}
-          </div>
-          <UButton type="submit" class="Ubutton_custom">
-            Ajouter le membre
-          </UButton>
-        </UForm>
-      </div>
+        <UFormGroup label="Groupe classe" name="groupNumber">
+          <UInput v-model="formState.groupNumber" type="number" class="Uinput_custom" color="gray"/>
+        </UFormGroup>
+        <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
+          {{ errorMessage }}
+        </div>
+        <UButton type="submit" class="Ubutton_custom">
+          Ajouter le membre
+        </UButton>
+      </UForm>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
-import { fetchBackendPost } from '~/services/call_backend.js';
 import { z } from "zod";
-import type { FormSubmitEvent } from "#ui/types";
-
-
-const showForm = ref(false);
+import { callAPI } from '~/services/callAPI';
 
 const formState = reactive({
   name: '',
@@ -71,59 +65,29 @@ const resetForm = () => {
   formState.groupNumber = null;
 };
 
-const handleClickOutside = (event: MouseEvent) => {
-  const formContainer = document.querySelector('.form-container');
-  if (formContainer && !formContainer.contains(event.target as Node)) {
-    showForm.value = false;
-    resetForm();
+const props = defineProps<{ userId: number, requetUser: () => void }>();
+const emit = defineEmits(['close']);
+
+const api = new callAPI();
+
+
+const submitForm = async () => {
+  try {
+    const validData = formSchema.parse(formState);
+    await api.fetchAPIPost(`user`,validData);
+    emit('close');
+    props.requetUser();
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour des données :', error);
   }
 };
 
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
 
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  event.preventDefault?.();
-  try {
-    // Validation avec Zod
-    const validData = formSchema.parse(formState);
-
-    // Envoi de la requête POST
-    const response = await fetchBackendPost('/api/user', validData);
-
-    console.log('Response:', response);
-    showForm.value = false;
-    resetForm();
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      errorMessage.value = error.errors.map(err => err.message).join(', ');
-    } else {
-      console.error('Submission failed:', error);
-      errorMessage.value = 'Failed to submit the form.';
-    }
-  }
-
-  console.log(event.data);
-}
 </script>
 
 <style scoped>
-.add-button {
-  background-color: #95BD75;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 999;
-}
-
-.form-overlay {
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -133,39 +97,46 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
-.form-container {
-  padding: 20px;
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 400px;
+  height: 500px;
+}
+
+u-form {
+  display: flex;
+  flex-direction: column;
+}
+
+u-form-item {
+  margin-bottom: 1rem;
+}
+
+u-input {
+  padding: 0.5rem;
   border: 1px solid #ddd;
-  border-radius: 15px;
-  background-color: #f9f9f9;
-  width: 411px;
-  z-index: 1001;
+  border-radius: 5px;
 }
 
-form div {
-  margin-bottom: 10px;
-}
-
-form label {
-  display: block;
-  margin-bottom: 5px;
-  width: auto;
-}
-
-form input {
-  width: 100%;
-  padding: 8px;
-}
-
-form button {
-  background-color: #95BD75;
-  color: white;
-  padding: 10px 20px;
+u-button {
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+u-button[type="primary"] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+u-button {
+  background-color: #f44336;
+  color: white;
 }
 </style>

@@ -1,12 +1,19 @@
 <template>
   <UTable  :rows="people" :columns="columns">
+    <template #actions-header>
+      <UButton @submit="ajouterUtilisateur">
+
+        Ajouter un utilisateur
+        <ajouter v-if="showAddUser" :user-id="selectedUserId"  @close="handleClose" :requet-user="requetUser"/>
+      </UButton>
+    </template>
     <template #actions-data="{ row }">
       <UDropdown :items="items(row)">
         <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
       </UDropdown>
     </template>
   </UTable>
-  <modif-user v-if="showModifUser" :user-id="selectedUserId"></modif-user>
+  <modif-user v-if="showModifUser" :user-id="selectedUserId"  @close="handleClose" :requet-user="requetUser"/>
 </template>
 
 <script setup lang="ts">
@@ -16,13 +23,15 @@ import { callAPI } from '~/services/callAPI';
 import modifUser from '~/components/modifUser.vue';
 
 const api = new callAPI();
-const showModifUser = ref(false); // Variable pour contrôler l'affichage du composant
 
+const selectedUserId = ref<number | null>(null);
+
+const showModifUser = ref(false);
+const showAddUser = ref(false);
 
 onMounted(async () => {
   requetUser();
 });
-let selectedUserId = null; // Variable pour stocker l'ID de l'utilisateur sélectionné
 
 let columns: { key: keyof Person; label: string }[];
 columns = [
@@ -83,14 +92,15 @@ async function supprimerUtilisateur(id: number) {
   const response = await api.fetchAPIDelete('user', id);
   requetUser();
 }
-
+const ajouterUtilisateur = async () => {
+  console.log("ajouter user");
+  showModifUser.value = true; // Afficher le composant modifUser
+}
 
 async function modifierUtilisateur(id: string) {
   console.log("Modif user funct",id);
-  selectedUserId = id;
-
+  selectedUserId.value = id;
   console.log("Modif user funct2" + selectedUserId);
-
   showModifUser.value = true; // Afficher le composant modifUser
 }
 
@@ -103,9 +113,13 @@ async function verouillerUtilisateur(id: number) {
   const response = await api.fetchAPIGet('user/block/' + id);
   requetUser();
 }
+function handleClose() {
+  showModifUser.value = false;
+  showAddUser.value = false;
+  requetUser();
+}
 
 </script>
-
 
 <style scoped>
 table {
@@ -120,6 +134,8 @@ th, td {
   padding: 8px;
   cursor: pointer;
   border-radius: 5px;
+  z-index:999;
+
 }
 
 th {
@@ -130,6 +146,7 @@ th {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
+
 }
 
 .column-header {
