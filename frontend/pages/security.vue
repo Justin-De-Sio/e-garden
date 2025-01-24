@@ -9,7 +9,8 @@
   import Notification from "~/components/notification2.vue"
 
   definePageMeta({
-    middleware: "auth"
+    middleware: "auth",
+    role: ["ADMINISTRATEUR"],
   })
 </script>
 

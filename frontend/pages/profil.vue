@@ -197,6 +197,11 @@ const logout = () => {
 const changePassword = () => {
   router.push("/changePassword");
 };
+
+definePageMeta({
+    middleware: "auth",
+    role: ["ADMINISTRATEUR","UTILISATEUR"],
+  })
 </script>
 
 
