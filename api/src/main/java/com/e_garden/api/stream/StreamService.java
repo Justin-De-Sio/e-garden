@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import static com.e_garden.api.stream.StreamConfig.OUTPUT_DIRECTORY;
-
 
 /**
  * Service for handling RTSP to HLS streaming operations.
@@ -15,6 +15,7 @@ import static com.e_garden.api.stream.StreamConfig.OUTPUT_DIRECTORY;
 @Service
 public class StreamService {
 
+    private static final Logger logger = Logger.getLogger(StreamService.class.getName());
     private final Process streamingProcess;
 
     @Autowired
@@ -37,9 +38,10 @@ public class StreamService {
     public void stopStreaming() {
         if (streamingProcess != null) {
             streamingProcess.destroy();
-            System.out.println("Stream stopped.");
+            logger.info("Stream arrêté.");
         }
     }
+
     /**
      * Checks if the HLS playlist file exists.
      *

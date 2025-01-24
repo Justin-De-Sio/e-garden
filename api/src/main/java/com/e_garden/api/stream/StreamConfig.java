@@ -2,9 +2,13 @@ package com.e_garden.api.stream;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import jakarta.annotation.PreDestroy;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Configuration class for initializing the RTSP to HLS streaming process.
@@ -12,10 +16,29 @@ import java.io.IOException;
 @Configuration
 public class StreamConfig {
 
+    private static final Logger logger = Logger.getLogger(StreamConfig.class.getName());
     protected static final String OUTPUT_DIRECTORY = "videos" + File.separator + "stream";
-    private static final String OUTPUT_FILE = OUTPUT_DIRECTORY  + File.separator + "output.m3u8";
+    private static final String OUTPUT_FILE = OUTPUT_DIRECTORY + File.separator + "output.m3u8";
     private static final String RTSP_URL = System.getenv("RTSP_URL");
+    private Process currentProcess;
 
+    @PreDestroy
+    public void stopStreaming() {
+        if (currentProcess != null && currentProcess.isAlive()) {
+            currentProcess.destroyForcibly();
+            try {
+                boolean terminated = currentProcess.waitFor(5, TimeUnit.SECONDS);
+                if (terminated) {
+                    logger.info("Stream FFmpeg arrêté avec succès lors de l'arrêt du serveur.");
+                } else {
+                    logger.warning("Le stream FFmpeg n'a pas pu être arrêté proprement lors de l'arrêt du serveur.");
+                }
+            } catch (InterruptedException e) {
+                logger.severe("Erreur lors de l'arrêt du stream FFmpeg pendant l'arrêt du serveur: " + e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
 
     /**
      * Bean for managing the streaming process.
@@ -24,7 +47,17 @@ public class StreamConfig {
      * @throws IOException if the FFmpeg process fails to start
      */
     @Bean
+    @Lazy
     public Process streamingProcess() throws IOException {
+        if (currentProcess != null && currentProcess.isAlive()) {
+            logger.info("FFmpeg process already running");
+            return currentProcess;
+        }
+
+        if (RTSP_URL == null || RTSP_URL.isEmpty()) {
+            throw new IllegalStateException("RTSP_URL environment variable is not set");
+        }
+
         File outputDir = new File(OUTPUT_DIRECTORY);
         if (!outputDir.exists()) {
             outputDir.mkdirs();
@@ -45,6 +78,8 @@ public class StreamConfig {
         );
 
         processBuilder.redirectErrorStream(true);
-        return processBuilder.start();
+        currentProcess = processBuilder.start();
+        logger.info("Started new FFmpeg process");
+        return currentProcess;
     }
 }
