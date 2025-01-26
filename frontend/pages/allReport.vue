@@ -1,6 +1,6 @@
 <template>
   <div>
-  <h1>Table de tous les rapports</h1>
+    <h1>Table de tous les rapports</h1>
     <div v-if="!report.length">
       <UTable
           loading
@@ -11,7 +11,15 @@
       />
     </div>
     <UTable v-else :columns="columns" :rows="report">
-      <template #user="{ row }">
+      <template #createdAt-data="{ row }">
+        <NuxtTime :datetime="row.createdAt" day="2-digit" month="2-digit" year="numeric" hour="2-digit"
+                  minute="2-digit"/>
+      </template>
+      <template #reportDate-data="{ row }">
+        <NuxtTime :datetime="row.reportDate" day="2-digit" month="2-digit" year="numeric" hour="2-digit"
+                  minute="2-digit"/>
+      </template>
+      <template #user-data="{ row }">
         {{ row.user.email }}
       </template>
       <template #actions-data="{ row }">
@@ -26,20 +34,9 @@
 
 <script setup lang="ts">
 import {callAPI} from "~/services/callAPI";
-import {ref, onMounted} from "vue";
-
-// Typage des données du rapport
-interface Report {
-  id: number;
-  content: string;
-  createdAt: string;
-  reportDate: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
-}
+import {onMounted, ref} from "vue";
+import type {Reports} from "~/model/Reports";
+import type {Pages} from "~/model/Pages";
 
 const columns = [
   {key: "id", label: "ID"},
@@ -51,7 +48,7 @@ const columns = [
 ];
 
 const api = new callAPI();
-const report = ref<Report[]>([]);
+const report = ref<Reports[]>([]);
 const page = ref(1)
 let pageCount = 1;
 let pageTotal = 0;
@@ -59,12 +56,9 @@ let pageTotal = 0;
 // Fonction pour récupérer les données de l'API
 async function fetchReport() {
   try {
-    const data = await api.fetchAPIGetPaginated("report", page.value - 1, 20);
+    const data = await api.fetchAPIGetPaginated("report", page.value - 1, 20) as Pages;
     if (data?.content) {
-      report.value = data.content.map((item: Report) => ({
-        ...item,
-        user: item.user.email, // Remplace `user` par l'email
-      }));
+      report.value = data.content as Reports[];
       pageTotal = data.totalPages;
     } else {
       console.warn("No content found in API response");
@@ -83,7 +77,6 @@ async function deleteReport(id: number) {
   }
 }
 
-// Appel lors du montage du composant
 onMounted(fetchReport);
 </script>
 
