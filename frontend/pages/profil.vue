@@ -52,7 +52,7 @@
               <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
                 {{ errorMessage }}
               </div>
-              <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="align-center">
+              <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="f">
                 Enregistrer
               </UButton>
             </UForm>
@@ -444,14 +444,14 @@ definePageMeta({
         text-align: center; 
         }
 
-        .custom-notification {
-        position: fixed;
-        bottom: 20px; 
-        right: 20px; 
-        z-index: 1000; 
-        width: min(50vw, 30rem);
-        max-width: 30rem; 
-        }
+    .custom-notification {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+    width: min(50vw, 30rem);
+    max-width: 30rem; 
+    }
 
 
     @media screen and (max-width: 800px) {

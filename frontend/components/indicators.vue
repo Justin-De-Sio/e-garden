@@ -38,7 +38,7 @@
   
   
   .custom-frame {
-    width: 30% ;
+    width: 100% ;
     max-width: 18rem;
     min-width: 10.5rem;
     height: 100%;
@@ -46,7 +46,7 @@
     display: flex;
     flex-direction: row; 
     align-items: center;
-    padding: 1.1rem;
+    padding: clamp(0.6rem, 1.5vw, 1rem);
     font-family: 'gilroy-medium', sans-serif; 
     border-radius: 0.8rem; 
   }

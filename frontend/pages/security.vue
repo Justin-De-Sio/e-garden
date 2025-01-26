@@ -1,20 +1,93 @@
 <template>
-  <div class="">
-    <NavbarVertical></NavbarVertical>
+    <div class="wrapper_page">
+      <NavbarVertical></NavbarVertical>
+
+    <div class="header_bis">
+      <header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici-même"></header_title>
+    </div>
+
+    <div class="top_left">
+      <div class="columns_indicators">
+        <indicators 
+        iconBackgroundColor="#95BD75"
+        iconPath="/assets/passages.png"
+        subtitle="Nombre de passage"
+        :title="`${number_passage} passages`"
+        ></indicators>
+        <indicators 
+        iconBackgroundColor="#ECA9A8"
+        iconPath="/assets/exclamation.png"
+        subtitle="Alertes"
+        :title="`${number_cr} absences de CR`"
+        ></indicators>
+      </div>
+    </div>
+    <report></report>
+
   </div>
+
+
+
 </template>
 
 <script setup lang="ts">
+  import indicators from "~/components/indicators.vue"; 
+  import header_title from "~/components/header_title.vue"; 
   import NavbarVertical from "~/components/navbar_vertical.vue"
-  import Notification from "~/components/notification2.vue"
+  import report from "~/components/report.vue";
+  import {callAPI}  from "~/services/callAPI";
 
+  const api = new callAPI;
+  const number_passage = ref();
+  const number_cr = ref();
   definePageMeta({
     middleware: "auth",
     role: ["ADMINISTRATEUR"],
   })
+
+  async function getData() {
+  try {
+    const stats_passages = await api.fetchAPIGet("/event/statistique");
+    const stats_cr = await api.fetchAPIGet("/report/statistique");
+    number_passage.value = stats_passages;
+    number_cr.value = stats_cr;
+  } catch (error) {
+    console.error("Erreur :", error); 
+  }
+  }
+
+  onMounted(() => {
+      getData()
+  })
+
+
+
 </script>
 
 <style scoped>
 
+.wrapper_page{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header_bis{
+  width: 100vw;
+  height: 100%;
+  padding: 2rem;
+}
+
+.top_left{
+  padding: 0 2rem;
+}
+
+.columns_indicators{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
 
 </style>
