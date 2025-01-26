@@ -4,9 +4,7 @@ export default defineNuxtConfig({
   css: [
     '/public/assets/css/reset.css', // Inclure le fichier CSS global
   ],
-  modules:[
-    '@nuxt/ui'
-  ],
+  modules:['@nuxt/ui', 'nuxt-time'],
   runtimeConfig: {
     public: {
       apibase: process.env.API_URL || 'thomas',
