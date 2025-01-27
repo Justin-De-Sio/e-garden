@@ -2,29 +2,29 @@
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <h2>Modifier Utilisateur</h2>
-      <u-form :model="user" @submit="submitForm">
+      <u-form :model="user" @submit="submitForm" v-if="user">
         <UFormGroup label="Prénom" name="name">
-          <u-input v-model="user.name" />
+          <u-input v-model="user.name"/>
         </UFormGroup>
 
         <UFormGroup label="Nom" name="surname">
-          <u-input v-model="user.surname" />
+          <u-input v-model="user.surname"/>
         </UFormGroup>
 
         <UFormGroup label="Email" name="email">
-          <u-input v-model="user.email" />
+          <u-input v-model="user.email"/>
         </UFormGroup>
 
         <UFormGroup label="Année scolaire" name="className">
-          <u-input v-model="user.className" />
+          <u-input v-model="user.className"/>
         </UFormGroup>
 
         <UFormGroup label="Groupe classe" name="groupNumber">
-          <u-input v-model="user.groupNumber" />
+          <u-input v-model="user.groupNumber"/>
         </UFormGroup>
 
         <UFormGroup label="Rôle" name="role">
-          <u-input v-model="user.role" />
+          <u-input v-model="user.role"/>
         </UFormGroup>
 
         <UFormGroup label="Validation">
@@ -37,19 +37,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { callAPI } from '~/services/callAPI';
+import {onMounted, ref, watch} from 'vue';
+import {callAPI} from '~/services/callAPI';
+import type {User} from '~/model/User.js'
 
 const props = defineProps<{ userId: number, requetUser: () => void }>();
 const emit = defineEmits(['close']);
 
 const api = new callAPI();
-const user = ref({ name: '', surname: '', email: '', role: '', className: '', groupNumber: '' });
+const user = ref<User>();
 
 const fetchUser = async (id: number) => {
   try {
     console.log(id);
-    const response = await api.fetchAPIGet(`user/` + id);
+    const response = await api.fetchAPIGet(`user/` + id) as User;
     user.value = response;
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);

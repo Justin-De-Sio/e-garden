@@ -1,14 +1,8 @@
 <template>
   <NavbarVertical></NavbarVertical>
   <div class="header_section">
-  <Header_title title="Section Gestion" subtitle="Gestion des Utilisateurs / Rôle" class="header_title" />
+    <Header_title title="Section Gestion" subtitle="Gestion des Utilisateurs / Rôle" class="header_title"/>
   </div>
-  <!--
-    <div class="component_ajouter">
-    <ajouter/>
-  </div>
--->
-
   <div class="left_section">
     <div class="title_indicator">
       <h2>Tableau de gestion</h2>
@@ -20,11 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import Header_title from '~/components/header_title.vue';
 import gestion_tab from '~/components/gestion_tab.vue';
 import NavbarVertical from "~/components/navbar_vertical.vue";
-
 </script>
 
 <style>

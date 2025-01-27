@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <UTable  :rows="people" :columns="columns" ui="{thead:'sticky top-0 z-index-1'}">
+    <UTable :rows="people" :columns="columns" ui="{thead:'sticky top-0 z-index-1'}">
       <template #actions-header>
         <UButton @click="ajouterUtilisateur()">
           Ajouter un utilisateur
@@ -8,22 +8,22 @@
       </template>
       <template #actions-data="{ row }">
         <UDropdown :items="items(row)">
-          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid"/>
         </UDropdown>
       </template>
     </UTable>
-    <ajouter v-if="showAddUser" @close="handleCloseAdd" :requet-user="requetUser" user-id=""/>
-    <modif-user v-if="showModifUser" :user-id="selectedUserId"  @close="handleCloseMod" :requet-user="requetUser"/>
+    <ajouter v-if="showAddUser" @close="handleCloseAdd" :requet-user="requetUser"/>
+    <modif-user v-if="showModifUser" :user-id="selectedUserId" @close="handleCloseMod" :requet-user="requetUser"/>
   </div>
 </template>
 
 <script setup lang="ts">
 
-import { ref, computed, onMounted } from 'vue';
-import { callAPI } from '~/services/callAPI';
+import {onMounted, ref} from 'vue';
+import {callAPI} from '~/services/callAPI';
 import modifUser from '~/components/modifUser.vue';
 import ajouter from '~/components/ajouter.vue'
-
+import type {User} from "~/model/User";
 
 const api = new callAPI();
 
@@ -33,11 +33,10 @@ const showModifUser = ref(false);
 const showAddUser = ref(false);
 
 onMounted(async () => {
-  requetUser();
+  await requetUser();
 });
 
-let columns: { key: keyof Person; label: string }[];
-columns = [
+let columns = [
   {key: 'surname', label: 'Nom'},
   {key: 'name', label: 'Prénom'},
   {key: 'email', label: 'Email'},
@@ -46,28 +45,16 @@ columns = [
   {key: 'role', label: 'Rôle'},
   {key: 'actions', label: 'Actions'}];
 
-interface Person {
-  id: number,
-  name: string,
-  surname: string,
-  email: string,
-  role: string,
-  className: string,
-  groupNumber: number,
-  locked: boolean
-}
+const people = ref<User[]>([]);
 
-const people = ref<Person[]>([]);
-const selected = ref<Person[]>([]);
-
-async function requetUser(){
+async function requetUser() {
   try {
     console.log("requetUser");
-    const response = await api.fetchAPIGet('/user/all') as Person;
+    const response = await api.fetchAPIGet('/user/all') as User[];
     people.value = response;
-    console.log("---------------",response);
+    console.log("---------------", response);
     console.log(showAddUser.value);
-    console.log("---------------",response);
+    console.log("---------------", response);
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
@@ -85,41 +72,40 @@ const items = row => [
     click: () => verouillerUtilisateur(row.id)
   }, {
     label: 'Réinitialiser le mot de passe',
-    click: () => resetMdp (row.id)
+    click: () => resetMdp(row.id)
   }],
 ]
 
 async function supprimerUtilisateur(id: number) {
-  const response = await api.fetchAPIDelete('user', id);
-  requetUser();
+  await api.fetchAPIDelete('user', id);
+  await requetUser();
 }
+
 async function ajouterUtilisateur() {
   showAddUser.value = true;
 }
 
-async function modifierUtilisateur(id: string) {
+async function modifierUtilisateur(id: number) {
   selectedUserId.value = id;
   showModifUser.value = true;
 }
 
 async function resetMdp(id: number) {
-  const response = await api.fetchAPIPostWithId('user/resetPassword/', id, {});
-  requetUser();
+  await api.fetchAPIPostWithId('user/resetPassword/', id, {});
+  await requetUser();
 }
 
 async function verouillerUtilisateur(id: number) {
-  const response = await api.fetchAPIGet('user/block/' + id);
-  requetUser();
+  await api.fetchAPIGet('user/block/' + id);
+  await requetUser();
 }
 
 function handleCloseMod() {
-  console.log("handlecloseMod");
   showModifUser.value = false;
   requetUser();
 }
 
 function handleCloseAdd() {
-  console.log("handlecloseAdd");
   showAddUser.value = false;
   requetUser();
 }
@@ -154,6 +140,6 @@ th {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  z-index:1;
+  z-index: 1;
 }
 </style>

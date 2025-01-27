@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
-      <h2>Modifier Utilisateur</h2>
+      <h2>Ajouter Utilisateur</h2>
       <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="submitForm">
         <UFormGroup label="Prénom" name="name">
           <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
@@ -35,11 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { z } from "zod";
-import { callAPI } from '~/services/callAPI';
+import {reactive, ref} from 'vue';
+import {z} from "zod";
+import {callAPI} from '~/services/callAPI';
 
-const props = defineProps<{ userId: number, requetUser: () => void }>();
+const props = defineProps<{ requetUser: () => void }>();
 const emit = defineEmits(['close']);
 
 const formState = reactive({
@@ -58,26 +58,13 @@ const formSchema = z.object({
   groupNumber: z.number().int(),
 });
 
-type Schema = z.output<typeof formSchema>;
 const errorMessage = ref('');
-
-const resetForm = () => {
-  formState.name = '';
-  formState.surname = '';
-  formState.email = '';
-  formState.className = '';
-  formState.groupNumber = null;
-};
-
-
-
 const api = new callAPI();
-
 
 const submitForm = async () => {
   try {
     const validData = formSchema.parse(formState);
-    await api.fetchAPIPost(`user`,validData);
+    await api.fetchAPIPost(`user`, validData);
     emit('close');
     props.requetUser();
   } catch (error) {
