@@ -66,22 +66,16 @@ h3 {
   margin-left: 4vw;
 }
 
-.component_ajouter{
-
-  z-index:1;
-}
 
 .tab_gestion {
   display: flex;
   gap: 2rem;
   width: 100%;
-  z-index:2;
   border-radius: 5px;
 
 }
 
 .scrollable {
-  z-index: 2;
   max-height: 30rem; /* Limitez la hauteur selon vos besoins */
   overflow: hidden;
   overflow-y: auto; /* Ajoute un ascenseur vertical */

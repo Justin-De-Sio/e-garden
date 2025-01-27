@@ -101,7 +101,7 @@ onMounted(() => {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
-  width: 400px;
+  width: auto;
   height: 500px;
 }
 
@@ -136,5 +136,10 @@ u-button[type="primary"] {
 u-button {
   background-color: #f44336;
   color: white;
+}
+
+h2 {
+  font-family: "Gilroy-Medium", sans-serif;
+  margin-bottom: 2vh;
 }
 </style>

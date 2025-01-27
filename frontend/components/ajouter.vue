@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
-      <h2>Ajouter Utilisateur</h2>
+      <h2>Modifier Utilisateur</h2>
       <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="submitForm">
         <UFormGroup label="Prénom" name="name">
           <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
@@ -25,18 +25,22 @@
         <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
           {{ errorMessage }}
         </div>
-        <UButton type="submit" class="Ubutton_custom">
-          Ajouter le membre
-        </UButton>
+        <UFormGroup label="Validation">
+          <UButton type="primary" native-type="submit">Ajouter l'utilisateur</UButton>
+          <UButton @click="handleCancel">Annuler</UButton>
+        </UFormGroup>
       </UForm>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { ref, reactive } from 'vue';
 import { z } from "zod";
 import { callAPI } from '~/services/callAPI';
+
+const props = defineProps<{ userId: number, requetUser: () => void }>();
+const emit = defineEmits(['close']);
 
 const formState = reactive({
   name: '',
@@ -65,8 +69,7 @@ const resetForm = () => {
   formState.groupNumber = null;
 };
 
-const props = defineProps<{ userId: number, requetUser: () => void }>();
-const emit = defineEmits(['close']);
+
 
 const api = new callAPI();
 
@@ -82,9 +85,13 @@ const submitForm = async () => {
   }
 };
 
-
+const handleCancel = () => {
+  props.requetUser();
+  emit('close');
+};
 
 </script>
+
 
 <style scoped>
 .modal-overlay {
@@ -138,5 +145,10 @@ u-button[type="primary"] {
 u-button {
   background-color: #f44336;
   color: white;
+}
+
+h2 {
+  font-family: "Gilroy-Medium", sans-serif;
+  margin-bottom: 2vh;
 }
 </style>

@@ -1,19 +1,20 @@
 <template>
-  <UTable  :rows="people" :columns="columns">
-    <template #actions-header>
-      <UButton @submit="ajouterUtilisateur">
-
-        Ajouter un utilisateur
-        <ajouter v-if="showAddUser" :user-id="selectedUserId"  @close="handleClose" :requet-user="requetUser"/>
-      </UButton>
-    </template>
-    <template #actions-data="{ row }">
-      <UDropdown :items="items(row)">
-        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-      </UDropdown>
-    </template>
-  </UTable>
-  <modif-user v-if="showModifUser" :user-id="selectedUserId"  @close="handleClose" :requet-user="requetUser"/>
+  <div class="table-container">
+    <UTable  :rows="people" :columns="columns" ui="{thead:'sticky top-0 z-index-1'}">
+      <template #actions-header>
+        <UButton @click="ajouterUtilisateur()">
+          Ajouter un utilisateur
+        </UButton>
+      </template>
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+        </UDropdown>
+      </template>
+    </UTable>
+    <ajouter v-if="showAddUser" @close="handleCloseAdd" :requet-user="requetUser" user-id=""/>
+    <modif-user v-if="showModifUser" :user-id="selectedUserId"  @close="handleCloseMod" :requet-user="requetUser"/>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,6 +22,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { callAPI } from '~/services/callAPI';
 import modifUser from '~/components/modifUser.vue';
+import ajouter from '~/components/ajouter.vue'
+
 
 const api = new callAPI();
 
@@ -63,6 +66,8 @@ async function requetUser(){
     const response = await api.fetchAPIGet('/user/all') as Person;
     people.value = response;
     console.log("---------------",response);
+    console.log(showAddUser.value);
+    console.log("---------------",response);
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
@@ -71,19 +76,15 @@ async function requetUser(){
 const items = row => [
   [{
     label: 'Modifier',
-    icon: '~/public/assets/stylo.png',
     click: () => modifierUtilisateur(row.id)
   }, {
     label: 'Supprimer',
-    icon: '~/public/assets/croix.png',
     click: () => supprimerUtilisateur(row.id)
   }, {
     label: 'Verouiller',
-    icon: '🔼',
     click: () => verouillerUtilisateur(row.id)
   }, {
     label: 'Réinitialiser le mot de passe',
-    icon: '🔼',
     click: () => resetMdp (row.id)
   }],
 ]
@@ -92,16 +93,13 @@ async function supprimerUtilisateur(id: number) {
   const response = await api.fetchAPIDelete('user', id);
   requetUser();
 }
-const ajouterUtilisateur = async () => {
-  console.log("ajouter user");
-  showModifUser.value = true; // Afficher le composant modifUser
+async function ajouterUtilisateur() {
+  showAddUser.value = true;
 }
 
 async function modifierUtilisateur(id: string) {
-  console.log("Modif user funct",id);
   selectedUserId.value = id;
-  console.log("Modif user funct2" + selectedUserId);
-  showModifUser.value = true; // Afficher le composant modifUser
+  showModifUser.value = true;
 }
 
 async function resetMdp(id: number) {
@@ -113,8 +111,15 @@ async function verouillerUtilisateur(id: number) {
   const response = await api.fetchAPIGet('user/block/' + id);
   requetUser();
 }
-function handleClose() {
+
+function handleCloseMod() {
+  console.log("handlecloseMod");
   showModifUser.value = false;
+  requetUser();
+}
+
+function handleCloseAdd() {
+  console.log("handlecloseAdd");
   showAddUser.value = false;
   requetUser();
 }
@@ -122,6 +127,11 @@ function handleClose() {
 </script>
 
 <style scoped>
+.table-container {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -134,46 +144,16 @@ th, td {
   padding: 8px;
   cursor: pointer;
   border-radius: 5px;
-  z-index:999;
-
 }
 
 th {
   position: sticky;
-  top: -0.5px;
+  top: 0;
   background-color: #FFFFFF;
   text-align: left;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
-
-}
-
-.column-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.action-icons {
-  display: flex;
-  align-items: center;
-}
-
-.icon-background {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
-  width: auto;
-  height: 19px;
-  padding: 0.09rem;
-  border-radius: 5px;
-}
-
-.icon-image {
-  width: 35px;
-  height: 35px;
-  padding: clamp(0.3rem, 0.7vw, 3rem);
+  z-index:1;
 }
 </style>
