@@ -2,82 +2,69 @@
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <h2>Modifier Utilisateur</h2>
-      <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="submitForm">
+      <u-form :model="user" @submit="submitForm">
         <UFormGroup label="Prénom" name="name">
-          <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
+          <u-input v-model="user.name" />
         </UFormGroup>
 
         <UFormGroup label="Nom" name="surname">
-          <UInput v-model="formState.surname" type="text" class="Uinput_custom" color="gray"/>
+          <u-input v-model="user.surname" />
         </UFormGroup>
 
         <UFormGroup label="Email" name="email">
-          <UInput v-model="formState.email" type="email" class="Uinput_custom" color="gray"/>
+          <u-input v-model="user.email" />
         </UFormGroup>
 
         <UFormGroup label="Année scolaire" name="className">
-          <UInput v-model="formState.className" type="text" class="Uinput_custom" color="gray"/>
+          <u-input v-model="user.className" />
         </UFormGroup>
 
         <UFormGroup label="Groupe classe" name="groupNumber">
-          <UInput v-model="formState.groupNumber" type="number" class="Uinput_custom" color="gray"/>
+          <u-input v-model="user.groupNumber" />
         </UFormGroup>
-        <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
-          {{ errorMessage }}
-        </div>
+
+        <UFormGroup label="Rôle" name="role">
+          <u-input v-model="user.role" />
+        </UFormGroup>
+
         <UFormGroup label="Validation">
-          <UButton type="primary" native-type="submit">Ajouter l'utilisateur</UButton>
-          <UButton @click="handleCancel">Annuler</UButton>
+          <u-button type="primary" native-type="submit">Enregistrer</u-button>
+          <u-button @click="handleCancel">Annuler</u-button>
         </UFormGroup>
-      </UForm>
+      </u-form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { z } from "zod";
+import { ref, watch, onMounted } from 'vue';
 import { callAPI } from '~/services/callAPI';
 
 const props = defineProps<{ userId: number, requetUser: () => void }>();
 const emit = defineEmits(['close']);
 
-const formState = reactive({
-  name: '',
-  surname: '',
-  email: '',
-  className: '',
-  groupNumber: null,
-});
+const api = new callAPI();
+const user = ref({ name: '', surname: '', email: '', role: '', className: '', groupNumber: '' });
 
-const formSchema = z.object({
-  name: z.string(),
-  surname: z.string(),
-  email: z.string().email("Must be a valid email"),
-  className: z.string(),
-  groupNumber: z.number().int(),
-});
-
-type Schema = z.output<typeof formSchema>;
-const errorMessage = ref('');
-
-const resetForm = () => {
-  formState.name = '';
-  formState.surname = '';
-  formState.email = '';
-  formState.className = '';
-  formState.groupNumber = null;
+const fetchUser = async (id: number) => {
+  try {
+    console.log(id);
+    const response = await api.fetchAPIGet(`user/` + id);
+    user.value = response;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données :', error);
+  }
 };
 
-
-
-const api = new callAPI();
-
+watch(() => props.userId, (newId) => {
+  if (newId) {
+    fetchUser(newId);
+  }
+});
 
 const submitForm = async () => {
   try {
-    const validData = formSchema.parse(formState);
-    await api.fetchAPIPost(`user`,validData);
+    await api.fetchAPIPut(`/user/${props.userId}`, user.value);
     emit('close');
     props.requetUser();
   } catch (error) {
@@ -90,8 +77,12 @@ const handleCancel = () => {
   emit('close');
 };
 
+onMounted(() => {
+  if (props.userId) {
+    fetchUser(props.userId);
+  }
+});
 </script>
-
 
 <style scoped>
 .modal-overlay {
@@ -110,7 +101,7 @@ const handleCancel = () => {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
-  width: 400px;
+  width: auto;
   height: 500px;
 }
 

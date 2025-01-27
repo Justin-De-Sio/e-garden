@@ -137,7 +137,7 @@ export async function fetchBackendPost(url, body) {
             },
             body: JSON.stringify(body),
         });
-        c
+
         return data3;
     } catch (error) {
         console.error('Erreur lors de la requête API :', error);
