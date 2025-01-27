@@ -90,8 +90,8 @@ const api = new callAPI();
 const isLoading = ref(false);
 const id = ref();
 const notificationVisible = ref(false);
-const notificationTitle = ref(""); // Titre dynamique
-const notificationMessage = ref(""); // Description dynamique
+const notificationTitle = ref(""); 
+const notificationMessage = ref(""); 
 
 
 const formState = reactive({
@@ -183,8 +183,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 }
 
 definePageMeta({
-  middleware: 'auth', // Applique le middleware
-  roles: ['UTILISATEUR'], // Rôles requis pour cette page
+  middleware: 'auth', 
+  roles: ['UTILISATEUR'], 
 });
 
 // Fonction pour récupérer les données utilisateur

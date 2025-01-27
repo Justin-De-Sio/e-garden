@@ -1,18 +1,29 @@
 <template>
   <div class="wrapper">
-    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-      <UInput v-model="q" placeholder="Rechercher..." />
-    </div>
+>
+    <UTable
+      v-if="rows.length > 0"
+      :rows="rows"
+      :columns="columns"
+    />
+    <p v-else class="text-center py-3">Aucune donnée disponible.</p>
 
-    <UTable :rows="filteredRows" :columns="columns" />
+    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+      <UPagination
+        v-model="page"
+        :page-count="totalPages"
+        :total="totalElements"
+        @update:modelValue="handlePageChange"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { callAPI } from '~/services/callAPI';
 
-// **Interfaces**
+// Interfaces
 interface User {
   id: number;
   name: string;
@@ -42,59 +53,48 @@ interface ApiResponse<T> {
 }
 
 
+const page = ref(1); 
+const pageSize = 5; 
+const totalPages = ref(1); 
+const totalElements = ref(0); 
+const varGetReportData = ref<Report[]>([]); 
 const api = new callAPI();
-
-// **Données**
-const varGetReportData = ref<any[]>([]); 
-const q = ref(''); 
 
 
 const columns = [
   { key: 'global_name', label: 'Prénom / Nom' },
-  { key: 'email', label: 'Email' },
-  { key: 'class', label: 'Classe' },
-  { key: 'group', label: 'Groupe' },
-  { key: 'role', label: 'Rôle' },
   { key: 'report', label: 'Compte-rendu' },
   { key: 'validated', label: 'Validation' },
-  { key: 'reportDate', label: 'Date du Compte-rendu' },
 ];
 
 
-const filteredRows = computed(() => {
-  if (!q.value) {
-    return varGetReportData.value;
-  }
-
-  return varGetReportData.value.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(q.value.toLowerCase())
-    )
-  );
+const rows = computed(() => {
+  if (!varGetReportData.value.length) return [];
+  return varGetReportData.value.map((report) => ({
+    global_name: `${report.user.name} ${report.user.surname}`,
+    report: report.content || "Aucun contenu",
+    validated: report.validated ? "Validé" : "Non validé",
+  }));
 });
 
-
-async function getReportData() {
+// Fonction pour récupérer les données depuis l'API
+async function getReportData(pageNumber = 0) {
   try {
+    const response = await api.fetchAPIGetPaginated("report", pageNumber, pageSize) as ApiResponse<Report[]>;
 
-    const response = await api.fetchAPIGetPaginated("report", 0, 5) as ApiResponse<Report[]>;
-
-    // Transforme les données pour qu'elles soient prêtes à être affichées
-    varGetReportData.value = response.content.map((report) => ({
-      global_name: `${report.user.name} ${report.user.surname}`,
-      email: report.user.email,
-      class: report.user.className,
-      group: `Groupe ${report.user.groupNumber}`,
-      role: report.user.role,
-      report: report.content || "Aucun contenu",
-      validated: report.validated ? "Validé" : "Non validé",
-      reportDate: new Date(report.reportDate).toLocaleString(),
-    }));
-
-    console.log("Données transformées :", varGetReportData.value);
+    varGetReportData.value = response.content;
+    totalPages.value = response.totalPages;
+    totalElements.value = response.totalElements;
   } catch (error) {
     console.error("Erreur lors de la récupération des données :", error);
+    varGetReportData.value = []; 
   }
+}
+
+
+function handlePageChange(newPage: number) {
+  page.value = newPage;
+  getReportData(newPage - 1);
 }
 
 
@@ -105,6 +105,10 @@ onMounted(() => {
 
 <style scoped>
 .wrapper {
+  max-width: 40rem;
   background-color: white;
+}
+.text-center {
+  text-align: center;
 }
 </style>
