@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="illustration">
-                <img src="/public/assets/mdp-illustration.jpg" alt="">
+                <img src="/public/assets/mdp-illustration.png" alt="">
             </div>
         </div>
 
@@ -105,7 +105,7 @@ const goBack = () => {
         justify-content: space-between; 
         align-items: center; 
         width: 100%; 
-        padding: 2rem; 
+        padding: 1rem; 
         box-sizing: border-box; 
     }
 

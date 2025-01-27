@@ -22,116 +22,157 @@
                     <img src="public/assets/user.png" alt="">
                 </div>
                 <div class="formulaire">
-                    <form @submit.prevent="submitForm">
-                        <div class="foreach" v-for="(param, index) in profil_params" :key="index">
-                            <h4 class="name_input">{{ param.name }}</h4>
-                            <input
-                                :type="param.key === 'email' ? 'email' : 'text'"
-                                :name="param.key"
-                                v-model="param.value"
-                                :readonly="param.readonly || false"
-                            />
+                    <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
+                        <UFormGroup label="Nom" name="surname">
+                            <UInput v-model="formState.surname" class="!bg-white rounded-md" color="gray"/>
+                        </UFormGroup>
+                        <UFormGroup label="Prénom" name="name">
+                            <UInput v-model="formState.name" class="!bg-white rounded-md" color="gray"/>
+                        </UFormGroup>
+                        <UFormGroup label="Email" name="email">
+                            <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray" readonly />
+                        </UFormGroup>
+                        <UFormGroup label="Classe" name="class">
+                            <UInput v-model="formState.class" type="text" class="!bg-white rounded-md" color="gray"/>
+                        </UFormGroup>
+                        <UFormGroup label="Groupe" name="group">
+                            <UInput v-model.number="formState.group" type="number" class="!bg-white rounded-md" color="gray"/>
+                        </UFormGroup>
+                        <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
+                            {{ errorMessage }}
                         </div>
-                        <button class="save_button" type="submit" :disabled="!isModified">Enregistrer</button>
-                    </form>
+                        <UButton :loading="isLoading" type="submit" class="align-center">
+                            Enregistrer
+                        </UButton>
+                        </UForm>
                 </div>
                 <div class="footer_button">
                     <p @click="changePassword">Changer de mot de passe</p>
                 </div>
             </div>
             <div class="illustration">
-                <img src="/public/assets/profil-illustration.jpg" alt="">
+                <img src="/public/assets/profil-illustration.png" alt="">
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { fetchBackend_URL, UpdateBackend } from '~/services/call_backend';
-import { ref, onMounted, computed } from 'vue';
+import { callAPI } from '~/services/callAPI';
+import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { z } from 'zod';
+import type { FormSubmitEvent } from "#ui/types";
 
-// Définir un type pour l'utilisateur
-interface User {
-  id: string;
-  name: string;
+const api = new callAPI();
+const isLoading = ref(false);
+const id = ref();
+
+interface UserProfileResponse {
+  id: number;
   surname: string;
+  name: string;
   email: string;
   className: string;
-  groupNumber: string;
-}
-
-interface ProfilParam {
-  key: keyof User;
-  name: string;
-  value: string;
-  originalValue: string;
-  readonly?: boolean;
+  groupNumber: number;
 }
 
 
-const router = useRouter();
-const goBack = () => {
-    router.back();
-};
-
-const logout = () =>{
-    document.cookie="session=;"
-    router.push("/login");
-}
-
-// Paramètres du profil et ID utilisateur
-const profil_params = ref<ProfilParam[]>([]);
-const userId = ref("");
-
-// Propriété calculée pour vérifier si un champ a été modifié
-const isModified = computed(() =>
-    profil_params.value.some(param => param.value !== param.originalValue)
-);
-
-// Charger les données du profil à l'initialisation
-onMounted(async () => {
-    try {
-        const data = await fetchBackend_URL('/api/user/profil');
-        userId.value = data.id; 
-        profil_params.value = [
-            { key: 'name', name: 'Prénom', value: data.name, originalValue: data.name },
-            { key: 'surname', name: 'Nom', value: data.surname, originalValue: data.surname },
-            { key: 'email', name: 'Adresse email', value: data.email, originalValue: data.email, readonly: true },
-            { key: 'className', name: 'Classe', value: data.className, originalValue: data.className },
-            { key: 'groupNumber', name: 'Groupe', value: data.groupNumber, originalValue: data.groupNumber },
-        ];
-    } catch (error) {
-        console.error('Erreur lors du chargement des données du profil :', error);
-    }
+const formState = reactive({
+  surname: '',
+  name: '',
+  email: '',
+  class: '',
+  group: undefined as number | undefined,
 });
 
+const formSchema = z.object({
+  surname: z.string().min(1),
+  name: z.string().min(1),
+  email: z.string().email(),
+  class: z.string().min(1),
+  group: z.number().nullable(),
+});
 
-const submitForm = async () => {
+interface UserProfileResponse {
+  id: number;
+  surname: string;
+  name: string;
+  email: string;
+  className: string;
+  groupNumber: number;
+}
 
-    // Construire l'objet User attendu par le backend
-    const userPayload: User = profil_params.value.reduce((acc, param) => {
-        acc[param.key] = param.value;
-        return acc;
-    }, {id: userId.value } as User);
-    console.log(userPayload);
-    try {
-        const response = await UpdateBackend('/api/user/profil/', userId.value, userPayload);
-        console.log('Profil mis à jour avec succès :', response);
+type Schema = z.output<typeof formSchema>;
+const errorMessage = ref('');
 
-        // Mettre à jour les valeurs originales après sauvegarde réussie
-        profil_params.value.forEach(param => {
-            param.originalValue = param.value;
-        });
-    } catch (error) {
-        console.error('Erreur lors de la mise à jour du profil :', error);
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  isLoading.value = true;
+  event.preventDefault?.();
+  const requestBody = {
+    id: id.value,
+    surname: formState.surname,
+    name: formState.name,
+    email: formState.email,
+    className: formState.class,
+    groupNumber: formState.group,
+  };
+
+  console.log(requestBody);
+  try {
+    const response = (await api.fetchAPIPutWithId("user/profil", id.value, requestBody)) as UserProfileResponse;
+    formState.surname = response.surname || formState.surname; 
+    formState.name = response.name || formState.name;
+    formState.email = response.email || formState.email;
+    formState.class = response.className || formState.class;
+    formState.group = response.groupNumber || formState.group;
+    isLoading.value = false;
+  } catch (error) {
+    isLoading.value = false;
+    if (error instanceof Error) {
+      errorMessage.value = error.message;
+    } else {
+      errorMessage.value = "Une erreur inattendue s'est produite.";
     }
+  }
+}
+
+// Fonction pour récupérer les données utilisateur
+const fetchUserData = async () => {
+  try {
+    const response = await api.fetchAPIGet('user/profil') as UserProfileResponse; 
+    id.value = response.id;
+    formState.surname = response.surname || '';
+    formState.name = response.name || '';
+    formState.email = response.email || '';
+    formState.class = response.className || '';
+    formState.group = response.groupNumber || undefined;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données utilisateur :", error);
+  }
 };
 
-    const changePassword =  () => {
-        router.push("/changePassword");
-    }; 
+
+onMounted(() => {
+  fetchUserData();
+});
+
+// Navigation
+const router = useRouter();
+const goBack = () => {
+  router.back();
+};
+
+const logout = () => {
+  document.cookie = "session=;";
+  router.push("/login");
+};
+
+const changePassword = () => {
+  router.push("/changePassword");
+};
 </script>
+
 
 <style scoped>
 
@@ -145,7 +186,7 @@ const submitForm = async () => {
         justify-content: space-between; 
         align-items: center; 
         width: 100%; 
-        padding: 2rem; 
+        padding: 1rem; 
         box-sizing: border-box; 
     }
 
@@ -326,6 +367,13 @@ const submitForm = async () => {
     .illustration img{
         width: min(40vw, 900px);
     }
+
+    .align-center {
+        display: flex; /* Active le mode flexbox */
+        justify-content: center; /* Centre horizontalement */
+        align-items: center; /* Centre verticalement */
+        text-align: center; /* Centre le texte (utile dans certains cas) */
+        }
 
     @media screen and (max-width: 800px) {
 
