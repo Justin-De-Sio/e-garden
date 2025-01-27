@@ -41,6 +41,7 @@ import {onMounted, ref} from "vue";
 import type {Reports} from "~/model/Reports";
 import type {Pages} from "~/model/Pages";
 import NavbarVertical from "~/components/navbar_vertical.vue";
+import Header_title from "~/components/header_title.vue";
 
 const columns = [
   {key: "id", label: "ID"},

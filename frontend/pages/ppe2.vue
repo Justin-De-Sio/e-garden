@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import NavbarVertical from "~/components/navbar_vertical.vue";
+import Header_title from "~/components/header_title.vue";
 </script>
 
 <template>
