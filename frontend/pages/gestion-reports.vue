@@ -1,7 +1,9 @@
 <template>
   <div class="wrapper_page">
     <NavbarVertical></NavbarVertical>
-    <h1>Table de tous les rapports</h1>
+    <div class="header_bis">
+      <header_title title="Table Rapport" subtitle="Gestion de tous les rapports existant"></header_title>
+    </div>
     <div v-if="!report.length">
       <UTable
           loading

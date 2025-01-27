@@ -14,12 +14,10 @@
             <h6>Entrez vos informations, s'il vous plaît.</h6>
           </div>
         </div>
-
         <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
           <UFormGroup label="Email" name="email">
             <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray"/>
           </UFormGroup>
-
           <UFormGroup label="Password" name="password">
             <UInput v-model="formState.password" type="password" class="!bg-white rounded-md" color="gray"/>
           </UFormGroup>
@@ -30,7 +28,6 @@
             Connexion
           </UButton>
         </UForm>
-       
       </div>
     </div>
   </div>  
@@ -159,7 +156,6 @@ definePageMeta({
   text-align: center;
 }
 
-
 form {
   margin-top: 20%;
   display: flex; 
@@ -168,18 +164,11 @@ form {
   width: 90%;
 }
 
-
-
-
-
 .password-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
-
-
-
 
 .Ubutton_custom:hover{
   transform: scale(1.03);

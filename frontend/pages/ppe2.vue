@@ -6,8 +6,9 @@ import NavbarVertical from "~/components/navbar_vertical.vue";
 <template>
   <div class="wrapper_page">
     <NavbarVertical></NavbarVertical>
-    <h1>ppe2</h1>
-  </div>
+    <div class="header_bis">
+      <header_title title="PP2" subtitle="Sous titre"></header_title>
+    </div>  </div>
 </template>
 
 <style scoped>

@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper_page">
     <NavbarVertical></NavbarVertical>
+    <div class="header_bis">
+      <header_title title="Table Événement" subtitle="Gestion de tous les événements"></header_title>
+    </div>
     <h1>Table de tous les événements</h1>
     <div v-if="!notifs.length">
       <UTable
