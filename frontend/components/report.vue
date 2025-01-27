@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
->
+
     <UTable
       v-if="rows.length > 0"
       :rows="rows"
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { callAPI } from '~/services/callAPI';
 
 // Interfaces
@@ -106,6 +106,7 @@ onMounted(() => {
 <style scoped>
 .wrapper {
   max-width: 40rem;
+  border-radius: 0.8rem;
   background-color: white;
 }
 .text-center {

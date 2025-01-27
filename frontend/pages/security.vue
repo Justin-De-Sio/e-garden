@@ -6,23 +6,35 @@
       <header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici-même"></header_title>
     </div>
 
-    <div class="top_left">
-      <div class="columns_indicators">
-        <indicators 
-        iconBackgroundColor="#95BD75"
-        iconPath="/assets/passages.png"
-        subtitle="Nombre de passage"
-        :title="`${number_passage} passages`"
-        ></indicators>
-        <indicators 
-        iconBackgroundColor="#ECA9A8"
-        iconPath="/assets/exclamation.png"
-        subtitle="Alertes"
-        :title="`${number_cr} absences de CR`"
-        ></indicators>
+    <div class="top_wrapper">
+      <div class="top_left">
+        <div class="columns_indicators">
+          <indicators 
+          iconBackgroundColor="#95BD75"
+          iconPath="/assets/passages.png"
+          subtitle="Nombre de passage"
+          :title="`${number_passage} passages`"
+          ></indicators>
+          <indicators 
+          iconBackgroundColor="#ECA9A8"
+          iconPath="/assets/exclamation.png"
+          subtitle="Alertes"
+          :title="`${number_cr} absences de CR`"
+          ></indicators>
+        </div>
+      </div>
+      <div class="bot_left">
+
+        <div class="top_bot_left">
+          <h2>Caméra</h2>
+        </div>
+        <div class="top_bot_right">
+          <h2>Compte-rendu</h2>
+          <report></report>
+        </div>
       </div>
     </div>
-    <report></report>
+
 
   </div>
 
@@ -88,6 +100,27 @@
   display: flex;
   flex-direction: row;
   gap: 1rem;
+}
+
+.top_wrapper{
+  width: 100%;
+  height: 100%;
+}
+.bot_left{
+  display: flex;
+  margin: 3rem;
+  gap: 5rem;
+}
+
+.top_bot_left{
+  width: 30%;
+  height: auto;
+  background-color: white;
+}
+
+.top_bot_right h2{
+  margin-bottom: 2rem;
+
 }
 
 </style>

@@ -43,7 +43,7 @@
         </template>
 
         <ul>
-          <li v-for="notification in notifications" :key="notification.id" class="notification-item">
+          <li v-for="notification in notifications.content" :key="notification.id" class="notification-item">
             <div class="notification-wrapper">
               <div class="notification-icon-wrapper">
                 <div class="notification-icon">
@@ -82,12 +82,15 @@ interface UserProfileContent {
 
 interface ApiResponse {
   content: UserProfileContent[]; 
+  totalPages: number,
 }
 
 const changePage = (direction: 'prev' | 'next') => {
+  console.log("Currentpage", currentPage.value);
+  console.log("Total", notifications.value.totalPages);
   if (direction === 'prev' && currentPage.value > 0) {
     currentPage.value--;
-  } else if (direction === 'next') {
+  } else if (direction === 'next' && currentPage.value < notifications.value.totalPages - 1 ) {
     currentPage.value++;
   }
   fetchNotif(currentPage.value);
@@ -95,7 +98,10 @@ const changePage = (direction: 'prev' | 'next') => {
 
 const fetchNotif = async (page: number) => {
   const response = await api.fetchAPIGetPaginated("event", page, 5) as ApiResponse;
-  notifications.value = response.content;
+  notifications.value = {
+    content: response.content,
+    totalPages: response.totalPages
+  }
   console.log(response);
 };
 
