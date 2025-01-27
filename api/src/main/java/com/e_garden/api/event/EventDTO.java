@@ -1,11 +1,14 @@
 package com.e_garden.api.event;
 
+import java.time.LocalDateTime;
+
 public class EventDTO {
     private Long id;
     private String title;
     private String description;
     private Integer eventType;
     private Long userId;
+    private LocalDateTime createdAt;
 
     public EventDTO() {
     }
@@ -16,6 +19,14 @@ public class EventDTO {
         this.description = description;
         this.eventType = eventType;
         this.userId = userId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Integer getEventType() {
