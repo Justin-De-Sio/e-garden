@@ -26,11 +26,24 @@
             @click="isOpen = false"
           />
           <Placeholder class="h-8" />
-          Notification
+          <div class="header_placement">
+            <h2>Notifications</h2>
+            <div class="chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('prev')" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+              <h2>{{ currentPage }}</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('next')" >
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+
+          </div>
+
         </template>
 
         <ul>
-          <li v-for="notification in notifications" :key="notification.id" class="notification-item">
+          <li v-for="notification in notifications.content" :key="notification.id" class="notification-item">
             <div class="notification-wrapper">
               <div class="notification-icon-wrapper">
                 <div class="notification-icon">
@@ -59,6 +72,7 @@ import { callAPI } from '~/services/callAPI';
 const isOpen = ref(false);
 const notifications = ref();
 const api = new callAPI();
+const currentPage = ref(0);
 
 interface UserProfileContent {
   id: number;
@@ -68,18 +82,31 @@ interface UserProfileContent {
 
 interface ApiResponse {
   content: UserProfileContent[]; 
+  totalPages: number,
 }
 
+const changePage = (direction: 'prev' | 'next') => {
+  console.log("Currentpage", currentPage.value);
+  console.log("Total", notifications.value.totalPages);
+  if (direction === 'prev' && currentPage.value > 0) {
+    currentPage.value--;
+  } else if (direction === 'next' && currentPage.value < notifications.value.totalPages - 1 ) {
+    currentPage.value++;
+  }
+  fetchNotif(currentPage.value);
+};
 
-
-const fetchNotif = async () => {
-  const response = await api.fetchAPIGetPaginated("event", 0, 5) as ApiResponse;
-  notifications.value = response.content;
+const fetchNotif = async (page: number) => {
+  const response = await api.fetchAPIGetPaginated("event", page, 5) as ApiResponse;
+  notifications.value = {
+    content: response.content,
+    totalPages: response.totalPages
+  }
   console.log(response);
 };
 
 onMounted(() => {
-  fetchNotif();
+  fetchNotif(currentPage.value);
 });
 </script>
 
@@ -137,7 +164,21 @@ onMounted(() => {
   color: #6b7280;
 }
 
-/* Responsive Styles */
+.header_placement{
+  display: flex;
+  flex-direction: row;
+}
+
+.chevron{
+  display: flex;
+  margin-left: auto;
+  gap: 1rem;
+}
+
+.chevron svg{
+  cursor: pointer;
+}
+
 @media (max-width: 640px) {
   .notification-item {
     flex-direction: column;

@@ -23,7 +23,7 @@
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { fetchBackend_URL, UpdateBackend } from '~/services/call_backend';
+  import {callAPI} from "~/services/callAPI";
   import Notification from "~/components/notification2.vue"
   // Structure des données pour les liens
   interface Link {
@@ -34,6 +34,18 @@
       src: string;
     };
   }
+
+
+  interface UserProfileResponse {
+  id: number;
+  surname: string;
+  name: string;
+  email: string;
+  className: string;
+  groupNumber: number;
+}
+
+  const api = new callAPI();
   
   // Tableau de liens initial
   const links = ref<Link[]>([
@@ -73,7 +85,7 @@
   
   const fetchProfile = async () => {
     try {
-      const response = await fetchBackend_URL('/api/user/profil'); 
+      const response = await api.fetchAPIGet('user/profil') as UserProfileResponse;
 
 
       // Mise à jour dynamique du dernier lien

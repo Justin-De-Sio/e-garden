@@ -22,6 +22,26 @@
                     <img src="public/assets/user.png" alt="">
                 </div>
                 <div class="formulaire">
+                    <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
+                        <UFormGroup label="Mot de passe actuel" name="currentpassword">
+                            <UInput v-model="formState.currentPassword" type="password" class="!bg-white rounded-md" color="gray" />
+                        </UFormGroup>
+                        <UFormGroup label="Nouveau mot de passe" name="newpassword">
+                            <UInput v-model="formState.newPassword" type="password" class="!bg-white rounded-md" color="gray" />
+                        </UFormGroup>
+                        <UFormGroup label="Confirmation de mot de passe" name="confirmPassword">
+                            <UInput v-model="formState.confirmPassword" type="password" class="!bg-white rounded-md" color="gray" />
+                        </UFormGroup>
+
+                        <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
+                            {{ errorMessage }}
+                        </div>
+                        <UButton :loading="isLoading" type="submit" class="align-center">
+                            Enregistrer
+                        </UButton>
+                        </UForm>
+
+                    <!--
                     <form @submit.prevent="submitForm">
                         <div v-for="(param, index) in password_params" :key="index">
                             <h4 class="name_input">{{ param.name }}</h4>
@@ -33,65 +53,118 @@
                         </div>
                         <button class="save_button" type="submit">Enregistrer</button>
                     </form>
+                    -->
                 </div>
             </div>
             <div class="illustration">
                 <img src="/public/assets/mdp-illustration.png" alt="">
             </div>
         </div>
-
     </div>
+    <UNotification
+        v-if="notificationVisible"
+        icon="i-heroicons-check-badge"
+        color="primary"
+        :id="6"
+        :title="notificationTitle"
+        :description="notificationMessage"
+        :timeout="6000"
+        class="custom-notification"
+        
+        />
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { fetchBackend_URL, PostBackend } from '~/services/call_backend';
+import {z} from 'zod';
+import { ref } from 'vue';
+import { callAPI } from "~/services/callAPI";
 
+const api = new callAPI();
+const errorMessage = ref()
 const userId = ref()
+
+const isLoading = ref(false);
+const notificationVisible = ref(false);
+const notificationTitle = ref(""); 
+const notificationMessage = ref(""); 
+
 onMounted(async () => {
     try {
-        const data = await fetchBackend_URL('/api/user/profil');
-        userId.value = data.id; 
+        const data = await api.fetchAPIGet('user/profil') as Profil;
+        userId.value = data.id;
+        console.log(userId.value) 
     } catch (error) {
         console.error('Erreur lors du chargement des données du profil :', error);
     }
 });
 
-interface PasswordParam {
-    key: string;
+interface Profil {
+    id: number;
+    surname: string;
     name: string;
-    type: string;
-    value: string;
+    email: string;
+    className: string;
+    groupNumber: number;
 }
 
-// Tableau contenant les paramètres des champs de mot de passe
-const password_params = ref<PasswordParam[]>([
-    { key: 'currentPassword', name: 'Mot de passe actuel', type: 'password', value: '' },
-    { key: 'newPassword', name: 'Nouveau mot de passe', type: 'password', value: '' },
-    { key: 'confirmNewPassword', name: 'Confirmez le mot de passe', type: 'password', value: '' },
-]);
+interface PasswordParam {
+    currentpassword: string;
+    newpassword: string;
+    oldpassword: string;
+}
+
+const formState = reactive ({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+
+    });
+
+const formSchema = z.object({
+currentPassword: z.string().min(1, "Le mot de passe actuel est requis"),
+newPassword: z.string().min(8, "Le nouveau mot de passe doit contenir au moins 8 caractères"),
+confirmPassword: z.string().min(8).refine(
+    (value) => value === formState.newPassword,
+    { message: "Les mots de passe ne correspondent pas" }
+),
+});
 
 
 
-const submitForm = async()  => {
-    const passwordPayload = password_params.value.reduce((acc, param) => {
-        acc[param.key] = param.value;
-        return acc;
-    }, {} as Record<string, string>);
-    try {
-        const response = await PostBackend('/api/user/changePassword', userId.value, passwordPayload);
-        console.log('Profil mis à jour avec succès :', response);
 
-    } catch (error) {
-        console.error('Erreur lors de la mise à jour du profil :', error);
+const onSubmit = async()  => {
+    isLoading.value = true;
+    const requestBody = {
+        currentPassword: formState.currentPassword,
+        newPassword: formState.newPassword,
+        confirmNewPassword: formState.confirmPassword,
+    };
+    try{
+        const response = await api.fetchAPIPostWithId("user/changePassword", userId.value, requestBody);
+        notificationVisible.value = true;
+        notificationTitle.value = "Succès";
+        notificationMessage.value = "Votre mot de passe a bien été modifié";
+
+        setTimeout(() => {
+        notificationVisible.value = false;
+        }, 6000);
+        isLoading.value = false;
+    }catch(error){
+        isLoading.value = false;
+        errorMessage.value = "Une erreur s'est produite";
     }
-    console.log('Payload:', passwordPayload);
-    alert('Formulaire soumis avec succès !');
+
+    
 };
 const router = useRouter();
 const goBack = () => {
     router.back();
 };
+
+definePageMeta({
+    middleware: "auth",
+    role: ["ADMINISTRATEUR","UTILISATEUR"],
+  })
 </script>
 
 <style scoped>
@@ -284,6 +357,22 @@ const goBack = () => {
 
     .illustration img{
         width: min(25vw, 600px);
+    }
+
+    .custom-notification {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+    width: min(50vw, 30rem);
+    max-width: 30rem; 
+    }
+
+    .align-center {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
     }
 
     @media screen and (max-width: 900px) {
