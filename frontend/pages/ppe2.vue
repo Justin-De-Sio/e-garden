@@ -1,9 +1,13 @@
 <script setup lang="ts">
 
+import NavbarVertical from "~/components/navbar_vertical.vue";
 </script>
 
 <template>
-<h1>ppe2</h1>
+  <div class="wrapper_page">
+    <NavbarVertical></NavbarVertical>
+    <h1>ppe2</h1>
+  </div>
 </template>
 
 <style scoped>

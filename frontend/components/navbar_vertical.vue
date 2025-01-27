@@ -72,7 +72,7 @@
     {
       label: 'Paramètres',
       icon: 'i-heroicons-cog-6-tooth',
-      to: '/settings',
+      to: '/reglages',
     },
     {
       label: 'Profil', 

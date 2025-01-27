@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="wrapper_page">
+    <NavbarVertical></NavbarVertical>
     <h1>Page des réglages de E-garden</h1>
     <div>
       <h2>Afficher les données</h2>
@@ -36,6 +37,7 @@
 
 <script setup lang="ts">
 
+import NavbarVertical from "~/components/navbar_vertical.vue";
 </script>
 
 <style scoped>
