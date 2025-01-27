@@ -59,7 +59,7 @@ const links = ref<Link[]>([
   {
     label: 'Gestionnaire',
     icon: 'i-heroicons-rectangle-stack',
-    to: '/gestionnaires',
+    to: '/gestion-users',
   },
   {
     label: 'Paramètres',
