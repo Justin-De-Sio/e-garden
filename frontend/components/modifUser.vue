@@ -52,10 +52,8 @@ const roles = ref<Roles>();
 const fetchUser = async (id: number) => {
   try {
     console.log(id);
-    const response = await api.fetchAPIGet(`user/` + id) as User;
-    user.value = response;
-    const response2 = await api.fetchAPIGet("user/roles") as Roles;
-    roles.value = response2;
+    user.value = await api.fetchAPIGet(`user/` + id) as User;
+    roles.value = await api.fetchAPIGet("user/roles") as Roles;
 
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
