@@ -5,6 +5,7 @@ Il est nécessaire d'installer :
 - Git
 - La version 23 de Java (peut se faire plus tard dans l'IDE)
 - Une base de données Postgres
+- FFMPEG (MacOS `brew install ffmpeg`, Linux: `sudo apt install ffmpeg`, Windows : https://phoenixnap.com/kb/ffmpeg-windows)
 
 ## Base de données
 Pour ce projet, nous utilisons une base de données Postgres. 
