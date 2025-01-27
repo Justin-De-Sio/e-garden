@@ -80,22 +80,25 @@ public class StreamConfig {
 
         ProcessBuilder processBuilder = new ProcessBuilder(
                 "ffmpeg",
-                "-rtsp_transport", "tcp",          // Forcer l'utilisation de TCP
-                "-i", RTSP_URL,                     // URL du flux RTSP
-                "-c:v", "libx264",                 // Codec vidéo
-                "-preset", "ultrafast",            // Préconfiguration rapide
-                "-an",
-                "-tune", "zerolatency",            // Optimisation pour la latence
-                "-f", "hls",                       // Format de sortie HLS
-                "-hls_time", "4",                  // Durée des segments en secondes
-                "-hls_list_size", "5",             // Nombre de segments dans la playlist
-                "-hls_flags", "delete_segments",   // Supprimer les anciens segments
-                OUTPUT_FILE                         // Fichier de sortie
+                "-rtsp_transport", "tcp",             // Transport TCP pour la stabilité
+                "-i", RTSP_URL,                        // URL du flux RTSP
+                "-c:v", "libx264",                    // Codec vidéo
+                "-preset", "ultrafast",               // Préconfiguration rapide
+                "-tune", "zerolatency",               // Optimisé pour une faible latence
+                "-r", "20",                           // Forcer la fréquence d'images à 20 FPS (c'est ce qu'on reçoit en input)
+                "-g", "80",                           // Intervalle d'images clés (20 FPS * 4 s)
+                "-an",                                // Pas d’audio
+                "-f", "hls",                          // Format HLS
+                "-hls_time", "4",                     // Segments de 4 secondes
+                "-hls_list_size", "3",                // Playlist contenant les 5 derniers segments
+                "-hls_flags", "delete_segments",      // Supprime les anciens segments
+                OUTPUT_FILE                           // Fichier de sortie
         );
+
 
         processBuilder.redirectErrorStream(true);
         currentProcess = processBuilder.start();
-//        startFfmpegLogReaderThread(currentProcess.getInputStream());
+        startFfmpegLogReaderThread(currentProcess.getInputStream());
 
         logger.info("Started new FFmpeg process");
         return currentProcess;
