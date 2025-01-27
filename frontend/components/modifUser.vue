@@ -24,7 +24,7 @@
         </UFormGroup>
 
         <UFormGroup label="Rôle" name="role">
-          <u-input v-model="user.role"/>
+          <USelect v-model="user.role" :options="roles"/>
         </UFormGroup>
 
         <UFormGroup label="Validation">
@@ -40,18 +40,23 @@
 import {onMounted, ref, watch} from 'vue';
 import {callAPI} from '~/services/callAPI';
 import type {User} from '~/model/User.js'
+import type {Roles} from '~/model/Roles.ts'
 
 const props = defineProps<{ userId: number, requetUser: () => void }>();
 const emit = defineEmits(['close']);
 
 const api = new callAPI();
 const user = ref<User>();
+const roles = ref<Roles>();
 
 const fetchUser = async (id: number) => {
   try {
     console.log(id);
     const response = await api.fetchAPIGet(`user/` + id) as User;
     user.value = response;
+    const response2 = await api.fetchAPIGet("user/roles") as Roles;
+    roles.value = response2;
+
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }

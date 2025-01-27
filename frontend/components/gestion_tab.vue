@@ -68,7 +68,7 @@ const items = row => [
     label: 'Supprimer',
     click: () => supprimerUtilisateur(row.id)
   }, {
-    label: 'Verouiller',
+    label: row.locked ? 'Verrouiller' : 'Déverrouiller',
     click: () => verouillerUtilisateur(row.id)
   }, {
     label: 'Réinitialiser le mot de passe',
