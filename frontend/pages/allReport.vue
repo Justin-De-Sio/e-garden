@@ -23,10 +23,10 @@
         {{ row.user.email }}
       </template>
       <template #actions-data="{ row }">
-        <UButton @click="deleteReport(row.id)"><span>Supprimer</span></UButton>
+        <UButton color="orange" variant="solid" @click="deleteReport(row.id)" ><span>Supprimer</span></UButton>
       </template>
     </UTable>
-    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700" v-if="pageTotal>1">
       <UPagination @click="fetchReport" v-model="page" :page-count="pageCount" :total="pageTotal"/>
     </div>
   </div>
