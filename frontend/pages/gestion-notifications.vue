@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="wrapper_page">
+    <NavbarVertical></NavbarVertical>
     <h1>Table de tous les événements</h1>
     <div v-if="!notifs.length">
       <UTable
@@ -27,6 +28,7 @@ import {callAPI} from "~/services/callAPI";
 import {onMounted, ref} from "vue";
 import type {Pages} from "~/model/Pages";
 import type {Events} from "~/model/Events";
+import NavbarVertical from "~/components/navbar_vertical.vue";
 
 const columns = [
   {key: "id", label: "ID"},

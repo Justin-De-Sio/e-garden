@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="wrapper_page">
+    <NavbarVertical></NavbarVertical>
     <h1>Table de tous les rapports</h1>
     <div v-if="!report.length">
       <UTable
@@ -37,6 +38,7 @@ import {callAPI} from "~/services/callAPI";
 import {onMounted, ref} from "vue";
 import type {Reports} from "~/model/Reports";
 import type {Pages} from "~/model/Pages";
+import NavbarVertical from "~/components/navbar_vertical.vue";
 
 const columns = [
   {key: "id", label: "ID"},
