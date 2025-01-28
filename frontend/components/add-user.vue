@@ -6,25 +6,24 @@
         <UFormGroup label="Prénom" name="name">
           <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
         </UFormGroup>
-
         <UFormGroup label="Nom" name="surname">
           <UInput v-model="formState.surname" type="text" class="Uinput_custom" color="gray"/>
         </UFormGroup>
-
         <UFormGroup label="Email" name="email">
           <UInput v-model="formState.email" type="email" class="Uinput_custom" color="gray"/>
         </UFormGroup>
-
         <UFormGroup label="Année scolaire" name="className">
           <UInput v-model="formState.className" type="text" class="Uinput_custom" color="gray"/>
         </UFormGroup>
-
         <UFormGroup label="Groupe classe" name="groupNumber">
           <UInput v-model="formState.groupNumber" type="number" class="Uinput_custom" color="gray"/>
         </UFormGroup>
         <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
           {{ errorMessage }}
         </div>
+        <UFormGroup label="Rôle" name="role">
+          <USelect v-model="formState.role" :options="roles"/>
+        </UFormGroup>
         <UFormGroup>
           <UButton type="primary" native-type="submit">Ajouter l'utilisateur</UButton>
           <UButton @click="handleCancel">Annuler</UButton>
@@ -38,15 +37,19 @@
 import {reactive, ref} from 'vue';
 import {z} from "zod";
 import {callAPI} from '~/services/callAPI';
+import type {Roles} from '~/model/Roles.ts'
+import type {User} from "~/model/User";
 
 const props = defineProps<{ requetUser: () => void }>();
 const emit = defineEmits(['close']);
+const roles = ref<Roles>();
 
 const formState = reactive({
   name: '',
   surname: '',
   email: '',
   className: '',
+  role: '',
   groupNumber: null,
 });
 
@@ -56,15 +59,26 @@ const formSchema = z.object({
   email: z.string().email("Must be a valid email"),
   className: z.string(),
   groupNumber: z.number().int(),
+  role: z.string(),
 });
 
 const errorMessage = ref('');
 const api = new callAPI();
 
+async function getRoles() {
+  try {
+    roles.value = await api.fetchAPIGet("user/roles") as Roles;
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données :', error);
+  }
+}
+
 const submitForm = async () => {
   try {
     const validData = formSchema.parse(formState);
     await api.fetchAPIPost(`user`, validData);
+
     emit('close');
     props.requetUser();
   } catch (error) {
@@ -76,6 +90,8 @@ const handleCancel = () => {
   props.requetUser();
   emit('close');
 };
+
+onMounted(getRoles);
 
 </script>
 
