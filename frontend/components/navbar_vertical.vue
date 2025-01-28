@@ -17,7 +17,11 @@
           }
         }"
     />
-    <Notification class="notif_button"></Notification>
+    <div class="button_group">
+      <AddReport class="add_button"></AddReport>
+      <Notification class="notif_button"></Notification>
+    </div>
+
   </div>
 </template>
 
@@ -26,6 +30,7 @@ import {onMounted, ref} from 'vue';
 import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
+import AddReport from "~/components/add-report.vue";
 
 // Structure des données pour les liens
 interface Link {
@@ -105,6 +110,14 @@ onMounted(fetchProfile);
 
 .notif_button {
   margin: auto;
+}
+
+
+.button_group{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3.5rem;
 }
 
 @media screen and (max-width: 800px) {
