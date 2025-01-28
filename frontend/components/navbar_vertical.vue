@@ -117,7 +117,7 @@ onMounted(fetchProfile);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3.5rem;
+  gap: 2rem;
 }
 
 @media screen and (max-width: 800px) {

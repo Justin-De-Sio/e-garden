@@ -1,6 +1,6 @@
 <template>
         <UPopover :popper="{ arrow: true }" >
-            <UButton color="white" trailing-icon="i-heroicons-plus" />
+            <UButton color="white" trailing-icon="i-heroicons-plus" :ui="{rounded: 'rounded-lg'}" />
 
             <template #panel >
             <div class="px-8 py-4">
@@ -40,6 +40,11 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
+import { callAPI } from '~/services/callAPI'
+
+const api = new callAPI;
+
+
 
 const schema = z.object({
   password: z.string().min(8, 'Must be at least 8 characters')
@@ -52,9 +57,16 @@ const state = reactive({
   password: undefined
 })
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
+onMounted(() => {
 
-  console.log(event.data)
+})
+
+async function onSubmit() {
+
+    const response = await api.fetchAPIGetPaginated("myNotValidatedReports", 0, 2);
+
+    console.log(response)
+
 }
 </script>
 
