@@ -25,7 +25,7 @@
         <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
           {{ errorMessage }}
         </div>
-        <UFormGroup label="Validation">
+        <UFormGroup>
           <UButton type="primary" native-type="submit">Ajouter l'utilisateur</UButton>
           <UButton @click="handleCancel">Annuler</UButton>
         </UFormGroup>

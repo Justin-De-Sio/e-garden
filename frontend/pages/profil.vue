@@ -23,10 +23,6 @@
             <h2>Mon profil</h2>
             <h3>Gérez les paramètres de votre profil</h3>
           </div>
-          <div class="header_profil">
-            <h3>Votre photo de profil</h3>
-            <img src="public/assets/user.png" alt="" />
-          </div>
           <div class="formulaire">
             <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
               <UFormGroup label="Nom" name="surname">

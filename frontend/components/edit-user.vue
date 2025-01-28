@@ -6,28 +6,22 @@
         <UFormGroup label="Prénom" name="name">
           <u-input v-model="user.name"/>
         </UFormGroup>
-
         <UFormGroup label="Nom" name="surname">
           <u-input v-model="user.surname"/>
         </UFormGroup>
-
         <UFormGroup label="Email" name="email">
           <u-input v-model="user.email"/>
         </UFormGroup>
-
         <UFormGroup label="Année scolaire" name="className">
           <u-input v-model="user.className"/>
         </UFormGroup>
-
         <UFormGroup label="Groupe classe" name="groupNumber">
           <u-input v-model="user.groupNumber"/>
         </UFormGroup>
-
         <UFormGroup label="Rôle" name="role">
           <USelect v-model="user.role" :options="roles"/>
         </UFormGroup>
-
-        <UFormGroup label="Validation">
+        <UFormGroup>
           <u-button type="primary" native-type="submit">Enregistrer</u-button>
           <u-button @click="handleCancel">Annuler</u-button>
         </UFormGroup>

@@ -4,9 +4,6 @@
     <Header_title title="Gestion utilisateurs" subtitle="Gestion des habilitations / rôles" class="header_title"/>
   </div>
   <div class="left_section">
-    <div class="title_indicator">
-      <h2>Tableau de gestion</h2>
-    </div>
     <div class="tab_gestion scrollable">
       <gestion_tab/>
     </div>

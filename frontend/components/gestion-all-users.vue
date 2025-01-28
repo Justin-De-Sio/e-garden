@@ -37,6 +37,7 @@ onMounted(async () => {
 });
 
 let columns = [
+  {key: 'id', label: 'ID'},
   {key: 'surname', label: 'Nom'},
   {key: 'name', label: 'Prénom'},
   {key: 'email', label: 'Email'},
