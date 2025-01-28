@@ -10,19 +10,19 @@
           <UInput v-model="formState.surname" type="text" class="Uinput_custom" color="gray"/>
         </UFormGroup>
         <UFormGroup label="Email" name="email">
-          <UInput v-model="formState.email" type="email" class="Uinput_custom" color="gray"/>
+          <UInput v-model="formState.email" type="email" class="Uinput_custom" placeholder="email@edu.ece.fr" color="gray"/>
         </UFormGroup>
         <UFormGroup label="Année scolaire" name="className">
-          <UInput v-model="formState.className" type="text" class="Uinput_custom" color="gray"/>
+          <UInput v-model="formState.className" type="text" class="Uinput_custom" placeholder="ING5 APP" color="gray"/>
         </UFormGroup>
         <UFormGroup label="Groupe classe" name="groupNumber">
-          <UInput v-model="formState.groupNumber" type="number" class="Uinput_custom" color="gray"/>
+          <UInput v-model="formState.groupNumber" type="number" placeholder="3" class="Uinput_custom" color="gray"/>
         </UFormGroup>
         <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
           {{ errorMessage }}
         </div>
         <UFormGroup label="Rôle" name="role">
-          <USelect v-model="formState.role" :options="roles"/>
+          <USelect v-model="formState.role" placeholder="UTILISATEUR" :options="roles"/>
         </UFormGroup>
         <UFormGroup>
           <UButton type="primary" native-type="submit">Ajouter l'utilisateur</UButton>
