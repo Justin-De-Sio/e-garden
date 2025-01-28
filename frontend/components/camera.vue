@@ -55,10 +55,13 @@ onMounted(() => {
 <style lang="css" scoped>
 
     .flux_video{
-      max-height: 200px;
-      max-width: 500px;
-        width: 100%;
-        height: 100%;
-        background-color: grey;
+      width: 100%;
+      height: auto;
+
+
+    }
+
+    .flux_video video{ 
+      max-height: 25rem;
     }
 </style>

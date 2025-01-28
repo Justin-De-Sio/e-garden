@@ -108,18 +108,28 @@
   height: 100%;
 }
 .bot_left{
-  display: flex;
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin: 3rem;
   gap: 5rem;
 }
 
 .top_bot_left{
-  width: 30%;
+  width: 100%;
   height: auto;
-  background-color: white;
+}
+
+.top_bot_left h2{
+  font-family: "Gilroy-Medium";
+  font-size: clamp(1rem, 2vw, 1.5rem); 
+  margin-bottom: 2rem;
+
 }
 
 .top_bot_right h2{
+  font-family: "Gilroy-Medium";
+  font-size: clamp(1rem, 2vw, 1.5rem); 
   margin-bottom: 2rem;
 
 }
