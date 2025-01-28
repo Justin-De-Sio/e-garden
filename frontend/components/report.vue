@@ -73,7 +73,7 @@ const rows = computed(() => {
   return varGetReportData.value.map((report) => ({
     global_name: `${report.user.name} ${report.user.surname}`,
     report: report.content || "Aucun contenu",
-    validated: report.validated ? "Validé" : "Non validé",
+    validated: report.validated ? "✅" : "❌",
   }));
 });
 
