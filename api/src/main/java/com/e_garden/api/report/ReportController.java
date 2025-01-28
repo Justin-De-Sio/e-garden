@@ -39,7 +39,7 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getPaginatedReports(page, size));
     }
 
-    @GetMapping("/myValidatedReports")
+    @GetMapping("/myValidatedReports/paginated")
     public ResponseEntity<PageDTO<Report>> getMyValidatedReports(@RequestParam(defaultValue = "10") Integer size,
                                                                  @RequestParam(defaultValue = "0") Integer page) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -49,7 +49,7 @@ public class ReportController {
 
         return ResponseEntity.ok(reportService.getMyValidatedReports(page, size, userByEmail.getId()));
     }
-    @GetMapping("/myNotValidatedReports")
+    @GetMapping("/myNotValidatedReports/paginated")
     public ResponseEntity<PageDTO<Report>> getMyNotValidatedReports(@RequestParam(defaultValue = "10") Integer size,
                                                                  @RequestParam(defaultValue = "0") Integer page) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
