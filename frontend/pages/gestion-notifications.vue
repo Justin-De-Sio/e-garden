@@ -35,11 +35,11 @@ import NavbarVertical from "~/components/navbar_vertical.vue";
 import Header_title from "~/components/header_title.vue";
 
 const columns = [
-  {key: "id", label: "ID"},
+  {key: "id", label: "ID Événement"},
   {key: "title", label: "Titre", sortable: true},
   {key: "description", label: "Description de l'événement", sortable: true},
   {key: "createdAt", label: "Date de création", sortable: true},
-  {key: "userId", label: "Utilisateur ID", sortable: true},
+  {key: "userId", label: "Identifiant utilisateur", sortable: true},
 ];
 
 const api = new callAPI();

@@ -1,11 +1,9 @@
 <template>
     <div class="wrapper_page">
       <NavbarVertical></NavbarVertical>
-
     <div class="header_bis">
-      <header_title title="Section Sécurité" subtitle="Retrouvez toute la sécurité de votre potager, ici-même"></header_title>
+      <header_title title="Section Sécurité" subtitle="Retrouvez tous les indicateurs pour la gestion de votre potager"></header_title>
     </div>
-
     <div class="top_wrapper">
       <div class="top_left">
         <div class="columns_indicators">
@@ -24,7 +22,6 @@
         </div>
       </div>
       <div class="bot_left">
-
         <div class="top_bot_left">
           <h2>Caméra</h2>
           <camera></camera>
@@ -35,12 +32,7 @@
         </div>
       </div>
     </div>
-
-
   </div>
-
-
-
 </template>
 
 <script setup lang="ts">
