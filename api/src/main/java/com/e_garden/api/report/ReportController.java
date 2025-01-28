@@ -39,6 +39,28 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getPaginatedReports(page, size));
     }
 
+    @GetMapping("/myValidatedReports")
+    public ResponseEntity<PageDTO<Report>> getMyValidatedReports(@RequestParam(defaultValue = "10") Integer size,
+                                                                 @RequestParam(defaultValue = "0") Integer page) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userByEmail = userService.getUserByEmail(user.getUsername());
+        if (userByEmail == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(reportService.getMyValidatedReports(page, size, userByEmail.getId()));
+    }
+    @GetMapping("/myNotValidatedReports")
+    public ResponseEntity<PageDTO<Report>> getMyNotValidatedReports(@RequestParam(defaultValue = "10") Integer size,
+                                                                 @RequestParam(defaultValue = "0") Integer page) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userByEmail = userService.getUserByEmail(user.getUsername());
+        if (userByEmail == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(reportService.getMyNotValidatedReports(page, size, userByEmail.getId()));
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
         Report updatedReport = reportService.getReportById(id);

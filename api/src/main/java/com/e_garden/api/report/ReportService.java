@@ -63,4 +63,24 @@ public class ReportService {
     public int getUnvalidatedReportsCount() {
         return reportRepository.countAllByValidatedAndReportDateGreaterThan(false, LocalDateTime.now().minusDays(30));
     }
+
+    public PageDTO<Report> getMyValidatedReports(int page, int size, Long id) {
+        return getUserReportsByValidated(page, size, id, true);
+    }
+
+    public PageDTO<Report> getMyNotValidatedReports(int page, int size, Long id) {
+        return getUserReportsByValidated(page, size, id, false);
+    }
+
+    private PageDTO<Report> getUserReportsByValidated(int page, int size, Long id, boolean validated) {
+        Page<Report> reportPage = reportRepository.findAllByUser_IdAndValidatedOrderByReportDateAsc(id, validated,PageRequest.of(page, size));
+
+        return (new PageDTO<>(
+                reportPage.getContent(),
+                reportPage.getNumber(),
+                reportPage.getSize(),
+                reportPage.getTotalElements(),
+                reportPage.getTotalPages()
+        ));
+    }
 }
