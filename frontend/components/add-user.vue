@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
-      <h2>Ajout d'un utilisateur</h2>
+      <h2>Ajouter un utilisateur</h2>
       <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="submitForm">
         <UFormGroup label="Prénom" name="name">
           <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>

@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
-      <h2>Modifier Utilisateur</h2>
+      <h2>Modifier un utilisateur</h2>
       <u-form :model="user" @submit="submitForm" v-if="user">
         <UFormGroup label="Prénom" name="name">
           <u-input v-model="user.name"/>
@@ -13,10 +13,10 @@
           <u-input v-model="user.email"/>
         </UFormGroup>
         <UFormGroup label="Année scolaire" name="className">
-          <u-input v-model="user.className"/>
+          <u-input v-model="user.className" placeholder="ING5 APP"/>
         </UFormGroup>
         <UFormGroup label="Groupe classe" name="groupNumber">
-          <u-input v-model="user.groupNumber"/>
+          <u-input placeholder="3" v-model="user.groupNumber"/>
         </UFormGroup>
         <UFormGroup label="Rôle" name="role">
           <USelect v-model="user.role" :options="roles"/>
