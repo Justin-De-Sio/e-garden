@@ -1,7 +1,9 @@
 <template>
   <div class="wrapper_page">
     <NavbarVertical></NavbarVertical>
-    <h1>Page des réglages de E-garden</h1>
+    <div class="header_bis">
+      <header_title title="Réglages" subtitle="Retrouvez tous les réglages d'E-garden ici"></header_title>
+    </div>
     <div>
       <h2>Afficher les données</h2>
       <ULink
@@ -38,6 +40,7 @@
 <script setup lang="ts">
 
 import NavbarVertical from "~/components/navbar_vertical.vue";
+import Header_title from "~/components/header_title.vue";
 </script>
 
 <style scoped>

@@ -2,10 +2,10 @@ package com.e_garden.api.stream;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import jakarta.annotation.PreDestroy;
 
 import java.io.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -82,9 +82,10 @@ public class StreamConfig {
                 "ffmpeg",
                 "-rtsp_transport", "tcp",             // Transport TCP pour la stabilité
                 "-i", RTSP_URL,                        // URL du flux RTSP
+                "-vf", "scale=1920:1080",               // Réduction de la résolution à 1080p
                 "-c:v", "libx264",                    // Codec vidéo
                 "-preset", "ultrafast",               // Préconfiguration rapide
-                "-tune", "zerolatency",               // Optimisé pour une faible latence
+                "-crf", "28",                          // Réduction de la qualité pour alléger l'encodage
                 "-r", "20",                           // Forcer la fréquence d'images à 20 FPS (c'est ce qu'on reçoit en input)
                 "-g", "80",                           // Intervalle d'images clés (20 FPS * 4 s)
                 "-an",                                // Pas d’audio
@@ -94,7 +95,6 @@ public class StreamConfig {
                 "-hls_flags", "delete_segments",      // Supprime les anciens segments
                 OUTPUT_FILE                           // Fichier de sortie
         );
-
 
         processBuilder.redirectErrorStream(true);
         currentProcess = processBuilder.start();
@@ -108,23 +108,20 @@ public class StreamConfig {
      * Reads the combined stdout/stderr stream from FFmpeg and logs it line by line.
      */
     private void startFfmpegLogReaderThread(InputStream ffmpegStream) {
-        Thread logThread = new Thread(() -> {
+        Executors.newSingleThreadExecutor().submit(() -> {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(ffmpegStream))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    // You can adjust the log level or use a different logger here as needed
-                    logger.info("[FFmpeg] " + line);
+                    // Filter or adjust logging level based on the log content
+                    if (line.contains("error") || line.contains("corrupt")) {
+                        logger.warning("[FFmpeg Warning] " + line);
+                    } else {
+                        logger.info("[FFmpeg] " + line);
+                    }
                 }
             } catch (IOException e) {
                 logger.severe("Error reading FFmpeg process output: " + e.getMessage());
             }
-        }, "ffmpeg-log-reader");
-
-        // It’s generally good practice to set this thread as a daemon
-        // if you don’t need it to prevent the JVM from exiting.
-        logThread.setDaemon(true);
-        logThread.start();
+        });
     }
 }
-
-

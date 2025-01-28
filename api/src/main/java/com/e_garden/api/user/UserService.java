@@ -34,6 +34,11 @@ public class UserService {
         return userRepository.findAllByEnable(true);
     }
 
+    public List<User> getAllResponsableUsers() {
+        return userRepository.findAllByEnableAndRoleContainsOrRoleContains(
+                true, Roles.UTILISATEUR.toString(), Roles.RESPONSABLE.toString());
+    }
+
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findByIdAndEnable(id, true);
         if (user.isEmpty())

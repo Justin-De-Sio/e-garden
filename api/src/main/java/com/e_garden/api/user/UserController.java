@@ -75,9 +75,15 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @Secured({"ADMINISTRATEUR"})
+    @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public List<User> getAllUser() {
-        return userService.getAllUsers();
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.getUserByEmail(user.getUsername());
+        Roles roles = Roles.valueOf(currentUser.getRole());
+        if (roles == Roles.ADMINISTRATEUR)
+            return userService.getAllUsers();
+        else
+            return userService.getAllResponsableUsers();
     }
 
     @PostMapping

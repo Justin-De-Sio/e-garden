@@ -22,42 +22,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { callAPI } from '~/services/callAPI';
-
-// Interfaces
-interface User {
-  id: number;
-  name: string;
-  surname: string;
-  email: string;
-  role: string;
-  className: string;
-  groupNumber: number;
-  locked: boolean;
-}
-
-interface Report {
-  id: number;
-  user: User;
-  reportDate: string;
-  content: string;
-  validated: boolean;
-  createdAt: string;
-}
-
-interface ApiResponse<T> {
-  content: T;
-  pageNumber: number;
-  pageSize: number;
-  totalElements: number;
-  totalPages: number;
-}
-
+import type {Pages} from "~/model/Pages";
+import type {Reports} from "~/model/Reports";
 
 const page = ref(1); 
 const pageSize = 5; 
 const totalPages = ref(1); 
 const totalElements = ref(0); 
-const varGetReportData = ref<Report[]>([]); 
+const varGetReportData = ref<Reports[]>([]);
 const api = new callAPI();
 
 
@@ -80,11 +52,14 @@ const rows = computed(() => {
 // Fonction pour récupérer les données depuis l'API
 async function getReportData(pageNumber = 0) {
   try {
-    const response = await api.fetchAPIGetPaginated("report", pageNumber, pageSize) as ApiResponse<Report[]>;
-
-    varGetReportData.value = response.content;
-    totalPages.value = response.totalPages;
-    totalElements.value = response.totalElements;
+    const response = await api.fetchAPIGetPaginated("report", pageNumber, pageSize) as Pages;
+    if (response?.content) {
+      varGetReportData.value = response.content as Reports[];
+      totalPages.value = response.totalPages;
+      totalElements.value = response.totalElements;
+    } else {
+      console.warn("No content found in API response");
+    }
   } catch (error) {
     console.error("Erreur lors de la récupération des données :", error);
     varGetReportData.value = []; 
@@ -97,10 +72,7 @@ function handlePageChange(newPage: number) {
   getReportData(newPage - 1);
 }
 
-
-onMounted(() => {
-  getReportData();
-});
+onMounted(getReportData);
 </script>
 
 <style scoped>
