@@ -15,7 +15,7 @@
   
   defineProps({
     iconPath: {
-      type: String,
+      type: String ,
       required: true,
     },
     iconBackgroundColor: {

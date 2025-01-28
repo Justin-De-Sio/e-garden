@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
 import {callAPI} from "~/services/callAPI";
-import Notification from "~/components/notification2.vue"
+import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
 
 // Structure des données pour les liens

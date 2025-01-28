@@ -21,8 +21,8 @@
 
 import {onMounted, ref} from 'vue';
 import {callAPI} from '~/services/callAPI';
-import modifUser from '~/components/modifUser.vue';
-import ajouter from '~/components/ajouter.vue'
+import modifUser from '~/components/edit-user.vue';
+import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
 
 const api = new callAPI();

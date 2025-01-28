@@ -12,14 +12,14 @@
           <indicators 
           iconBackgroundColor="#95BD75"
           iconPath="/assets/passages.png"
-          subtitle="Nombre de passage"
-          :title="`${number_passage} passages`"
+          subtitle="Nombre de passages"
+          :title="`${number_passage || 0} passages`"
           ></indicators>
           <indicators 
           iconBackgroundColor="#ECA9A8"
           iconPath="/assets/exclamation.png"
           subtitle="Alertes"
-          :title="`${number_cr} absences de CR`"
+          :title="`${number_cr || 0} rapports absents`"
           ></indicators>
         </div>
       </div>
@@ -44,8 +44,9 @@
 </template>
 
 <script setup lang="ts">
-  import indicators from "~/components/indicators.vue"; 
-  import header_title from "~/components/header_title.vue"; 
+  import indicators from "~/components/indicators.vue";
+  import header_title from "~/components/header_title.vue";
+  import camera from "~/components/camera-direct.vue";
   import NavbarVertical from "~/components/navbar_vertical.vue"
   import report from "~/components/report.vue";
   import {callAPI}  from "~/services/callAPI";

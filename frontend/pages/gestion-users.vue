@@ -1,7 +1,7 @@
 <template>
   <NavbarVertical></NavbarVertical>
   <div class="header_section">
-    <Header_title title="Section Gestion" subtitle="Gestion des Utilisateurs / Rôle" class="header_title"/>
+    <Header_title title="Gestion utilisateurs" subtitle="Gestion des habilitations / rôles" class="header_title"/>
   </div>
   <div class="left_section">
     <div class="title_indicator">
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import Header_title from '~/components/header_title.vue';
-import gestion_tab from '~/components/gestion_tab.vue';
+import gestion_tab from '~/components/gestion-all-users.vue';
 import NavbarVertical from "~/components/navbar_vertical.vue";
 </script>
 

@@ -5,7 +5,7 @@
           <img class="profil_logo" src="/assets/logo.png" alt="" />
         </div>
         <div class="exit">
-          <button class="logout" @click="logout">Deconnexion</button>
+          <button class="logout" @click="logout">Déconnexion</button>
           <button class="button_exit" @click="goBack">
             <img
               class="exit_profil"

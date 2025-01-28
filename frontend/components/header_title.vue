@@ -16,7 +16,6 @@
             required: true,
         }
     });
-    
 </script>
 
 <style lang="css" >
