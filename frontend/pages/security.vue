@@ -27,6 +27,7 @@
 
         <div class="top_bot_left">
           <h2>Caméra</h2>
+          <camera></camera>
         </div>
         <div class="top_bot_right">
           <h2>Compte-rendu</h2>
