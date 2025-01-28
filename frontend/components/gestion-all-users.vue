@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <UTable :rows="people" :columns="columns" ui="{thead:'sticky top-0 z-index-1'}">
+    <UTable :rows="people" :columns="columns">
       <template #actions-header>
         <UButton @click="ajouterUtilisateur()">
           Ajouter un utilisateur
@@ -38,12 +38,12 @@ onMounted(async () => {
 
 let columns = [
   {key: 'id', label: 'ID'},
-  {key: 'surname', label: 'Nom'},
-  {key: 'name', label: 'Prénom'},
-  {key: 'email', label: 'Email'},
-  {key: 'className', label: 'Classe'},
-  {key: 'groupNumber', label: 'Groupe'},
-  {key: 'role', label: 'Rôle'},
+  {key: 'surname', label: 'Nom', sortable: true},
+  {key: 'name', label: 'Prénom', sortable: true},
+  {key: 'email', label: 'Email', sortable: true},
+  {key: 'className', label: 'Classe', sortable: true},
+  {key: 'groupNumber', label: 'Groupe', sortable: true},
+  {key: 'role', label: 'Rôle', sortable: true},
   {key: 'actions', label: 'Actions'}];
 
 const people = ref<User[]>([]);
