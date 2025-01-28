@@ -234,7 +234,7 @@ const logout = () => {
 };
 
 const changePassword = () => {
-  router.push("/changePassword");
+  router.push("/change-password");
 };
 
 definePageMeta({
