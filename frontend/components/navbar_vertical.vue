@@ -112,6 +112,9 @@ onMounted(fetchProfile);
   margin: auto;
 }
 
+.add_button{
+  margin: auto;
+}
 
 .button_group{
   display: flex;
