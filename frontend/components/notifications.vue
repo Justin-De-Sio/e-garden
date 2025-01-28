@@ -86,8 +86,6 @@ interface ApiResponse {
 }
 
 const changePage = (direction: 'prev' | 'next') => {
-  console.log("Currentpage", currentPage.value);
-  console.log("Total", notifications.value.totalPages);
   if (direction === 'prev' && currentPage.value > 0) {
     currentPage.value--;
   } else if (direction === 'next' && currentPage.value < notifications.value.totalPages - 1 ) {

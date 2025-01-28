@@ -38,7 +38,6 @@ import {reactive, ref} from 'vue';
 import {z} from "zod";
 import {callAPI} from '~/services/callAPI';
 import type {Roles} from '~/model/Roles.ts'
-import type {User} from "~/model/User";
 
 const props = defineProps<{ requetUser: () => void }>();
 const emit = defineEmits(['close']);
