@@ -33,8 +33,8 @@ const api = new callAPI();
 
 const columns = [
   { key: 'global_name', label: 'Prénom / Nom' },
-  { key: 'report', label: 'Compte-rendu' },
-  { key: 'validated', label: 'Validation' },
+  { key: 'report', label: 'Justification' },
+  { key: 'validated', label: 'Status' },
 ];
 
 const rows = computed(() => {
