@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
-      <h2>Ajouter Utilisateur</h2>
+      <h2>Ajout d'un utilisateur</h2>
       <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="submitForm">
         <UFormGroup label="Prénom" name="name">
           <UInput v-model="formState.name" class="Uinput_custom" color="gray"/>
@@ -54,11 +54,11 @@ const formState = reactive({
 });
 
 const formSchema = z.object({
-  name: z.string(),
-  surname: z.string(),
-  email: z.string().email("Must be a valid email"),
-  className: z.string(),
-  groupNumber: z.number().int(),
+  name: z.string().max(255, "Ne peut dépasser 255 caractères"),
+  surname: z.string().max(255, "Ne peut dépasser 255 caractères"),
+  email: z.string().email("L'email est invalide"),
+  className: z.string().max(20, "Ne peut dépasser 20 caractères"),
+  groupNumber: z.number().int().positive("Le groupe doit être un nombre positif"),
   role: z.string(),
 });
 
