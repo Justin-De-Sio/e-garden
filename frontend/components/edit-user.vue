@@ -23,7 +23,7 @@
         </UFormGroup>
         <UFormGroup>
           <u-button type="primary" native-type="submit">Enregistrer</u-button>
-          <u-button @click="handleCancel">Annuler</u-button>
+          <u-button class="cancel-button" @click="handleCancel">Annuler</u-button>
         </UFormGroup>
       </u-form>
     </div>
@@ -100,7 +100,7 @@ onMounted(() => {
   padding: 2rem;
   border-radius: 10px;
   width: auto;
-  height: 500px;
+  height: auto;
 }
 
 u-form {
@@ -139,5 +139,11 @@ u-button {
 h2 {
   font-family: "Gilroy-Medium", sans-serif;
   margin-bottom: 2vh;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  margin-left: 0.5rem;
 }
 </style>
