@@ -39,6 +39,12 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getPaginatedReports(page, size));
     }
 
+    @GetMapping("/history/paginated")
+    public ResponseEntity<PageDTO<Report>> getHistoryPaginatedReports(@RequestParam(defaultValue = "10") Integer size,
+                                                               @RequestParam(defaultValue = "0") Integer page) {
+        return ResponseEntity.ok(reportService.getPaginatedValidatedReports(page, size));
+    }
+
     @GetMapping("/myValidatedReports/paginated")
     public ResponseEntity<PageDTO<Report>> getMyValidatedReports(@RequestParam(defaultValue = "10") Integer size,
                                                                  @RequestParam(defaultValue = "0") Integer page) {
@@ -49,6 +55,7 @@ public class ReportController {
 
         return ResponseEntity.ok(reportService.getMyValidatedReports(page, size, userByEmail.getId()));
     }
+
     @GetMapping("/myNotValidatedReports/paginated")
     public ResponseEntity<PageDTO<Report>> getMyNotValidatedReports(@RequestParam(defaultValue = "10") Integer size,
                                                                  @RequestParam(defaultValue = "0") Integer page) {
@@ -59,7 +66,6 @@ public class ReportController {
 
         return ResponseEntity.ok(reportService.getMyNotValidatedReports(page, size, userByEmail.getId()));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
@@ -78,6 +84,8 @@ public class ReportController {
         updatedReport.setValidated(reportDetails.isValidated());
         return ResponseEntity.ok(reportService.saveReport(updatedReport));
     }
+
+
 
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})

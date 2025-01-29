@@ -83,4 +83,16 @@ public class ReportService {
                 reportPage.getTotalPages()
         ));
     }
+
+    public PageDTO<Report> getPaginatedValidatedReports(int page, int size) {
+        Page<Report> reportPage = reportRepository.findAllByValidatedOrderByReportDateAsc(true, PageRequest.of(page, size));
+
+        return (new PageDTO<>(
+                reportPage.getContent(),
+                reportPage.getNumber(),
+                reportPage.getSize(),
+                reportPage.getTotalElements(),
+                reportPage.getTotalPages()
+        ));
+    }
 }
