@@ -136,7 +136,7 @@ public class VideoService {
         videoRepository.save(new Video(fileName, duration));
 
         // Suppression des vidéos de plus de 7 jours (optionnel)
-        deleteOldVideos(7);
+        deleteOldVideos(30);
     }
 
     /**
@@ -170,14 +170,14 @@ public class VideoService {
     /**
      * Supprime les vidéos de plus de `minutes` et retire les entrées de la base de données.
      */
-    private void deleteOldVideos(int minutes) {
+    private void deleteOldVideos(int days) {
         File directory = new File(OUTPUT_DIRECTORY);
         if (!directory.exists()) return;
 
         File[] files = directory.listFiles();
         if (files == null) return;
 
-        LocalDateTime cutoffDateTime = LocalDateTime.now().minusDays(minutes);
+        LocalDateTime cutoffDateTime = LocalDateTime.now().minusDays(days);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 
         for (File file : files) {
