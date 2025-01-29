@@ -98,7 +98,7 @@ public class StreamConfig {
 
         processBuilder.redirectErrorStream(true);
         currentProcess = processBuilder.start();
-        startFfmpegLogReaderThread(currentProcess.getInputStream());
+//        startFfmpegLogReaderThread(currentProcess.getInputStream());
 
         logger.info("Started new FFmpeg process");
         return currentProcess;
