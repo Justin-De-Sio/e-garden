@@ -27,7 +27,7 @@
           <camera></camera>
         </div>
         <div class="top_bot_right">
-          <h2>Compte-rendu</h2>
+          <h2>Compte-rendu <u-link to="/gestion-reports">(voir plus)</u-link></h2>
           <report></report>
         </div>
       </div>
