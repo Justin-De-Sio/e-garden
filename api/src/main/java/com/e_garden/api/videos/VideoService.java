@@ -126,8 +126,7 @@ public class VideoService {
     @Async
     protected void startRecordingAsync(String rtspUrl, String filePath, String fileName, Duration duration) {
         String command = String.format(
-                "ffmpeg -rtsp_transport tcp -probesize 10000000 -analyzeduration 10000000 -i %s " +
-                        "-vf \"fps=5,scale=1280:720\" -c:v libx264 -preset ultrafast -crf 30 -c:a copy -t %d -f mp4 %s",
+                "ffmpeg -rtsp_transport tcp -probesize 10000000 -analyzeduration 10000000 -i %s -c:v copy -c:a copy -t %d -f mp4 %s",
                 rtspUrl, duration.getSeconds(), filePath
         );
 
