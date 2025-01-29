@@ -12,6 +12,7 @@
           :progress="{ color: 'primary', animation: 'carousel' }"
           class="w-full"
           :columns="columns"
+          :ui="{ th: { base: 'sticky top-0' }, wrapper: { base: '' } }"
       />
     </div>
     <UTable v-else :columns="columns" :rows="notifs">
