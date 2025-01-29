@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   colorMode:{
     preference: "light"
   },
+  ui: {
+    safelistColors: ['brandPrimary']
+  },
 
 
   compatibilityDate: '2025-01-20',

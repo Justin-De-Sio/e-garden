@@ -15,12 +15,19 @@
           </div>
         </div>
         <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
-          <UFormGroup label="Email" name="email">
-            <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray"/>
-          </UFormGroup>
-          <UFormGroup label="Password" name="password">
-            <UInput v-model="formState.password" type="password" class="!bg-white rounded-md" color="gray"/>
-          </UFormGroup>
+          <UFormGroup  label="Email"  name="email" 
+              :ui="{
+                label: { 
+                  base: 'text-black dark:text-white',
+                }
+              }"
+            >
+              <UInput  v-model="formState.email"  class="!bg-white rounded-md has-[:invalid]:ring-red-500" />
+            </UFormGroup>
+
+          <UFormGroup label="Password" name="password" :ui="{ label: { base: 'text-black dark:text-white' } }">
+            <UInput v-model="formState.password" type="password" class="!bg-white rounded-md" color="gray" required/>
+          </UFormGroup> 
           <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
             {{ errorMessage }}
           </div>
@@ -113,7 +120,7 @@ definePageMeta({
 
 .pos_white_card {
   border-radius: 10px;
-  background-color: #151B11;
+  background-color: white;
   width: 90%;
   height: 95%;
   display: flex;
@@ -141,7 +148,7 @@ definePageMeta({
 
 .title_part h1 {
   font-family: "Gilroy-Bold", sans-serif;
-  color: white;
+  color: #151B11;
   font-size: clamp(1.8rem, 2.5vw, 4rem); 
   padding-left: 25px;
   text-align: center;
@@ -172,7 +179,7 @@ form {
 
 .Ubutton_custom:hover{
   transform: scale(1.03);
-  background-color: #49DC82;
+  background-color: #95bd75;
   color: white;
 }
 .Ubutton_custom{
@@ -181,8 +188,8 @@ form {
   align-items: center;
   margin-top: 100px;
   border-radius: 30px;
-  background-color: white;
-  color: #151B11;
+  background-color: black;
+  color: white;
   height: 40px;
   transition: transform 0.3s ease;
   transform-origin: center ;
