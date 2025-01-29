@@ -20,7 +20,7 @@
                 <div class="wrapperEach">
                     <p>{{ truncateText(report.content, 15) }}</p>
                     <p>{{ formatDate(report.createdAt) }}</p>
-                  <button type="button" class="editReport" @click="editReport(report.content)">
+                  <button type="button" class="editReport" @click="editReport(report.content, report.id)">
                     Modifier
                   </button>
                 </div>
@@ -34,8 +34,8 @@
               <UTextarea v-model="state.content" type="text" placeholder="Veuillez choisir un compte-rendu à modifier " />
             </UFormGroup>
             <div class="placement_button">
-                <UButton type="submit" >Envoyer</UButton>
-                <UButton type="button" color="gray" >Brouillon</UButton>
+                <UButton type="button" @click="onSubmit(true)">Envoyer</UButton>
+                <UButton type="button" color="gray" @click="onSubmit(false)">Brouillon</UButton>
             </div>
           </UForm>
         </div>
@@ -67,6 +67,8 @@
 
 
   const api = new callAPI();
+  const id_report = ref<bigint | undefined>();
+
   
   const schema = z.object({
     content: z.string().min(8, "Must be at least 8 characters"),
@@ -78,8 +80,9 @@
     content: "",
   });
 
-  function editReport(content: string) {
+  function editReport(content: string, id?: bigint) {
     state.content = content; 
+    id_report.value = id
     }
   
   const NotValidatedReports = ref<Reports[]>([]);
@@ -97,10 +100,24 @@
       console.error("Erreur lors de la récupération des rapports :", error);
     }
   }
-  
-  async function onSubmit() {
-    console.log("Données soumises :", state);
-    await fetchReports();
+
+  const RequestValidatedReport = reactive({
+    content: state.content,
+    validated: true,
+
+  });  
+
+  async function onSubmit(isFinal: boolean) {
+    try{
+        const reportId = Number(id_report.value);
+        RequestValidatedReport.content = state.content;
+        RequestValidatedReport.validated = isFinal;
+
+        const response = await api.fetchAPIPutWithId("report", reportId, RequestValidatedReport);
+        console.log("test",response);
+
+    }catch(error){
+        console.error("Erreur lors de l'envoie des rapports :", error);}
   }
   
   function formatDate(date: string) {

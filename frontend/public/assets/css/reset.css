@@ -27,7 +27,11 @@
     font-weight: 700;
     font-style: normal;
   }
-  body {
+  html, body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      position: relative;
     background-color: #f2f4ef;
   }
 

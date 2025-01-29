@@ -30,6 +30,7 @@ import {onMounted, ref} from 'vue';
 import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
+import type {Roles} from "~/model/Roles";
 import AddReport from "~/components/add-report.vue";
 
 // Structure des données pour les liens
@@ -84,19 +85,26 @@ const isAdmin = ref(false);
 const fetchProfile = async () => {
   try {
     const response = await api.fetchAPIGet('user/profil') as User;
-    console.log("Profil",response);
-    isAdmin.value = response.role.valeur === 'ADMINISTRATEUR'; 
+    isAdmin.value = response.role === 'ADMINISTRATEUR';
 
 
-  const updatedLinks = links.value.filter(link => !(isAdmin.value && link.label === 'Sécurité'));
+    const updatedLinks = links.value.filter(link => !(!isAdmin.value && link.label === 'Sécurité'));
+
+
     updatedLinks[updatedLinks.length - 1].label = response.name || 'Profil';
     links.value = updatedLinks;
+
+
   } catch (error) {
     console.error('Erreur lors de la récupération du profil :', error);
   }
 };
 
-onMounted(fetchProfile);
+
+onMounted(() => {
+  console.log("fetchProfile() est exécuté !");
+  fetchProfile();
+});
 </script>
 
 <style scoped>

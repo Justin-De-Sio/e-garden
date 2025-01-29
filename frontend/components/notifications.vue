@@ -9,7 +9,7 @@
       :ui="{rounded:'rounded-[0.8rem]', color:{white: {solid: 'shadow-sm text-white dark:text-gray-900 bg-gray-900 hover:bg-[#95bd75]'}}}"
       @click="isOpen = true"
     />
-    <USlideover v-model="isOpen">
+    <USlideover v-model="isOpen" class="Slider">
       <UCard
         class="flex flex-col flex-1"
         :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }"
@@ -33,7 +33,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
               <h2>{{ currentPage + 1 }}</h2>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('next')" >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('next')" v-if="checkNextPage()" >
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </div>
@@ -93,6 +93,12 @@ const changePage = (direction: 'prev' | 'next') => {
   }
   fetchNotif(currentPage.value);
 };
+
+const checkNextPage = () => {
+
+  return currentPage.value < notifications.value.totalPages - 1;
+};
+
 
 const fetchNotif = async (page: number) => {
   const response = await api.fetchAPIGetPaginated("event", page, 5) as ApiResponse;
@@ -168,14 +174,18 @@ onMounted(() => {
 }
 
 .chevron{
-  display: flex;
+  display: flex;  
   margin-left: auto;
   gap: 1rem;
+  position: sticky;
+  padding-right: 1rem;
 }
 
 .chevron svg{
   cursor: pointer;
 }
+
+
 
 @media (max-width: 640px) {
   .notification-item {
@@ -185,5 +195,19 @@ onMounted(() => {
   .notification-content {
     margin-top: 0.5rem;
   }
+
+  .chevron{
+    top: 1.2rem;
+    right: 3rem;
+  }
+
+  .chevron svg{
+    cursor: pointer;
+}
+.Slider button{
+  padding-top: 0.2rem;
+}
+
+
 }
 </style>
