@@ -95,4 +95,8 @@ public class ReportService {
                 reportPage.getTotalPages()
         ));
     }
+
+    public Report createReport(Report report) {
+        return saveReport(report);
+    }
 }

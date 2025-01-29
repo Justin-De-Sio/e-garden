@@ -67,6 +67,19 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getMyNotValidatedReports(page, size, userByEmail.getId()));
     }
 
+    @PostMapping()
+    public ResponseEntity<Report> createReport(@RequestBody Report newReport) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userByEmail = userService.getUserByEmail(user.getUsername());
+        if (userByEmail == null)
+            return ResponseEntity.notFound().build();
+        Report report = new Report();
+        report.setUser(userByEmail);
+        report.setContent(newReport.getContent());
+        report.setValidated(newReport.isValidated());
+        return ResponseEntity.ok(reportService.createReport(report));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report reportDetails) {
         Report updatedReport = reportService.getReportById(id);
@@ -84,8 +97,6 @@ public class ReportController {
         updatedReport.setValidated(reportDetails.isValidated());
         return ResponseEntity.ok(reportService.saveReport(updatedReport));
     }
-
-
 
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
