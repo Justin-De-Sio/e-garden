@@ -123,7 +123,13 @@ public class UserService {
     }
 
     public Object verify(User user) {
-        User userInfo = getUserByEmail(user.getEmail());
+        Optional<User> userOptional = userRepository.findByEmailAndEnable(user.getEmail(), true);
+        User userInfo;
+        if (userOptional.isPresent()) {
+            userInfo = userOptional.get();
+        } else {
+            return false;
+        }
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
