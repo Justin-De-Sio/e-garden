@@ -1,6 +1,7 @@
 <template>
   <div class="table-container">
-    <UTable :rows="people" :columns="columns">
+    <UTable :rows="people" :columns="columns"
+            :ui="{ th: { base: 'sticky top-0 bg-gray-100', }, wrapper: { base: '' }, }" style="background: #f3f4f6">
       <template #actions-header>
         <UButton @click="ajouterUtilisateur()">
           Ajouter un utilisateur
