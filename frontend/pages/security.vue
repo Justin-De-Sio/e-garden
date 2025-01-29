@@ -10,13 +10,13 @@
           <indicators 
           iconBackgroundColor="#95BD75"
           iconPath="/assets/passages.png"
-          subtitle="Nombre de passages"
+          subtitle="Sur les 30 derniers jours"
           :title="`${number_passage || 0} passages`"
           ></indicators>
           <indicators 
           iconBackgroundColor="#ECA9A8"
           iconPath="/assets/exclamation.png"
-          subtitle="Alertes"
+          subtitle="Sur les 30 derniers jours"
           :title="`${number_cr || 0} rapports non remis`"
           ></indicators>
         </div>
