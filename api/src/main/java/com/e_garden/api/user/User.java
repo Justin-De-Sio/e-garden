@@ -45,12 +45,15 @@ public class User {
     @Column(nullable = false, name = "locked")
     private boolean locked;
 
+    @JsonIgnore
     @Column(nullable = false, name = "nb_login_failure")
     private Integer nbLoginFailure;
 
+    @JsonIgnore
     @Column(nullable = true, name = "date_last_login")
     private LocalDateTime dateLastLogin;
 
+    @JsonIgnore
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
