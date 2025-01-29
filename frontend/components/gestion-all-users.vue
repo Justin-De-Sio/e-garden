@@ -92,7 +92,7 @@ async function modifierUtilisateur(id: number) {
 }
 
 async function resetMdp(id: number) {
-  await api.fetchAPIPostWithId('user/resetPassword/', id, {});
+  await api.fetchAPIPostWithId('user/resetPassword', id, {});
   await requetUser();
 }
 
