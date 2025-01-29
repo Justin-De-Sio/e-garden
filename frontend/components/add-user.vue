@@ -26,7 +26,7 @@
         </UFormGroup>
         <UFormGroup>
           <UButton type="primary" native-type="submit">Ajouter l'utilisateur</UButton>
-          <UButton @click="handleCancel">Annuler</UButton>
+          <UButton class="cancel-button" @click="handleCancel">Annuler</UButton>
         </UFormGroup>
       </UForm>
     </div>
@@ -94,7 +94,6 @@ onMounted(getRoles);
 
 </script>
 
-
 <style scoped>
 .modal-overlay {
   position: fixed;
@@ -112,8 +111,8 @@ onMounted(getRoles);
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
-  width: 400px;
-  height: 500px;
+  width: auto;
+  height: auto;
 }
 
 u-form {
@@ -144,9 +143,10 @@ u-button[type="primary"] {
   color: white;
 }
 
-u-button {
+.cancel-button {
   background-color: #f44336;
   color: white;
+  margin-left: 0.5rem;
 }
 
 h2 {
