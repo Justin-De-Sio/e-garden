@@ -1,6 +1,6 @@
 <template>
     <div class="flux_video">
-      <video id="video" ></video>
+      <video id="video" controls autoplay muted playsinline></video>
     </div>
 </template>
 
@@ -54,6 +54,9 @@ onMounted(() => {
 
 <style lang="css" scoped>
 
+    video::-webkit-media-controls-timeline {
+      display: none !important;
+    }
     .flux_video{
       width: 100%;
       height: auto;

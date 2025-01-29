@@ -22,7 +22,7 @@
                 }
               }"
             >
-              <UInput  v-model="formState.email"  class="!bg-white rounded-md has-[:invalid]:ring-red-500" />
+              <UInput  v-model="formState.email"  class="!bg-white rounded-md has-[:invalid]:ring-red-500" color="gray"/>
             </UFormGroup>
 
           <UFormGroup label="Password" name="password" :ui="{ label: { base: 'text-black dark:text-white' } }">

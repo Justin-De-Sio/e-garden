@@ -78,15 +78,17 @@ const links = ref<Link[]>([
     },
     to: '/profil',
   },
-]);
+]); 
+const isAdmin = ref(false);
 
 const fetchProfile = async () => {
   try {
     const response = await api.fetchAPIGet('user/profil') as User;
+    console.log("Profil",response);
+    isAdmin.value = response.role.valeur === 'ADMINISTRATEUR'; 
 
 
-    // Mise à jour dynamique du dernier lien
-    const updatedLinks = [...links.value];
+  const updatedLinks = links.value.filter(link => !(isAdmin.value && link.label === 'Sécurité'));
     updatedLinks[updatedLinks.length - 1].label = response.name || 'Profil';
     links.value = updatedLinks;
   } catch (error) {
