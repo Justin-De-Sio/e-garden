@@ -98,7 +98,7 @@ public class UserController {
     public ResponseEntity<User> resetPassword(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.getUserByEmail(user.getUsername());
-        if (!Objects.equals(currentUser.getId(), id))
+        if (Objects.equals(currentUser.getId(), id))
             return ResponseEntity.status(406).build();
         userService.resetPassword(userService.getUserById(id));
         return ResponseEntity.noContent().build();
@@ -109,7 +109,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.getUserByEmail(userPrincipal.getUsername());
-        if (!Objects.equals(currentUser.getId(), id))
+        if (Objects.equals(currentUser.getId(), id))
             return ResponseEntity.status(406).build();
         return ResponseEntity.ok(userService.updateUser(userService.getUserById(id), user));
     }
@@ -119,7 +119,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.getUserByEmail(user.getUsername());
-        if (!Objects.equals(currentUser.getId(), id))
+        if (Objects.equals(currentUser.getId(), id))
             return ResponseEntity.status(406).build();
         userService.archiveUSer(id);
         return ResponseEntity.noContent().build();
@@ -130,7 +130,7 @@ public class UserController {
     public ResponseEntity<Void> blockUnblockUser(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.getUserByEmail(user.getUsername());
-        if (!Objects.equals(currentUser.getId(), id))
+        if (Objects.equals(currentUser.getId(), id))
             return ResponseEntity.status(406).build();
         userService.blockUnBlock(id);
         return ResponseEntity.noContent().build();
