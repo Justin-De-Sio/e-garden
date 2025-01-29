@@ -1,5 +1,6 @@
 package com.e_garden.api.videos;
 
+import com.e_garden.api.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -219,8 +220,25 @@ public class VideoService {
 
     /**
      * Récupère la liste de toutes les vidéos enregistrées.
+     *
+     * @return Liste des vidéos avec leurs métadonnées
      */
     public List<Video> getAllVideos() {
         return videoRepository.findAll();
+    }
+
+    /**
+     * Récupère le fichier le plus grand correspondant à un jour donnée.
+     *
+     * @param date Date recherchée
+     * @return Fichier vidéo correspondant à la journée recherchée
+     */
+    public Resource getVideoForOneDay(LocalDateTime date) {
+        LocalDateTime startOfDay = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0, 0);
+        LocalDateTime endOfDay = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 23, 59, 59, 999999999);
+        Video video = videoRepository.findFirstByFileDateBetweenOrderByFileDurationDesc(startOfDay, endOfDay);
+        if (video == null)
+            throw new ObjectNotFoundException("Video non trouvé avec la date : " + date.toString());
+        return getVideo(video.getFileName()).getBody();
     }
 }
