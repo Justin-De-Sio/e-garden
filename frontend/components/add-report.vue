@@ -1,7 +1,7 @@
 <template>
     <UPopover :popper="{ arrow: true }">
       <UButton
-        color="white"
+        color="primary"
         trailing-icon="i-heroicons-plus"
         :ui="{ rounded: 'rounded-lg' }"
       />
@@ -35,13 +35,7 @@
               <UTextarea v-model="state.content" type="text" placeholder="Veuillez choisir un compte-rendu à modifier " />
             </UFormGroup>
             <div class="placement_button">
-                <UButton type="submit" :ui="{variant: {
-                    solid: 'shadow-sm text-white dark:text-gray-900 bg-[#95bd75] hover:bg-[#85ac65] disabled:bg-[#95bd75] aria-disabled:bg-[#95bd75] dark:bg-[#85ac65] dark:hover:bg-[#75a055] dark:disabled:bg-[#85ac65] dark:aria-disabled:bg-[#85ac65] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#95bd75] dark:focus-visible:outline-[#85ac65]',
-                    outline: 'ring-1 ring-inset ring-current text-[#95bd75] dark:text-[#85ac65] hover:bg-[#d6e7cb] disabled:bg-transparent aria-disabled:bg-transparent dark:hover:bg-[#4d6c34] dark:disabled:bg-transparent dark:aria-disabled:bg-transparent focus-visible:ring-2 focus-visible:ring-[#95bd75] dark:focus-visible:ring-[#85ac65]',
-                    soft: 'text-[#95bd75] dark:text-[#85ac65] bg-[#d6e7cb] hover:bg-[#c6d7bb] disabled:bg-[#d6e7cb] aria-disabled:bg-[#d6e7cb] dark:bg-[#4d6c34] dark:hover:bg-[#3d5c24] dark:disabled:bg-[#4d6c34] dark:aria-disabled:bg-[#4d6c34] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#95bd75] dark:focus-visible:ring-[#85ac65]',
-                    ghost: 'text-[#95bd75] dark:text-[#85ac65] hover:bg-[#d6e7cb] disabled:bg-transparent aria-disabled:bg-transparent dark:hover:bg-[#4d6c34] dark:disabled:bg-transparent dark:aria-disabled:bg-transparent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#95bd75] dark:focus-visible:ring-[#85ac65]',
-                    link: 'text-[#95bd75] hover:text-[#85ac65] disabled:text-[#95bd75] aria-disabled:text-[#95bd75] dark:text-[#85ac65] dark:hover:text-[#75a055] dark:disabled:text-[#85ac65] dark:aria-disabled:text-[#85ac65] underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#95bd75] dark:focus-visible:ring-[#85ac65]',
-                }}">Envoyer</UButton>
+                <UButton type="submit" >Envoyer</UButton>
                 <UButton type="button" color="gray" >Brouillon</UButton>
             </div>
           </UForm>

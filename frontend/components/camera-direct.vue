@@ -1,6 +1,6 @@
 <template>
     <div class="flux_video">
-      <video id="video" controls></video>
+      <video id="video" ></video>
     </div>
 </template>
 
@@ -16,6 +16,7 @@ definePageMeta({
 onMounted(() => {
   const video = document.getElementById('video') as HTMLVideoElement;
 
+
   const sessionCookie = useCookie('session');
   const bearerToken = sessionCookie?.value;
   if (!bearerToken) {
@@ -29,10 +30,9 @@ onMounted(() => {
         xhr.setRequestHeader('Authorization', `Bearer ${bearerToken}`);
       },
       fetchSetup: (url, options) => {
-        // Assurez-vous que les cookies sont envoyés
         return {
           ...options,
-          credentials: 'include', // Envoi des cookies avec la requête
+          credentials: 'include', 
         };
       },
     });

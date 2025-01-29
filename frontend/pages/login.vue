@@ -53,8 +53,8 @@ const formState = reactive({
 });
 
 const formSchema = z.object({
-  email: z.string().email("Must be a valid email"),
-  password: z.string().min(5, "Minimum of 5 characters"),
+  email: z.string().email("Doit avoir la bonne syntaxe"),
+  password: z.string().min(5, "Minimum 5 caractères"),
 });
 
 type Schema = z.output<typeof formSchema>;
