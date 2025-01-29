@@ -5,7 +5,7 @@
           <img class="profil_logo" src="/assets/logo.png" alt="" />
         </div>
         <div class="exit">
-          <button class="logout" @click="logout">Déconnexion</button>
+          <button class="logout" @click="logout">Deconnexion</button>
           <button class="button_exit" @click="goBack">
             <img
               class="exit_profil"
@@ -22,6 +22,10 @@
           <div class="text_header">
             <h2>Mon profil</h2>
             <h3>Gérez les paramètres de votre profil</h3>
+          </div>
+          <div class="header_profil">
+            <h3>Votre photo de profil</h3>
+            <img src="public/assets/user.png" alt="" />
           </div>
           <div class="formulaire">
             <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
@@ -48,7 +52,7 @@
               <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
                 {{ errorMessage }}
               </div>
-              <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="f">
+              <UButton :disabled="!hasChanges" :loading="isLoading" type="submit" class="save_button">
                 Enregistrer
               </UButton>
             </UForm>
@@ -230,7 +234,7 @@ const logout = () => {
 };
 
 const changePassword = () => {
-  router.push("/change-password");
+  router.push("/changePassword");
 };
 
 definePageMeta({
@@ -405,24 +409,28 @@ definePageMeta({
     }
 
     .save_button{
+        display: flex;
+        justify-content: center;
         background: none;
         border: none;
         background-color: #95bd75;
         color: white;
-        width: min(25vw, 200px);
+        width: min(25vw, 300px);
         font-family: "Gilroy-Medium";
-        font-size: clamp(0.7rem, 2vw, 0.8rem); 
+        font-size: clamp(0.7rem, 2vw, 0.9rem); 
         border-radius: 0.2rem;
         height: 2rem;
         margin: auto;
         cursor: pointer;
+        text-align: center;
     }
 
     .save_button:disabled {
         background-color: #cccccc; 
         color: #666666;           
         cursor: not-allowed;      
-        opacity: 0.6;             
+        opacity: 0.6;
+        text-align: center;             
     }
 
     .illustration{

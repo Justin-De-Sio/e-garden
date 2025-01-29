@@ -41,6 +41,17 @@
         </div>
       </template>
     </UPopover>
+    <UNotification
+        v-if="notificationVisible"
+        icon="i-heroicons-check-badge"
+        color="primary"
+        :id="6"
+        :title="notificationTitle"
+        :description="notificationMessage"
+        :timeout="6000"
+        class="custom-notification"
+        
+        />
   </template>
   
   <script setup lang="ts">
@@ -49,6 +60,9 @@
   import type { Reports } from "~/model/Reports";
   import { callAPI } from "~/services/callAPI";
 
+  const notificationVisible = ref(false);
+    const notificationTitle = ref(""); 
+    const notificationMessage = ref(""); 
 
 
     const truncateText = (text: string | undefined, maxLength: number = 15): string => {
@@ -115,6 +129,17 @@
 
         const response = await api.fetchAPIPutWithId("report", reportId, RequestValidatedReport);
         console.log("test",response);
+
+        if (isFinal != true){
+            notificationTitle.value = "Succès"; 
+            notificationMessage.value = "Votre rapport a bien été enregistré !"; 
+            notificationVisible.value = true;
+        }else{
+            notificationTitle.value = "Succès"; 
+            notificationMessage.value = "Votre rapport a bien été enregistré en mode brouillon !"; 
+            notificationVisible.value = true;
+        }
+
 
     }catch(error){
         console.error("Erreur lors de l'envoie des rapports :", error);}
