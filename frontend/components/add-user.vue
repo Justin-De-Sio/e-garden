@@ -53,10 +53,10 @@ const formState = reactive({
 });
 
 const formSchema = z.object({
-  name: z.string().min(1, "Le prénom est obligatoire"),
-  surname: z.string().min(1, "Le nom est obligatoire"),
+  name: z.string().min(3, "Le prénom est obligatoire").max(255, "Ne peut dépasser 255 caractères"),
+  surname: z.string().min(1, "Le nom est obligatoire").max(255, "Ne peut dépasser 255 caractères"),
   email: z.string().email("L'email est invalide"),
-  className: z.string().min(1, "L'année scolaire est obligatoire"),
+  className: z.string().max(20, "Ne peut dépasser 20 caractères"),
   groupNumber: z.number().int().positive("Le groupe doit être un nombre positif"),
   role: z.string(),
 });
