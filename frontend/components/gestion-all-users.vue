@@ -1,7 +1,7 @@
 <template>
   <div class="table-container">
     <UTable :rows="people" :columns="columns"
-            :ui="{ th: { base: 'sticky top-0 bg-gray-100', }, wrapper: { base: '' }, }" style="background: #f3f4f6">
+            :ui="{ th: { base: 'sticky top-0 bg-gray-100', }, wrapper: { base: '' }, }" style="background: #f2f4ef">
       <template #actions-header>
         <UButton @click="ajouterUtilisateur()">
           Ajouter un utilisateur
@@ -118,17 +118,19 @@ function handleCloseAdd() {
 .table-container {
   overflow-y: auto;
   max-height: 400px;
+  border: 1px solid black;
+  border-radius: 15px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #FFFFFF;
+  background-color: #f2f4ef;
   border-radius: 5px;
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #f2f4ef;
   padding: 8px;
   cursor: pointer;
   border-radius: 5px;
@@ -137,10 +139,10 @@ th, td {
 th {
   position: sticky;
   top: 0;
-  background-color: #FFFFFF;
+  background-color: #f2f4ef;
   text-align: left;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #f2f4ef;
   border-radius: 5px;
   z-index: 1;
 }
