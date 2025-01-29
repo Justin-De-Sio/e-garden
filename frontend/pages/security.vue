@@ -17,7 +17,7 @@
           iconBackgroundColor="#ECA9A8"
           iconPath="/assets/exclamation.png"
           subtitle="Alertes"
-          :title="`${number_cr || 0} rapports absents`"
+          :title="`${number_cr || 0} rapports non remis`"
           ></indicators>
         </div>
       </div>
