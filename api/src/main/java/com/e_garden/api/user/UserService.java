@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -96,6 +97,7 @@ public class UserService {
 
     public User resetPassword(User user) {
         user.setPassword(System.getenv("DEFAULT_PASSWORD"));
+        user.setNbLoginFailure(0);
         user = saveUser(encodePassword(user));
         log.createLog(String.valueOf(Levels.USER), "Utilisateur resetPassword", user.toString());
         return user;
@@ -122,20 +124,44 @@ public class UserService {
             return user.get();
     }
 
+    private void savedLogin(User user) {
+        user.setDateLastLogin(LocalDateTime.now());
+        user.setNbLoginFailure(0);
+        saveUser(user);
+    }
+
+    /**
+     * Méthode qui contrôle le nombre de connexions erroné pour un utilisateur.
+     * Si le compte a réalisé plus de 5 tentatives alors il sera bloqué
+     * @param user à contrôler
+     * @return true si valide false si bloqué
+     */
+    private boolean checkLoginFailure(User user) {
+        user.setNbLoginFailure(user.getNbLoginFailure() + 1);
+        if (user.getNbLoginFailure() < 6) {
+            return true;
+        }
+        saveUser(user);
+        return false;
+    }
+
     public Object verify(User user) {
         Optional<User> userOptional = userRepository.findByEmailAndEnable(user.getEmail(), true);
         User userInfo;
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent())
             userInfo = userOptional.get();
-        } else {
+        else
             return false;
-        }
+        if (!checkLoginFailure(userInfo))
+            return "Le compte utilisateur est bloqué";
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
             );
             if (authentication.isAuthenticated() && userInfo.isEnable() && userInfo.isLocked()) {
                 log.createLog(String.valueOf(Levels.USER), "Utilisateur authentifié", user.getEmail());
+                savedLogin(userInfo);
                 return jwtService.generateToken(user.getEmail(), userInfo.getRole());
             }
         } catch (Exception e) {

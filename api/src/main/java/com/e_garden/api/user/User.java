@@ -5,6 +5,7 @@ import com.e_garden.api.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,17 @@ public class User {
     @Column(nullable = false, name = "locked")
     private boolean locked;
 
+    @Column(nullable = false, name = "nb_login_failure")
+    private Integer nbLoginFailure;
+
+    @Column(nullable = true, name = "date_last_login")
+    private LocalDateTime dateLastLogin;
+
+    @Column(nullable = false, name = "created_at")
+    private LocalDateTime createdAt;
+
     public User() {
+        this.nbLoginFailure = 0;
         this.locked = false;
         this.enable = true;
         this.name = "";
@@ -66,6 +77,30 @@ public class User {
         this.surname = surname;
         this.className = className;
 
+    }
+
+    public LocalDateTime getDateLastLogin() {
+        return dateLastLogin;
+    }
+
+    public void setDateLastLogin(LocalDateTime dateLastLogin) {
+        this.dateLastLogin = dateLastLogin;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Integer getNbLoginFailure() {
+        return nbLoginFailure;
+    }
+
+    public void setNbLoginFailure(Integer nbLoginFailure) {
+        this.nbLoginFailure = nbLoginFailure;
     }
 
     public boolean isEnable() {
@@ -155,6 +190,15 @@ public class User {
     public List<Report> getReports() {
         return reports;
     }
+
+    /**
+     * Cette méthode est appelée automatiquement avant l'insertion dans la base de données.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 
     @Override
     public String toString() {
