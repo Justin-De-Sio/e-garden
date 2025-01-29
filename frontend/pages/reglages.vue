@@ -32,7 +32,7 @@
       <br>
     </div>
     <div>
-      <ServeurInfo></ServeurInfo>
+      <infosServer></infosServer>
     </div>
   </div>
 </template>
@@ -41,6 +41,8 @@
 
 import NavbarVertical from "~/components/navbar_vertical.vue";
 import Header_title from "~/components/header_title.vue";
+import infosServer from "~/components/infos-server.vue";
+
 </script>
 
 <style scoped>

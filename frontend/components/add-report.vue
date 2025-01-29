@@ -9,7 +9,6 @@
       <template #panel>
         <div class="px-8 py-4">
           <Placeholder class="h-20 w-48" />
-  
           <div class="wrapper_report">
             <ul>
               <UDivider label="RAPPORT NON VALIDÉ" />
