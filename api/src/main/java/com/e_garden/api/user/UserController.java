@@ -96,6 +96,10 @@ public class UserController {
     @PostMapping("/resetPassword/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> resetPassword(@PathVariable Long id) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.getUserByEmail(user.getUsername());
+        if (!Objects.equals(currentUser.getId(), id))
+            return ResponseEntity.status(406).build();
         userService.resetPassword(userService.getUserById(id));
         return ResponseEntity.noContent().build();
     }
@@ -103,19 +107,31 @@ public class UserController {
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.getUserByEmail(userPrincipal.getUsername());
+        if (!Objects.equals(currentUser.getId(), id))
+            return ResponseEntity.status(406).build();
         return ResponseEntity.ok(userService.updateUser(userService.getUserById(id), user));
     }
 
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.getUserByEmail(user.getUsername());
+        if (!Objects.equals(currentUser.getId(), id))
+            return ResponseEntity.status(406).build();
         userService.archiveUSer(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/block/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
-    public ResponseEntity<Void> blockUnblockUSer(@PathVariable Long id) {
+    public ResponseEntity<Void> blockUnblockUser(@PathVariable Long id) {
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.getUserByEmail(user.getUsername());
+        if (!Objects.equals(currentUser.getId(), id))
+            return ResponseEntity.status(406).build();
         userService.blockUnBlock(id);
         return ResponseEntity.noContent().build();
     }
