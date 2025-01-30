@@ -97,8 +97,8 @@ onMounted(() => {
   background-color: #f2f4ef;
   width: 100%;
   padding: 3rem;
-  height: 100svh;
-  max-height: 100svh;
+  height: 100dvh;
+  max-height: 100dvh;
   min-height: 100vh; /* Fallback pour anciens navigateurs */
 }
 
