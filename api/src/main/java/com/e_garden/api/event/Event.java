@@ -1,5 +1,6 @@
 package com.e_garden.api.event;
 
+import com.e_garden.api.door.Door;
 import com.e_garden.api.user.User;
 import com.e_garden.api.videos.Video;
 import jakarta.persistence.*;
@@ -38,8 +39,9 @@ public class Event {
      * Numéro de porte, correspond à un badge.
      * Peut aussi être utilisé pour le numéro d'une caméra, ou d'un autre objet à l'avenir.
      */
-    @Column(nullable = true, name = "door_number")
-    private Integer doorNumber;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = true, name = "door_id")
+    private Door door;
 
     /**
      * L'utilisateur, facultatif, enregistré si on a l'information.
@@ -115,12 +117,12 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public Integer getDoorNumber() {
-        return doorNumber;
+    public Door getDoor() {
+        return door;
     }
 
-    public void setDoorNumber(Integer doorNumber) {
-        this.doorNumber = doorNumber;
+    public void setDoor(Door door) {
+        this.door = door;
     }
 
     public User getUser() {
@@ -138,7 +140,7 @@ public class Event {
                 ", title='" + title + '\'' +
                 ", createdAt=" + createdAt +
                 ", eventType=" + eventType +
-                ", doorNumber=" + doorNumber +
+                ", doorNumber=" + door +
                 ", user=" + user +
                 '}';
     }

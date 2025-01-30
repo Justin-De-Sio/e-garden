@@ -9,5 +9,6 @@ public enum Levels {
     USER,
     REPORT,
     EVENT,
+    DOOR,
     API
 }
