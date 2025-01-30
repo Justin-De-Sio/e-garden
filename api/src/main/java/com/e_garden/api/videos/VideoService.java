@@ -233,12 +233,12 @@ public class VideoService {
      * @param date Date recherchée
      * @return Fichier vidéo correspondant à la journée recherchée
      */
-    public Resource getVideoForOneDay(LocalDateTime date) {
+    public ResponseEntity<Resource> getVideoForOneDay(LocalDateTime date) {
         LocalDateTime startOfDay = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0, 0);
         LocalDateTime endOfDay = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 23, 59, 59, 999999999);
         Video video = videoRepository.findFirstByFileDateBetweenOrderByFileDurationDesc(startOfDay, endOfDay);
         if (video == null)
             throw new ObjectNotFoundException("Video non trouvé avec la date : " + date.toString());
-        return getVideo(video.getFileName()).getBody();
+        return getVideo(video.getFileName());
     }
 }

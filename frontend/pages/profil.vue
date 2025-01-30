@@ -58,7 +58,7 @@
             </UForm>
           </div>
           <div class="footer_button">
-            <p @click="changePassword">Changer de mot de passe</p>
+            <u-link to="/change-password" >Changer de mot de passe</u-link>
           </div>
         </div>
         <div class="illustration">
@@ -231,10 +231,6 @@ const goBack = () => {
 const logout = () => {
   document.cookie = "session=;";
   router.push("/login");
-};
-
-const changePassword = () => {
-  router.push("/changePassword");
 };
 
 definePageMeta({

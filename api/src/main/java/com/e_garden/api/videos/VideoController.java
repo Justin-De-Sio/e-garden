@@ -59,9 +59,7 @@ public class VideoController {
             ResponseEntity.badRequest().build();
         }
         LocalDateTime dateTime = LocalDateTime.of(year, month, day, 0, 0);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                .body(videoService.getVideoForOneDay(dateTime));
+        return videoService.getVideoForOneDay(dateTime);
 
     }
 
