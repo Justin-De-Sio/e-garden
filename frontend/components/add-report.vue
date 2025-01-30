@@ -11,6 +11,15 @@
           <Placeholder class="h-20 w-48" />
           <div class="wrapper_report">
             <ul>
+                <div class="chevron">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('prev')" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                    <h2>{{ currentPage + 1 }}</h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('next')" v-if="checkNextPage()" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </div>
               <UDivider label="RAPPORT NON VALIDÉ" />
               <li
                 class="eachReport"
@@ -20,7 +29,7 @@
                 <div class="wrapperEach">
                     <p>{{ truncateText(report.content, 15) }}</p>
                     <p>{{ formatDate(report.createdAt) }}</p>
-                  <button type="button" class="editReport" @click="editReport(report.content, report.id)">
+                  <button type="button" class="editReport" @click="editReport(report.content, report.id)" :class="{ 'selected': activeReportId === report.id }">
                     Modifier
                   </button>
                 </div>
@@ -33,9 +42,12 @@
             <UFormGroup label="Contenu" name="content">
               <UTextarea v-model="state.content" type="text" placeholder="Veuillez choisir un compte-rendu à modifier " />
             </UFormGroup>
+            <UFormGroup label="Date de création" name="createdAt">
+                <UInput v-model="state.createdAt" type="text" readonly />
+            </UFormGroup>
             <div class="placement_button">
-                <UButton type="button" @click="onSubmit(true)">Envoyer</UButton>
-                <UButton type="button" color="gray" @click="onSubmit(false)">Brouillon</UButton>
+                <UButton type="button" @click="onSubmit(true)" >{{ isCreating ? "Créer" : "Enregistrer" }}</UButton>
+                <UButton type="button" color="gray" @click="onSubmit(false)" :disabled="isCreating">Brouillon</UButton>
             </div>
           </UForm>
         </div>
@@ -63,12 +75,32 @@
   const notificationVisible = ref(false);
     const notificationTitle = ref(""); 
     const notificationMessage = ref(""); 
+    const currentPage = ref(0);
+    const activeReportId = ref<bigint | null>(null);
+    const isCreating = ref(true);
+
+
 
 
     const truncateText = (text: string | undefined, maxLength: number = 15): string => {
     if (!text) return "Aucun Contenu"; 
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
     };
+
+
+    const changePage = (direction: 'prev' | 'next') => {
+        if (direction === 'prev' && currentPage.value > 0) {
+            currentPage.value--;
+        } else if (direction === 'next' && currentPage.value < totalPages.value - 1 ) {
+            currentPage.value++;
+        }
+        fetchReports(currentPage.value);
+        };
+
+        const checkNextPage = () => {
+
+        return currentPage.value < totalPages.value - 1;
+        };
 
   interface PaginatedResponse {
     content: Reports[];
@@ -92,28 +124,44 @@
   
   const state = reactive({
     content: "",
+    createdAt: "",
   });
 
   function editReport(content: string, id?: bigint) {
+    const selectedReport = NotValidatedReports.value.find(report => report.id === id);
+
     state.content = content; 
-    id_report.value = id
-    }
+    id_report.value = id;
+    activeReportId.value = id ?? null;
+    isCreating.value = false;
+    state.createdAt = selectedReport ? formatDate(selectedReport.createdAt) : "";
+}
+
   
-  const NotValidatedReports = ref<Reports[]>([]);
+    const NotValidatedReports = ref<Reports[]>([]);
+
   
   onMounted(async () => {
-    await fetchReports();
+    await fetchReports(currentPage.value);
   });
   
-  async function fetchReports() {
+  const totalPages = ref(0);
+
+async function fetchReports(page: number) {
     try {
-      const response = await api.fetchAPIGetPaginated("report/myNotValidatedReports",0,3) as PaginatedResponse;
-    console.log(response);
-      NotValidatedReports.value = response.content;
+        const response = await api.fetchAPIGetPaginated("report/myNotValidatedReports", page, 2) as PaginatedResponse;
+        
+        console.log("TotalPage", response);
+        
+        NotValidatedReports.value = response.content; 
+        totalPages.value = response.totalPages; 
+        
+        console.log("Rapports non validés :", NotValidatedReports.value);
     } catch (error) {
-      console.error("Erreur lors de la récupération des rapports :", error);
+        console.error("Erreur lors de la récupération des rapports :", error);
     }
-  }
+}
+
 
   const RequestValidatedReport = reactive({
     content: state.content,
@@ -123,22 +171,38 @@
 
   async function onSubmit(isFinal: boolean) {
     try{
-        const reportId = Number(id_report.value);
         RequestValidatedReport.content = state.content;
         RequestValidatedReport.validated = isFinal;
 
-        const response = await api.fetchAPIPutWithId("report", reportId, RequestValidatedReport);
-        console.log("test",response);
+        if(isCreating.value){
+            const response = await api.fetchAPIPost("report", RequestValidatedReport);
+        }
+        else{
+            const reportId = Number(id_report.value);
+            const response = await api.fetchAPIPutWithId("report", reportId, RequestValidatedReport);
+            console.log("test",response);
+        }
 
-        if (isFinal != true){
+
+        if (isFinal == true){
             notificationTitle.value = "Succès"; 
-            notificationMessage.value = "Votre rapport a bien été enregistré !"; 
+            notificationMessage.value = isCreating.value 
+                ? "Votre rapport a été créé !" 
+                : "Votre rapport a bien été enregistré !";
             notificationVisible.value = true;
         }else{
             notificationTitle.value = "Succès"; 
             notificationMessage.value = "Votre rapport a bien été enregistré en mode brouillon !"; 
             notificationVisible.value = true;
         }
+        await fetchReports(currentPage.value);
+
+        state.content = "";
+        state.createdAt = "";
+        activeReportId.value = null;
+            setTimeout(() => {
+        notificationVisible.value = false;
+        }, 6000);
 
 
     }catch(error){
@@ -179,6 +243,18 @@
     font-size: clamp(0.7rem, 2vw, 0.9rem);
   }
 
+  .editReport.selected {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: min(0.8vw, 5px) min(2vw, 12px); 
+    background-color: #f79d65;
+    opacity: 0.5;
+    color: white;
+    border-radius: 0.4rem;
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+  }
+
   .wrapperEach p {
     font-size: clamp(0.7rem, 2vw, 0.9rem);
   }
@@ -187,5 +263,26 @@
     display: flex;
     gap: 1rem;
   }
+
+  .custom-notification {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+    width: min(50vw, 30rem);
+    max-width: 30rem; 
+    }
+
+    .chevron{
+    display: flex;  
+    margin-left: auto;
+    gap: 1rem;
+    position: sticky;
+    padding-right: 1rem;
+    }
+
+    .chevron svg{
+    cursor: pointer;
+    }
   </style>
   
