@@ -23,7 +23,6 @@ public class EventService {
     public EventService(EventRepository eventRepository, LogService log) {
         this.eventRepository = eventRepository;
         this.log = log;
-
     }
 
     public PageDTO<EventDTO> getPaginatedEvents(int page, int size) {
@@ -50,9 +49,9 @@ public class EventService {
             return event.get();
     }
 
-    public Event saveEvents(Event event) {
+    public void saveEvents(Event event) {
         log.createLog(String.valueOf(Levels.EVENT), "Événement ajouté", event.toString());
-        return eventRepository.save(event);
+        eventRepository.save(event);
     }
 
     public void deleteEvents(Long id) {
@@ -60,6 +59,11 @@ public class EventService {
         log.createLog(String.valueOf(Levels.EVENT), "Événement supprimé", "event id :" + id);
     }
 
+    /**
+     * Méthode privée permettant de convertir un objet Event en EventDTO
+     * @param event l'Event
+     * @return un EventDTO complet
+     */
     private EventDTO getEventDTOFromEvent(Event event) {
         EventDTO eventDTO = new EventDTO();
         eventDTO.setId(event.getId());
@@ -86,7 +90,12 @@ public class EventService {
         };
     }
 
-    public int getEventTypeUserBadgeCount() {
+    /**
+     * Méthode afin de récupérer le nombre d'événements lié à utilisateur, soit le nombre de passages
+     * sur les 30 derniers jours.
+     * @return un entier
+     */
+    public int getCountOfEventTypeUserBadge() {
         return eventRepository.countAllByEventTypeAndCreatedAtGreaterThan(0, LocalDateTime.now().minusDays(30));
     }
 
