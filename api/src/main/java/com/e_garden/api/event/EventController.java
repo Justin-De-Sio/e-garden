@@ -74,6 +74,6 @@ public class EventController {
     @GetMapping("/statistique")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Integer> getEventStatistique() {
-        return ResponseEntity.ok(eventService.getEventTypeUserBadgeCount());
+        return ResponseEntity.ok(eventService.getCountOfEventTypeUserBadge());
     }
 }
