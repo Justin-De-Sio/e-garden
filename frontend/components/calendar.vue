@@ -101,7 +101,7 @@ export default {
 
 <style scoped>
 .calendar {
-  width: 100%;
+  width: 20rem;
   border: 1px solid #ccc;
   border-radius: 15px;
   padding: 10px;
