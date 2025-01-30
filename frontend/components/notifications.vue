@@ -1,14 +1,12 @@
 <template>
   <div>
-    <UButton
-      icon="i-heroicons-bell-alert"
-      size="lg"
-      color="white"
-      square
-      variant="solid"
-      :ui="{rounded:'rounded-[0.8rem]', color:{white: {solid: 'shadow-sm text-white dark:text-gray-900 bg-gray-900 hover:bg-[#95bd75]'}}}"
-      @click="isOpen = true"
-    />
+    <div class="button_not">
+      <button type="button" @click="isOpen = true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-black">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+        </svg>
+      </button>
+    </div>
     <USlideover v-model="isOpen" class="Slider">
       <UCard
         class="flex flex-col flex-1"
@@ -36,7 +34,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('next')" v-if="checkNextPage()" >
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
-          </div>
+         </div>
 
           </div>
 
@@ -184,6 +182,32 @@ onMounted(() => {
 .chevron svg{
   cursor: pointer;
 }
+
+
+.button_not button{
+  background: none;
+  border: none;
+  width: min(7vw, 2rem);
+  height: min(7vw, 2rem);
+  background-color: white;
+  border-radius: 0.5rem;
+  margin: auto;
+  margin-top: 0.2rem;
+  cursor: pointer ;
+}
+
+
+.button_not button:hover{
+  opacity: 0.7;
+}
+
+.button_not button svg{
+  margin: auto;
+  width: min(4vw, 1.2rem);
+  height: min(4vw, 1.2rem);
+}
+
+
 
 
 

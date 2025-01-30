@@ -3,7 +3,7 @@
     <img src="/public/assets/logo.png" alt="" width="80px" height="auto">
     <UHorizontalNavigation
         :links="links"
-        class="border-b border-gray-200 dark:border-gray-800"
+        class=" dark:border-gray-800"
         :ui="{
           after: 'after:h-[2px]',
           base: 'py-7 focus:outline-none',
@@ -124,6 +124,7 @@ onMounted(() => {
 
 .add_button{
   margin: auto;
+
 }
 
 .button_group{
@@ -138,6 +139,15 @@ onMounted(() => {
     display: none;
   }
 
+  .wrapper{
+      padding-right: 2rem;
+  }
+
+  .button_group{
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
 
 }
 </style>
