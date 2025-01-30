@@ -60,18 +60,44 @@ public class ReportService {
         ));
     }
 
+    /**
+     * Méthode qui retourne le nombre de rapports non validé sur les 30 derniers jours.
+     * @return un entier
+     */
     public int getUnvalidatedReportsCount() {
         return reportRepository.countAllByValidatedAndReportDateGreaterThan(false, LocalDateTime.now().minusDays(30));
     }
 
+    /**
+     * Retourne une page de rapports validés pour un utilisateur.
+     * @param page numéro de la page
+     * @param size taille de la page
+     * @param id identifiant de l'utilisateur
+     * @return une page avec n rapports validés
+     */
     public PageDTO<Report> getMyValidatedReports(int page, int size, Long id) {
         return getUserReportsByValidated(page, size, id, true);
     }
 
+    /**
+     * Retourne une page de rapports non validés pour un utilisateur.
+     * @param page numéro de la page
+     * @param size taille de la page
+     * @param id identifiant de l'utilisateur
+     * @return une page avec n rapports non validés
+     */
     public PageDTO<Report> getMyNotValidatedReports(int page, int size, Long id) {
         return getUserReportsByValidated(page, size, id, false);
     }
 
+    /**
+     * Méthode privée retournant une page de rapports pour un utilisateur en fonction de son état validé.
+     * @param page numéro de la page
+     * @param size taille de la page
+     * @param id identifiant de l'utilisateur
+     * @param validated état validé ou non des rapports
+     * @return une page avec n rapports
+     */
     private PageDTO<Report> getUserReportsByValidated(int page, int size, Long id, boolean validated) {
         Page<Report> reportPage = reportRepository.findAllByUser_IdAndValidatedOrderByReportDateAsc(id, validated,PageRequest.of(page, size));
 
@@ -84,6 +110,12 @@ public class ReportService {
         ));
     }
 
+    /**
+     * Méthode pour retournant les rapports validés les plus recent par page.
+     * @param page numéro de la page
+     * @param size taille de la page
+     * @return une page avec n rapports
+     */
     public PageDTO<Report> getPaginatedValidatedReports(int page, int size) {
         Page<Report> reportPage = reportRepository.findAllByValidatedOrderByReportDateAsc(true, PageRequest.of(page, size));
 
