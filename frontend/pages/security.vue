@@ -1,43 +1,48 @@
 <template>
     <div class="wrapper_page">
       <NavbarVertical></NavbarVertical>
-      <div class="wrapper_content">
-      <div class="header_bis">
-        <header_title title="Section Sécurité" subtitle="Retrouvez tous les indicateurs pour la gestion de votre potager"></header_title>
-      </div>
-      <div class="top_wrapper">
-        <div class="top_left">
-          <div class="columns_indicators">
-            <indicators 
-            iconBackgroundColor="#95BD75"
-            iconPath="/assets/passages.png"
-            subtitle="Sur les 30 derniers jours"
-            :title="`${number_passage || 0} passages`"
-            ></indicators>
-            <indicators 
-            iconBackgroundColor="#ECA9A8"
-            iconPath="/assets/exclamation.png"
-            subtitle="Sur les 30 derniers jours"
-            :title="`${number_cr || 0} rapports non remis`"
-            ></indicators>
+      <div class="wrapperLeftRight">
+        <div class="left_content">
+          <div class="header_bis">
+            <header_title title="Section Sécurité" subtitle="Retrouvez tous les indicateurs pour la gestion de votre potager"></header_title>
           </div>
-        </div>
-        <div class="bot_left">
-          <div class="top_bot_left">
-            <h2>Caméra</h2>
-            <camera></camera>
+          <div class="top_wrapper">
+            <div class="top_left">
+              <div class="columns_indicators">
+                <indicators 
+                iconBackgroundColor="#95BD75"
+                iconPath="/assets/passages.png"
+                subtitle="Sur les 30 derniers jours"
+                :title="`${number_passage || 0} passages`"
+                ></indicators>
+                <indicators 
+                iconBackgroundColor="#ECA9A8"
+                iconPath="/assets/exclamation.png"
+                subtitle="Sur les 30 derniers jours"
+                :title="`${number_cr || 0} rapports non remis`"
+                ></indicators>
+              </div>
+            </div>
+            <div class="bot_left">
+              <div class="top_bot_left">
+                <h2>Caméra</h2>
+                <camera></camera>
+              </div>
+              <div class="top_bot_right">
+                <h2>Comptes-rendus</h2>
+                  <newReport></newReport>
+              </div>
           </div>
-          <div class="top_bot_right">
-            <h2>Comptes-rendus <u-link to="/gestion-reports">(voir plus)</u-link></h2>
-              <newReport></newReport>
-          </div>
+
+
         </div>
 
       </div>
+      <div class="right_calendar">
+              <calendar></calendar>
+        </div>
     </div>
-    <footer>
-    E-Garden • © 2025
-  </footer>
+    <footer>E-Garden • © 2025</footer>
   </div>
 
 </template>
@@ -49,7 +54,8 @@
   import NavbarVertical from "~/components/navbar_vertical.vue"
   import report from "~/components/report.vue";
   import {callAPI}  from "~/services/callAPI";
-      import newReport from '~/components/new-report.vue'
+  import newReport from '~/components/new-report.vue'
+  import calendar from "~/components/calendar.vue";
 
   const api = new callAPI;
   const number_passage = ref();
@@ -91,15 +97,22 @@
   flex-direction: column;
   min-height: 100vh;
 }
-.wrapper_content{
+
+.wrapperLeftRight{
   display: flex;
-  flex-direction: column;
-  padding: 0 2rem;
   flex-grow: 1;
 }
+
+.left_content{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  flex-grow: 1;
+  padding: 0 2rem;
+}
 .header_bis{
-  width: 100vw;
-  height: 100%;
+  width: 80%;
+  height: auto;
   padding: 2rem 0;
 }
 
@@ -111,14 +124,16 @@
 }
 
 .top_wrapper{
+
   width: 100%;
   height: 100%;
 }
 .bot_left{
-  width: 70%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin: 3rem 0;
+  padding-right: 3rem;
   gap: 5rem;
 }
 
@@ -141,6 +156,11 @@
 
 }
 
+.right_calendar{
+  margin-top: 5rem;
+  margin-right: 4rem;
+}
+
 footer{ 
   font-family: "Gilroy-Medium";
   text-align: center;
@@ -153,8 +173,8 @@ footer{
   .wrapper_content {
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* Centre verticalement */
-  align-items: center;  /* Centre horizontalement */
+  justify-content: center; 
+  align-items: center;  
   width: 100%;
   padding: 0 1rem;
 }

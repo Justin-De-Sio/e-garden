@@ -61,17 +61,26 @@ onMounted(() => {
     video::-webkit-media-controls-timeline {
       display: none !important;
     }
-    .flux_video{
-      width: 100%;
-      height: auto;
-      position: relative;
-    }
+    .flux_video {
+    width: 100%;
+    max-width: 800px; 
+    height: auto;
+    position: relative;
+    background-color: black; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.8rem;
+    overflow: hidden; 
+  }
 
-    .flux_video video{ 
-      max-height: 25rem;
-      border-radius: 0.8rem;
-
-    }
+  .flux_video video { 
+    width: 100%;  
+    height: auto;
+    max-height: 20rem; 
+    border-radius: inherit; 
+    object-fit: cover; 
+  }
 
     .liveContainer{
       display: flex;
