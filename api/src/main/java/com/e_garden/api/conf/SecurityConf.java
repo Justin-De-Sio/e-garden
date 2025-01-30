@@ -77,6 +77,11 @@ public class SecurityConf {
         return provider;
     }
 
+    /**
+     * Fonction qui permet de définir des informations sur l'aspect Rôle et autorité de l'application.
+     * La méthode précise que le rôle ne contient pas de préfixe, par défaut les rôles débutent par "ROLE_".
+     * @return un Objet GrantedAuthorityDefaults
+     */
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults(""); // Supprime le préfixe "ROLE_"
