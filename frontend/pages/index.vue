@@ -109,6 +109,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .center_title h1 {
