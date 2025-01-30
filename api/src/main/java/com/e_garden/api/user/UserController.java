@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
-
+// TODO mettre lemail en minuscule
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
@@ -62,7 +63,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO user) {
-        Object verify = userService.verify(new User(user.getEmail(), user.getPassword()));
+        Object verify = userService.verify(new User(user.getEmail().toLowerCase(Locale.ROOT), user.getPassword()));
         if (verify.equals(false))
             return ResponseEntity.status(403).body("Identifiant ou mot de passe incorrecte");
         return ResponseEntity.ok(verify.toString());
@@ -90,6 +91,7 @@ public class UserController {
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public User createUser(@RequestBody User user) {
         user.setPassword(System.getenv("DEFAULT_PASSWORD"));
+        user.setEmail(user.getEmail().toLowerCase(Locale.ROOT));
         return userService.createUser(user);
     }
 
