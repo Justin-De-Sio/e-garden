@@ -46,6 +46,7 @@ onMounted(() => {
 <style lang="css" scoped>
 
 .loading-wrapper {
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
