@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div
         v-if="isLoading"
         class="loading-wrapper"
@@ -54,6 +54,7 @@ onMounted(() => {
   background-color: #f2f4ef;
   width: 100%;
   height: 100vh;
+  max-height: 100dvh;
   position: fixed;
   top: 0;
   left: 0;
