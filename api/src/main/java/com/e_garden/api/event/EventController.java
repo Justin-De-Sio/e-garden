@@ -51,6 +51,12 @@ public class EventController {
     //   En revanche, l’indicateur devient rouge si la personne n’est pas
     //   autorisée à accéder au potager.
 
+    /**
+     * Méthode qui permet d'enregistrer un passage.
+     * La méthode enregistre un événement lié à l'utilisateur et crée un rapport non rempli lié à l'utilisateur.
+     * @param id identifiant de la porte
+     * @return un objet rapport non rempli
+     */
     @GetMapping("/door/{id}")
     public ResponseEntity<Report> saveEntry(@PathVariable Long id) {
         Event event = new Event();
