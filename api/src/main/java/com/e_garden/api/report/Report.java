@@ -50,6 +50,11 @@ public class Report {
         this.user = user;
     }
 
+    public Report(User user, String content) {
+        this(user);
+        this.content = content;
+    }
+
     public Long getId() {
         return id;
     }
@@ -96,11 +101,6 @@ public class Report {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Report(User user, String content) {
-        this(user);
-        this.content = content;
     }
 
     @Override
