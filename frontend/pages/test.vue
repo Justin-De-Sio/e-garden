@@ -1,11 +1,11 @@
 <template>
     <div>
-        <calendar></calendar>
+        <newReport></newReport>
     </div>
 </template>
 
 <script setup lang="ts">
-    import calendar from '~/components/calendar.vue'
+    import newReport from '~/components/new-report.vue'
 </script>
 
 <style scoped>

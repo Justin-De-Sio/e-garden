@@ -29,13 +29,17 @@
           </div>
           <div class="top_bot_right">
             <h2>Comptes-rendus <u-link to="/gestion-reports">(voir plus)</u-link></h2>
-            <report></report>
+              <newReport></newReport>
           </div>
         </div>
 
       </div>
     </div>
+    <footer>
+    E-Garden • © 2025
+  </footer>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -45,6 +49,7 @@
   import NavbarVertical from "~/components/navbar_vertical.vue"
   import report from "~/components/report.vue";
   import {callAPI}  from "~/services/callAPI";
+      import newReport from '~/components/new-report.vue'
 
   const api = new callAPI;
   const number_passage = ref();
@@ -82,11 +87,15 @@
   height: 100%;
   overflow: hidden;
   max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 .wrapper_content{
   display: flex;
   flex-direction: column;
   padding: 0 2rem;
+  flex-grow: 1;
 }
 .header_bis{
   width: 100vw;
@@ -132,6 +141,14 @@
 
 }
 
+footer{ 
+  font-family: "Gilroy-Medium";
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+
  @media screen and (max-width: 800px){
   .wrapper_content {
   display: flex;
@@ -150,8 +167,6 @@
   text-align: center;
 }
 
-
-  
  }
 
 </style>

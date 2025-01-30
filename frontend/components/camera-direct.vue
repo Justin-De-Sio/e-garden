@@ -1,6 +1,10 @@
 <template>
     <div class="flux_video">
       <video id="video" controls autoplay muted playsinline></video>
+      <div class="liveContainer">
+        <div class="cercle"></div>
+        <h4>En Direct</h4>
+      </div>
     </div>
 </template>
 
@@ -60,11 +64,42 @@ onMounted(() => {
     .flux_video{
       width: 100%;
       height: auto;
-
-
+      position: relative;
     }
 
     .flux_video video{ 
       max-height: 25rem;
+      border-radius: 0.8rem;
+
     }
+
+    .liveContainer{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.3rem;
+      width: 15%;
+      height: 8%;
+      background-color: black;
+      border-radius: 12rem;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      opacity: 0.6;
+    }
+
+    .cercle{
+      width: 0.7rem;
+      height: 0.7rem;
+      background-color: #ECA9A8;
+      border-radius: 50%;
+      opacity: 1;
+    }
+
+    .liveContainer h4{
+      color: white;
+      font-family: "Gilroy-medium";
+      font-size: 0.7rem;
+    }
+
 </style>
