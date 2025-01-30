@@ -1,5 +1,4 @@
 <template>
-  <div >
     <div
         v-if="isLoading"
         class="loading-wrapper"
@@ -19,7 +18,6 @@
         <button @click="loginButton" class="button-login">Entrez dans le potager !</button>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -53,7 +51,7 @@ onMounted(() => {
   align-items: center;
   background-color: #f2f4ef;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   max-height: 100dvh;
   position: fixed;
   top: 0;
