@@ -256,6 +256,7 @@ definePageMeta({
         justify-content: space-between; 
         align-items: center; 
         width: 100%; 
+        max-height: 100dvh;
         box-sizing: border-box; 
     }
 
