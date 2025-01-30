@@ -45,6 +45,11 @@ onMounted(() => {
 
 <style lang="css" scoped>
 
+:deep(html), :deep(body) {
+  height: 100%;
+  overflow: hidden;
+}
+
 .loading-wrapper {
   overflow: hidden;
   display: flex;
@@ -91,8 +96,10 @@ onMounted(() => {
   align-items: center;
   background-color: #f2f4ef;
   width: 100%;
-  height: 100vh;
   padding: 3rem;
+  height: 100svh;
+  max-height: 100svh;
+  min-height: 100vh; /* Fallback pour anciens navigateurs */
 }
 
 .center_placement {
