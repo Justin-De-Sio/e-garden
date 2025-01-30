@@ -9,10 +9,10 @@
       </div>
       <div class="calendar-navigation">
         <button @click="prevMonth">
-          <img src="/assets/gauche.png" alt="Mois précédent" />
+          <img src="~/assets/gauche.png" alt="Mois précédent" />
         </button>
         <button @click="nextMonth">
-          <img src="/assets/droite.png" alt="Mois suivant" />
+          <img src="~/assets/droite.png" alt="Mois suivant" />
         </button>
       </div>
     </div>
