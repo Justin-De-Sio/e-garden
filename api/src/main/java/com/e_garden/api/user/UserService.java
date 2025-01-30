@@ -35,6 +35,10 @@ public class UserService {
         return userRepository.findAllByEnable(true);
     }
 
+    /**
+     * Méthode permettant de retourner les utilisateurs avec le Rôle Responsable ou le Rôle utilisateur.
+     * @return une liste d'utilisateur
+     */
     public List<User> getAllResponsableUsers() {
         return userRepository.findAllByEnableAndRoleContainsOrRoleContains(
                 true, Roles.UTILISATEUR.toString(), Roles.RESPONSABLE.toString());
@@ -95,22 +99,25 @@ public class UserService {
         return usersSaved;
     }
 
-    public User resetPassword(User user) {
+    /**
+     * Réinitialise le mot de passe de l'utilisateur avec le mot de pass par défaut défini dans la configuration du projet.
+     * @param user à réinitialiser
+     */
+    public void resetPassword(User user) {
         user.setPassword(System.getenv("DEFAULT_PASSWORD"));
         user.setNbLoginFailure(0);
         user = saveUser(encodePassword(user));
         log.createLog(String.valueOf(Levels.USER), "Utilisateur resetPassword", user.toString());
-        return user;
     }
 
-    public User saveUser(User user) {
+    private User saveUser(User user) {
         user.setSurname(user.getSurname().toUpperCase(Locale.ROOT));
         user = userRepository.save(user);
         log.createLog(String.valueOf(Levels.USER), "Utilisateur mis à jour", user.toString());
         return user;
     }
 
-    public void deleteUSer(Long id) {
+    private void deleteUSer(Long id) {
         userRepository.deleteById(id);
         log.createLog(String.valueOf(Levels.USER), "Utilisateur supprimé", "user id : " + id);
     }
@@ -188,7 +195,12 @@ public class UserService {
         }
     }
 
-
+    /**
+     * Méthode spécifique pour la mise à jour d'un utilisateur.
+     * @param currentUser utilisateur avec les informations connues
+     * @param newUser utilisateur avec les nouvelles informations
+     * @return l'utilisateur à jour
+     */
     public User updateUser(User currentUser, User newUser) {
         currentUser.setName(newUser.getName());
         currentUser.setSurname(newUser.getSurname());
@@ -200,6 +212,10 @@ public class UserService {
         return saveUser(currentUser);
     }
 
+    /**
+     * Méthode permettant d'archiver un utilisateur.
+     * @param id identifiant de l'utilisateur
+     */
     public void archiveUSer(Long id) {
         User u = getUserById(id);
         u.setEnable(false);
@@ -208,12 +224,12 @@ public class UserService {
     }
 
     /**
-     * Efface les données personnelles d'un utilisateur
+     * Efface les données personnelles d'un utilisateur afin de l'anonymiser.
      *
      * @param user avec des données
      * @return user anonymisé
      */
-    public User anonymisationUser(User user) {
+    private User anonymisationUser(User user) {
         user.setName("name");
         user.setSurname("surname");
         user.setClassName("");
@@ -223,6 +239,10 @@ public class UserService {
         return encodePassword(user);
     }
 
+    /**
+     * Méthode permettant de bloquer ou de débloqué un utilisateur.
+     * @param id identifiant de l'utilisateur
+     */
     public void blockUnBlock(Long id) {
         User u = getUserById(id);
         boolean lockedState = u.isLocked();

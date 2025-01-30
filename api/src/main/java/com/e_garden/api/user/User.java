@@ -37,22 +37,17 @@ public class User {
     private String className;
     @Column(nullable = true, name = "class_number")
     private Integer groupNumber;
-
     @JsonIgnore
     @Column(nullable = false, name = "enable")
     private boolean enable;
-
     @Column(nullable = false, name = "locked")
     private boolean locked;
-
     @JsonIgnore
     @Column(nullable = false, name = "nb_login_failure")
     private Integer nbLoginFailure;
-
     @JsonIgnore
     @Column(nullable = true, name = "date_last_login")
     private LocalDateTime dateLastLogin;
-
     @JsonIgnore
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
@@ -79,7 +74,6 @@ public class User {
         this.name = name;
         this.surname = surname;
         this.className = className;
-
     }
 
     public LocalDateTime getDateLastLogin() {
