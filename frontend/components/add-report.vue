@@ -1,10 +1,12 @@
 <template>
     <UPopover :popper="{ arrow: true }">
-      <UButton
-        color="primary"
-        trailing-icon="i-heroicons-plus"
-        :ui="{ rounded: 'rounded-lg' }"
-      />
+        <div class="button_add">
+            <button type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+        </div>
   
       <template #panel>
         <div class="px-8 py-4">
@@ -284,5 +286,28 @@ async function fetchReports(page: number) {
     .chevron svg{
     cursor: pointer;
     }
+
+.button_add button{
+  background: none;
+  border: none;
+  width: min(7vw, 2rem);
+  height: min(7vw, 2rem);
+  background-color: #95bd75;
+  border-radius: 0.5rem;
+  margin: auto;
+  margin-top: 0.2rem;
+  cursor: pointer ;
+}
+
+
+.button_add button:hover{
+  opacity: 0.7;
+}
+
+.button_add button svg{
+  margin: auto;
+  width: min(4vw, 1.2rem);
+  height: min(4vw, 1.2rem);
+}
   </style>
   

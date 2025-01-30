@@ -81,6 +81,34 @@
     color: #7B7B7B;
     margin: 0;
   }
+
+  @media screen and (max-width: 800px) {
+
+    .custom-frame{
+      padding: 0.5rem  
+    }
+
+    .icon-image {
+    width: 100%; 
+    height: auto;
+    padding: 0.6rem;
+
+  }
+  }
+  @media screen and (max-width: 400px) {
+
+  .custom-frame{
+    padding: 0.5rem  
+  }
+
+  .icon-image {
+  width: 100%; 
+  height: auto;
+  padding: 0.3rem;
+
+  }
+    
+}
   
   </style>
   

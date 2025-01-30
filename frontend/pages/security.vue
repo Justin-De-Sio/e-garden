@@ -1,34 +1,36 @@
 <template>
     <div class="wrapper_page">
       <NavbarVertical></NavbarVertical>
-    <div class="header_bis">
-      <header_title title="Section Sécurité" subtitle="Retrouvez tous les indicateurs pour la gestion de votre potager"></header_title>
-    </div>
-    <div class="top_wrapper">
-      <div class="top_left">
-        <div class="columns_indicators">
-          <indicators 
-          iconBackgroundColor="#95BD75"
-          iconPath="/assets/passages.png"
-          subtitle="Sur les 30 derniers jours"
-          :title="`${number_passage || 0} passages`"
-          ></indicators>
-          <indicators 
-          iconBackgroundColor="#ECA9A8"
-          iconPath="/assets/exclamation.png"
-          subtitle="Sur les 30 derniers jours"
-          :title="`${number_cr || 0} rapports non remis`"
-          ></indicators>
-        </div>
+      <div class="wrapper_content">
+      <div class="header_bis">
+        <header_title title="Section Sécurité" subtitle="Retrouvez tous les indicateurs pour la gestion de votre potager"></header_title>
       </div>
-      <div class="bot_left">
-        <div class="top_bot_left">
-          <h2>Caméra</h2>
-          <camera></camera>
+      <div class="top_wrapper">
+        <div class="top_left">
+          <div class="columns_indicators">
+            <indicators 
+            iconBackgroundColor="#95BD75"
+            iconPath="/assets/passages.png"
+            subtitle="Sur les 30 derniers jours"
+            :title="`${number_passage || 0} passages`"
+            ></indicators>
+            <indicators 
+            iconBackgroundColor="#ECA9A8"
+            iconPath="/assets/exclamation.png"
+            subtitle="Sur les 30 derniers jours"
+            :title="`${number_cr || 0} rapports non remis`"
+            ></indicators>
+          </div>
         </div>
-        <div class="top_bot_right">
-          <h2>Comptes-rendus <u-link to="/gestion-reports">(voir plus)</u-link></h2>
-          <report></report>
+        <div class="bot_left">
+          <div class="top_bot_left">
+            <h2>Caméra</h2>
+            <camera></camera>
+          </div>
+          <div class="top_bot_right">
+            <h2>Comptes-rendus <u-link to="/gestion-reports">(voir plus)</u-link></h2>
+            <report></report>
+          </div>
         </div>
       </div>
     </div>
@@ -79,16 +81,17 @@
   height: 100%;
   overflow: hidden;
 }
-
+.wrapper_content{
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+}
 .header_bis{
   width: 100vw;
   height: 100%;
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
-.top_left{
-  padding: 0 2rem;
-}
 
 .columns_indicators{
   display: flex;
@@ -104,7 +107,7 @@
   width: 70%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin: 3rem;
+  margin: 3rem 0;
   gap: 5rem;
 }
 
@@ -126,5 +129,27 @@
   margin-bottom: 2rem;
 
 }
+
+ @media screen and (max-width: 800px){
+  .wrapper_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Centre verticalement */
+  align-items: center;  /* Centre horizontalement */
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.bot_left{
+  width: 100%;
+}
+
+.header_bis{
+  text-align: center;
+}
+
+
+  
+ }
 
 </style>
