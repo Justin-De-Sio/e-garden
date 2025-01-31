@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -71,7 +72,7 @@ public class EventService {
         eventDTO.setTitle(event.getTitle());
         eventDTO.setCreatedAt(event.getCreatedAt());
         eventDTO.setUserId(event.getUser() == null ? -1 : event.getUser().getId());
-        String date = event.getCreatedAt().format(DateTimeFormatter.ofPattern("'le' dd MMMM yyyy 'à' HH'H'mm"));
+        String date = event.getCreatedAt().format(DateTimeFormatter.ofPattern("'le' dd MMMM yyyy 'à' HH'H'mm", Locale.FRENCH));
         return switch (event.getEventType()) {
             case 0 -> {
                 eventDTO.setDescription(event.getUser().getName() + " " +
