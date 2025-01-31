@@ -34,6 +34,11 @@ import type {Events} from "~/model/Events";
 import NavbarVertical from "~/components/navbar_vertical.vue";
 import Header_title from "~/components/header_title.vue";
 
+definePageMeta({
+  middleware: "auth",
+  role: ["ADMINISTRATEUR"],
+})
+
 const columns = [
   {key: "id", label: "ID Événement"},
   {key: "title", label: "Titre", sortable: true},
