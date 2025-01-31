@@ -1,7 +1,7 @@
 <template>  
     <div class="wrapperContainer">
         <div class="wrapperContrainerHeader">
-            <button type="button" class="moreReport" @click="allReport()">Voir plus</button>
+          <button type="button" class="moreReport" @click="$router.push('/gestion-reports')">Voir plus</button>
             <div class="chevron">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('prev')" >
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -60,10 +60,6 @@
         reportsObject.value = response.content as Reports[];
 
     };
-
-    function allReport(){
-        navigateTo("/gestion-notifications")
-    }
 
     onMounted( async () => {
         fetchNotif(currentPage.value)
