@@ -30,6 +30,7 @@ import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
 import AddReport from "~/components/add-report.vue";
+import {getToken} from "~/services/getToken";
 
 // Structure des données pour les liens
 interface Link {
@@ -68,18 +69,21 @@ const links = ref<Link[]>([
   },
 ]);
 
+const respoLinks = ref<Link[]>([
+  {
+    order: 4,
+    label: 'Gestionnaire',
+    icon: 'i-heroicons-rectangle-stack',
+    to: '/gestion-users',
+  },
+]);
+
 const adminLinks = ref<Link[]>([
   {
     order: 1,
     label: 'Sécurité',
     icon: 'i-heroicons-video-camera',
     to: '/security',
-  },
-  {
-    order: 4,
-    label: 'Gestionnaire',
-    icon: 'i-heroicons-rectangle-stack',
-    to: '/gestion-users',
   },
   {
     order: 5,
@@ -89,25 +93,34 @@ const adminLinks = ref<Link[]>([
   },
 ]);
 const isAdmin = ref(false);
+const isRespo = ref(false);
+
+function loadElementsNavBar() {
+  let updatedLinks: Link[] = [];
+  if (getToken().role === 'ADMINISTRATEUR') {
+    updatedLinks = links.value.concat(adminLinks.value).concat(respoLinks.value);
+    isAdmin.value = true;
+    isRespo.value = true;
+  }
+  if (getToken().role === 'RESPONSABLE') {
+    updatedLinks = links.value.concat(respoLinks.value);
+    isRespo.value = true;
+  }
+  updatedLinks.sort((a, b) => a.order - b.order);
+  links.value = updatedLinks;
+}
 
 const fetchProfile = async () => {
   try {
     const response = await api.fetchAPIGet('user/profil') as User;
-    isAdmin.value = response.role === 'ADMINISTRATEUR';
-    let updatedLinks: Link[] = [];
-
-    if (isAdmin.value) {
-      updatedLinks = links.value.concat(adminLinks.value); // Concatène correctement
-      updatedLinks.sort((a, b) => a.order - b.order);
-    }
-    updatedLinks[updatedLinks.length - 1].label = response.name || 'Profil';
-    links.value = updatedLinks;
+    links.value[links.value.length - 1].label = response.name || 'Profil';
   } catch (error) {
     console.error('Erreur lors de la récupération du profil :', error);
   }
 };
 
 onMounted(async () => {
+  loadElementsNavBar();
   await fetchProfile();
 });
 </script>
