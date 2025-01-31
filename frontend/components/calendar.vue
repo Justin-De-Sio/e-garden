@@ -39,7 +39,6 @@
 
 <script>
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, startOfToday, isSameDay, isSameMonth } from 'date-fns';
-import { fr } from 'date-fns/locale';
 
 export default {
   data() {
@@ -51,8 +50,8 @@ export default {
   },
   computed: {
     currentMonth() {
-      const month = format(this.currentDate, 'MMMM', { locale: fr });
-      const year = format(this.currentDate, 'yyyy', { locale: fr });
+      const month = format(this.currentDate, 'MMMM');
+      const year = format(this.currentDate, 'yyyy');
       return `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
     },
     days() {
@@ -63,7 +62,7 @@ export default {
       while (day <= end) {
         days.push({
           date: day,
-          label: format(day, 'd', { locale: fr }),
+          label: format(day, 'd'),
         });
         day = addDays(day, 1);
       }
