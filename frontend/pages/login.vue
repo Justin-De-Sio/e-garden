@@ -171,12 +171,6 @@ form {
   width: 90%;
 }
 
-.password-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
 .Ubutton_custom:hover{
   transform: scale(1.03);
   background-color: #95bd75;

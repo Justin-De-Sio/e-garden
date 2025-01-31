@@ -14,6 +14,11 @@
 import Header_title from '~/components/header_title.vue';
 import gestion_tab from '~/components/gestion-all-users.vue';
 import NavbarVertical from "~/components/navbar_vertical.vue";
+
+definePageMeta({
+  middleware: "auth",
+  role: ["ADMINISTRATEUR", "RESPONSABLE"],
+})
 </script>
 
 <style>

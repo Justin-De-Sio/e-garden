@@ -45,7 +45,6 @@ const roles = ref<Roles>();
 
 const fetchUser = async (id: number) => {
   try {
-    console.log(id);
     user.value = await api.fetchAPIGet(`user/` + id) as User;
     roles.value = await api.fetchAPIGet("user/roles") as Roles;
 

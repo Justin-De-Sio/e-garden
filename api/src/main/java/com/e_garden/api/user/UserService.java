@@ -139,7 +139,7 @@ public class UserService {
 
     /**
      * Méthode qui contrôle le nombre de connexions erroné pour un utilisateur.
-     * Si le compte a réalisé plus de 5 tentatives alors il sera bloqué
+     * Si le compte a réalisé plus de 5 tentatives alors, il sera bloqué
      * @param user à contrôler
      * @return true si valide false si bloqué
      */

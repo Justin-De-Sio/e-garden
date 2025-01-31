@@ -43,6 +43,10 @@ import NavbarVertical from "~/components/navbar_vertical.vue";
 import Header_title from "~/components/header_title.vue";
 import infosServer from "~/components/infos-server.vue";
 
+definePageMeta({
+  middleware: "auth",
+  role: ["ADMINISTRATEUR"],
+})
 </script>
 
 <style scoped>

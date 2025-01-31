@@ -1,13 +1,13 @@
 <template>
-    <div class="main_wrapper">
-      <div class="header_log">
-        <div class="logo">
-          <img class="profil_logo" src="/assets/logo.png" alt="" />
-        </div>
-        <div class="exit">
-          <button class="logout" @click="logout">Deconnexion</button>
-          <button class="button_exit" @click="goBack">
-            <img
+  <div class="main_wrapper">
+    <div class="header_log">
+      <div class="logo">
+        <img class="profil_logo" src="/assets/logo.png" alt=""/>
+      </div>
+      <div class="exit">
+        <button class="logout" @click="logout">Déconnexion</button>
+        <button class="button_exit" @click="goBack">
+          <img
               class="exit_profil"
               src="/assets/cancel.png"
               alt=""
@@ -80,19 +80,22 @@
   </template>
   
 <script setup lang="ts">
-import { callAPI } from '~/services/callAPI';
-import { ref, onMounted, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-import { z } from 'zod';
-import type { FormSubmitEvent } from "#ui/types";
+import {callAPI} from '~/services/callAPI';
+import {onMounted, reactive, ref} from 'vue';
+import {useRouter} from 'vue-router';
+import {z} from 'zod';
+import type {FormSubmitEvent} from "#ui/types";
 
 const api = new callAPI();
 const isLoading = ref(false);
 const id = ref();
 const notificationVisible = ref(false);
-const notificationTitle = ref(""); 
-const notificationMessage = ref(""); 
+const notificationTitle = ref("");
+const notificationMessage = ref("");
 
+definePageMeta({
+  middleware: 'auth',
+});
 
 const formState = reactive({
   surname: '',
@@ -182,11 +185,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
 }
 
-definePageMeta({
-  middleware: 'auth', 
-  roles: ['UTILISATEUR'], 
-});
-
 // Fonction pour récupérer les données utilisateur
 const fetchUserData = async () => {
   try {
@@ -232,29 +230,24 @@ const logout = () => {
   document.cookie = "session=;";
   router.push("/login");
 };
-
-definePageMeta({
-    middleware: "auth",
-    role: ["ADMINISTRATEUR","UTILISATEUR"],
-  })
 </script>
 
 
 <style scoped>
 
-    body{
-        background-color: #f2f4ef
-    }
+body {
+  background-color: #f2f4ef
+}
 
-    .main_wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; 
-        align-items: center; 
-        width: 100%; 
-        max-height: 100dvh;
-        box-sizing: border-box; 
-    }
+.main_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-height: 100dvh;
+  box-sizing: border-box;
+}
 
     .wrapper_profil{
         display: flex;
@@ -275,7 +268,7 @@ definePageMeta({
 
 
     .profil_logo{
-        width: min(15vw, 100px); 
+        width: min(15vw, 100px);
         height: auto;
     }
     
@@ -374,17 +367,10 @@ definePageMeta({
     
     }
 
-    .name_input {
-        font-family: "Gilroy-Regular";
-        font-size: 0.9rem;
-        color: #909399;
-    
-    }
-
-    .formulaire form input::placeholder {
-        font-family: "Gilroy-Medium";
-        color: black;
-    }
+.formulaire form input::placeholder {
+  font-family: "Gilroy-Medium";
+  color: black;
+}
 
     .footer_button{
         margin: auto;
