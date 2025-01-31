@@ -48,6 +48,12 @@ const api = new callAPI();
 // Tableau de liens initial
 const links = ref<Link[]>([
   {
+    order: 0.5,
+    label: 'Historiques',
+    icon: 'document-check',
+    to: '/wire-report',
+  },
+  {
     order: 2,
     label: 'PPE1',
     icon: 'i-heroicons-bolt',
