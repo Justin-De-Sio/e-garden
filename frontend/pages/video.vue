@@ -2,6 +2,11 @@
 import { ref, onMounted } from 'vue';
 import { callAPI } from '~/services/callAPI';
 
+definePageMeta({
+  middleware: "auth",
+  role: ["ADMINISTRATEUR"],
+})
+
 const api = new callAPI();
 const videoUrl = ref<string | null>(null);
 const loading = ref(false); // Pour afficher un indicateur de chargement si besoin
