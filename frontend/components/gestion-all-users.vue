@@ -21,13 +21,11 @@
 </template>
 
 <script setup lang="ts">
-
 import {onMounted, ref} from 'vue';
 import {callAPI} from '~/services/callAPI';
 import modifUser from '~/components/edit-user.vue';
 import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
-import jwtDecode from "jwt-decode";
 import {getToken} from "~/services/getToken";
 
 const api = new callAPI();
