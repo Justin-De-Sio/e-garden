@@ -10,7 +10,7 @@
         </UButton>
       </template>
       <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
+        <UDropdown :items="items(row)" v-if="isMe(row.email)">
           <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid"/>
         </UDropdown>
       </template>
@@ -27,6 +27,7 @@ import {callAPI} from '~/services/callAPI';
 import modifUser from '~/components/edit-user.vue';
 import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
+import jwtDecode from "jwt-decode";
 
 const api = new callAPI();
 
@@ -53,7 +54,7 @@ const people = ref<User[]>([]);
 
 async function requetUser() {
   try {
-    people.value = await api.fetchAPIGet('/user/all') as User[];
+    people.value = await api.fetchAPIGet('user/all') as User[];
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
@@ -109,6 +110,18 @@ function handleCloseMod() {
 function handleCloseAdd() {
   showAddUser.value = false;
   requetUser();
+}
+
+function isMe(email: string) {
+  let sessionCookie;
+  try {
+    sessionCookie = (useCookie('session')); // Récupérer le cookie
+    const token = sessionCookie.value;
+    const username = token ? jwtDecode(token).sub : null;
+    return email !== username;
+  } catch (error) {
+    return true;
+  }
 }
 
 </script>
