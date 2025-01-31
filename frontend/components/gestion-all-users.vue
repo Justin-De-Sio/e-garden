@@ -64,10 +64,12 @@ async function requetUser() {
   }
 }
 
+const isSelectedDelete = ref(false);
+
 const items = row => [
   [{
     label: 'Modifier',
-    click: () => modifierUtilisateur(row.id)
+    click: () => modifierUtilisateur(row.id )
   }, {
     label: 'Supprimer',
     click: () => supprimerUtilisateur(row.id)

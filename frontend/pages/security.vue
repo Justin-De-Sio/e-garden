@@ -56,6 +56,7 @@
   const api = new callAPI;
   const number_passage = ref();
   const number_cr = ref();
+  
   definePageMeta({
     middleware: "auth",
     role: ["ADMINISTRATEUR"],

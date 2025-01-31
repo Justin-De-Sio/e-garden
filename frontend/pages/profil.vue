@@ -58,7 +58,7 @@
             </UForm>
           </div>
           <div class="footer_button">
-            <u-link to="/change-password" >Changer de mot de passe</u-link>
+            <p @click="navigateTo('/change-password')">Changer de mot de passe</p>
           </div>
         </div>
         <div class="illustration">
@@ -275,7 +275,7 @@ definePageMeta({
 
 
     .profil_logo{
-        width: min(20vw, 100px); 
+        width: min(15vw, 100px); 
         height: auto;
     }
     
@@ -412,7 +412,7 @@ definePageMeta({
         border: none;
         background-color: #95bd75;
         color: white;
-        width: min(25vw, 300px);
+        width: min(40vw, 300px);
         font-family: "Gilroy-Medium";
         font-size: clamp(0.7rem, 2vw, 0.9rem); 
         border-radius: 0.2rem;
@@ -459,7 +459,7 @@ definePageMeta({
 
         .wrapper_form{
             margin: auto;
-            margin-top: 2.5em;
+            margin-top: 1em;
             justify-content: center;
             align-items: center;
         }
@@ -472,13 +472,29 @@ definePageMeta({
         }
 
         .header_profil{
-            align-items: center;
+            display: none;
         }
 
 
         .illustration{
             display: none;
         }
+
+        .logout{
+          height: 1.5rem;
+        }
+
+        .formulaire form{
+          gap: 0.5rem;
+        }
+
+        .footer_button{
+          margin-top: 2rem;
+      }
+
+      .save_button{
+        height: 1.5rem;
+      }
 
   }
 
