@@ -15,7 +15,6 @@
         <div class="container" v-for="(report,index) in reportsObject" :key="index">
             <img :src="isCompleted(report.validated)" class="validationIcon">
             <div class="header" >
-                <img src="/public/assets/avatar_profil.png" class="avatarImg">
                 <div class="informations">
                     <h2>{{ report.user.name }} {{ report.user.surname }}</h2>
                     <h4>{{ report.user.className }} - Grp 0{{ report.user.groupNumber }}</h4>
