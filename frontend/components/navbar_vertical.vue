@@ -101,10 +101,11 @@ function loadElementsNavBar() {
     updatedLinks = links.value.concat(adminLinks.value).concat(respoLinks.value);
     isAdmin.value = true;
     isRespo.value = true;
-  }
-  if (getToken().role === 'RESPONSABLE') {
+  } else if (getToken().role === 'RESPONSABLE') {
     updatedLinks = links.value.concat(respoLinks.value);
     isRespo.value = true;
+  } else {
+    updatedLinks = links.value;
   }
   updatedLinks.sort((a, b) => a.order - b.order);
   links.value = updatedLinks;
