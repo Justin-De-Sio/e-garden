@@ -91,8 +91,11 @@ const isLoading = ref(false);
 const id = ref();
 const notificationVisible = ref(false);
 const notificationTitle = ref(""); 
-const notificationMessage = ref(""); 
+const notificationMessage = ref("");
 
+definePageMeta({
+  middleware: 'auth',
+});
 
 const formState = reactive({
   surname: '',
@@ -182,11 +185,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
 }
 
-definePageMeta({
-  middleware: 'auth', 
-  roles: ['UTILISATEUR'], 
-});
-
 // Fonction pour récupérer les données utilisateur
 const fetchUserData = async () => {
   try {
@@ -232,11 +230,6 @@ const logout = () => {
   document.cookie = "session=;";
   router.push("/login");
 };
-
-definePageMeta({
-    middleware: "auth",
-    role: ["ADMINISTRATEUR","UTILISATEUR"],
-  })
 </script>
 
 
