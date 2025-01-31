@@ -86,23 +86,15 @@ const fetchProfile = async () => {
   try {
     const response = await api.fetchAPIGet('user/profil') as User;
     isAdmin.value = response.role === 'ADMINISTRATEUR';
-
-
     const updatedLinks = links.value.filter(link => !(!isAdmin.value && link.label === 'Sécurité'));
-
-
     updatedLinks[updatedLinks.length - 1].label = response.name || 'Profil';
     links.value = updatedLinks;
-
-
   } catch (error) {
     console.error('Erreur lors de la récupération du profil :', error);
   }
 };
 
-
 onMounted(() => {
-  console.log("fetchProfile() est exécuté !");
   fetchProfile();
 });
 </script>

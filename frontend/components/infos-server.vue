@@ -30,7 +30,6 @@ async function fetchServeurInfo() {
   try {
     const data = await api.fetchAPIGet("server-info") as ServerInfo;
     if (data) {
-      console.log(data)
       infos.value = data;
     } else {
       console.warn("No content found in API response");
