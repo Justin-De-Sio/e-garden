@@ -104,7 +104,6 @@ const fetchNotif = async (page: number) => {
     content: response.content,
     totalPages: response.totalPages
   }
-  console.log(response);
 };
 
 onMounted(() => {

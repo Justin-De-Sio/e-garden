@@ -53,12 +53,8 @@ const people = ref<User[]>([]);
 
 async function requetUser() {
   try {
-    console.log("requetUser");
     const response = await api.fetchAPIGet('/user/all') as User[];
     people.value = response;
-    console.log("---------------", response);
-    console.log(showAddUser.value);
-    console.log("---------------", response);
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }

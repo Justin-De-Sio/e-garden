@@ -149,18 +149,12 @@
 async function fetchReports(page: number) {
     try {
         const response = await api.fetchAPIGetPaginated("report/myNotValidatedReports", page, 2) as PaginatedResponse;
-        
-        console.log("TotalPage", response);
-        
         NotValidatedReports.value = response.content; 
         totalPages.value = response.totalPages; 
-        
-        console.log("Rapports non validés :", NotValidatedReports.value);
     } catch (error) {
         console.error("Erreur lors de la récupération des rapports :", error);
     }
 }
-
 
   const RequestValidatedReport = reactive({
     content: state.content,
@@ -179,7 +173,6 @@ async function fetchReports(page: number) {
         else{
             const reportId = Number(id_report.value);
             const response = await api.fetchAPIPutWithId("report", reportId, RequestValidatedReport);
-            console.log("test",response);
         }
 
 
