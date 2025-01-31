@@ -33,10 +33,7 @@
                   <newReport></newReport>
               </div>
           </div>
-
-
         </div>
-
       </div>
       <div class="right_calendar">
               <calendar></calendar>
@@ -44,7 +41,6 @@
     </div>
     <footer>E-Garden • © 2025</footer>
   </div>
-
 </template>
 
 <script setup lang="ts">

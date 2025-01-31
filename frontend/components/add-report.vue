@@ -7,13 +7,12 @@
                 </svg>
             </button>
         </div>
-  
       <template #panel>
         <div class="px-8 py-4">
           <Placeholder class="h-20 w-48" />
           <div class="wrapper_report">
             <ul>
-                <div class="chevron">
+                <div class="chevron" v-if="NotValidatedReports.length > 0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" @click="changePage('prev')" >
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
@@ -22,7 +21,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
                 </div>
-              <UDivider label="RAPPORT NON VALIDÉ" />
+              <UDivider label="RAPPORT NON VALIDÉ" v-if="NotValidatedReports.length > 0" />
               <li
                 class="eachReport"
                 v-for="(report, index) in NotValidatedReports"
@@ -44,9 +43,7 @@
             <UFormGroup label="Contenu" name="content">
               <UTextarea v-model="state.content" type="text" placeholder="Veuillez choisir un compte-rendu à modifier " />
             </UFormGroup>
-            <UFormGroup label="Date de création" name="createdAt">
-                <UInput v-model="state.createdAt" type="text" readonly />
-            </UFormGroup>
+            <p>Date de création {{state.createdAt || 'aujourd\'hui'}}</p>
             <div class="placement_button">
                 <UButton type="button" @click="onSubmit(true)" >{{ isCreating ? "Créer" : "Enregistrer" }}</UButton>
                 <UButton type="button" color="gray" @click="onSubmit(false)" :disabled="isCreating">Brouillon</UButton>
