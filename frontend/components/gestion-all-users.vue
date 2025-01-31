@@ -21,13 +21,12 @@
 </template>
 
 <script setup lang="ts">
-
 import {onMounted, ref} from 'vue';
 import {callAPI} from '~/services/callAPI';
 import modifUser from '~/components/edit-user.vue';
 import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
-import jwtDecode from "jwt-decode";
+import {getToken} from "~/services/getToken";
 
 const api = new callAPI();
 
@@ -115,15 +114,8 @@ function handleCloseAdd() {
 }
 
 function isMe(email: string) {
-  let sessionCookie;
-  try {
-    sessionCookie = (useCookie('session')); // Récupérer le cookie
-    const token = sessionCookie.value;
-    const username = token ? jwtDecode(token).sub : null;
-    return email !== username;
-  } catch (error) {
-    return true;
-  }
+  const username = getToken().sub;
+  return email !== username;
 }
 
 </script>
