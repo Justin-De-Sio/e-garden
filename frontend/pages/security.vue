@@ -82,8 +82,7 @@
 </script>
 
 <style scoped>
-
-.wrapper_page{
+.wrapper_page {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -95,48 +94,47 @@
   min-height: 100vh;
 }
 
-.wrapperLeftRight{
-  display: flex;
+.wrapperLeftRight {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
   flex-grow: 1;
 }
 
-.left_content{
+
+.left_content {
   display: flex;
   flex-direction: column;
-  width: 60%;
-  flex-grow: 1;
-  padding: 0 2rem;
+  width: 100%;
 }
-.header_bis{
+
+.header_bis {
   width: 80%;
-  height: auto;
-  padding: 2rem 0;
+  padding-bottom: 2rem;
 }
 
 
-.columns_indicators{
+.top_wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.columns_indicators {
+  display: flex;
+  flex-wrap: nowrap; 
   gap: 1rem;
+  justify-content: flex-start; 
+  white-space: nowrap; 
+  max-width: 100%;
 }
 
-.top_wrapper{
 
-  width: 100%;
-  height: 100%;
-}
-.bot_left{
-  width: 100%;
+.bot_left {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin: 3rem 0;
-  padding-right: 3rem;
-  gap: 5rem;
-}
-
-.top_bot_left{
-  width: 100%;
-  height: auto;
+  gap: 2rem;
 }
 
 .top_bot_left h2{
@@ -153,9 +151,12 @@
 
 }
 
-.right_calendar{
+
+.right_calendar {
+  display: flex;
+  justify-content: center;
+  align-items: start;
   margin-top: 5rem;
-  margin-right: 4rem;
 }
 
 footer{ 
@@ -166,24 +167,16 @@ footer{
 }
 
 
- @media screen and (max-width: 800px){
-  .wrapper_content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-  align-items: center;  
-  width: 100%;
-  padding: 0 1rem;
+@media screen and (max-width: 1024px) {
+  .wrapperLeftRight {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .right_calendar {
+    margin-top: 2rem;
+    justify-content: center;
+  }
+  
 }
-
-.bot_left{
-  width: 100%;
-}
-
-.header_bis{
-  text-align: center;
-}
-
- }
-
 </style>
