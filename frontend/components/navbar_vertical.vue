@@ -33,6 +33,7 @@ import AddReport from "~/components/add-report.vue";
 
 // Structure des données pour les liens
 interface Link {
+  order: number;
   label: string;
   icon?: string;
   to?: string;
@@ -41,66 +42,72 @@ interface Link {
   };
 }
 
-
-
 const api = new callAPI();
 
 // Tableau de liens initial
 const links = ref<Link[]>([
   {
-    label: 'Sécurité',
-    icon: 'i-heroicons-video-camera',
-    to: '/security',
-  },
-  {
+    order: 2,
     label: 'PPE1',
     icon: 'i-heroicons-bolt',
     to: '/ppe1',
   },
   {
+    order: 3,
     label: 'PPE2',
     icon: 'i-heroicons-globe-europe-africa',
     to: '/ppe2',
   },
   {
-    label: 'Gestionnaire',
-    icon: 'i-heroicons-rectangle-stack',
-    to: '/gestion-users',
-  },
-  {
-    label: 'Paramètres',
-    icon: 'i-heroicons-cog-6-tooth',
-    to: '/reglages',
-  },
-  {
+    order: 6,
     label: 'Profil',
     avatar: {
       src: 'https://avatars.githubusercontent.com/u/739984?v=4',
     },
     to: '/profil',
   },
-]); 
-const isAdmin = ref(false);
+]);
 
+const adminLinks = ref<Link[]>([
+  {
+    order: 1,
+    label: 'Sécurité',
+    icon: 'i-heroicons-video-camera',
+    to: '/security',
+  },
+  {
+    order: 4,
+    label: 'Gestionnaire',
+    icon: 'i-heroicons-rectangle-stack',
+    to: '/gestion-users',
+  },
+  {
+    order: 5,
+    label: 'Paramètres',
+    icon: 'i-heroicons-cog-6-tooth',
+    to: '/reglages',
+  },
+]);
+const isAdmin = ref(false);
 
 const fetchProfile = async () => {
   try {
     const response = await api.fetchAPIGet('user/profil') as User;
     isAdmin.value = response.role === 'ADMINISTRATEUR';
+    let updatedLinks: Link[] = [];
 
-    const updatedLinks = links.value.filter(link => !(!isAdmin.value && link.label === 'Sécurité'));
-
+    if (isAdmin.value) {
+      updatedLinks = links.value.concat(adminLinks.value); // Concatène correctement
+      updatedLinks.sort((a, b) => a.order - b.order);
+    }
     updatedLinks[updatedLinks.length - 1].label = response.name || 'Profil';
     links.value = updatedLinks;
-
   } catch (error) {
     console.error('Erreur lors de la récupération du profil :', error);
   }
 };
 
-
-onMounted(async() => {
-  console.log("fetchProfile() est exécuté !");
+onMounted(async () => {
   await fetchProfile();
 });
 </script>
@@ -120,12 +127,12 @@ onMounted(async() => {
   margin: auto;
 }
 
-.add_button{
+.add_button {
   margin: auto;
 
 }
 
-.button_group{
+.button_group {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,15 +144,15 @@ onMounted(async() => {
     display: none;
   }
 
-  .wrapper{
-      padding-right: 2rem;
+  .wrapper {
+    padding-right: 2rem;
   }
 
-  .button_group{
-  display: flex;
-  gap: 1rem;
-  margin-left: auto;
-}
+  .button_group {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+  }
 
 }
 </style>
