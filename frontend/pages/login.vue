@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { JWTPayload } from "~/services/jwtpayload";
 import { z } from 'zod'
 import type {FormSubmitEvent} from "#ui/types";
 import { login } from '~/services/auth';
@@ -67,8 +68,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   const { email, password } = formState;
 
   try {
-    await login(email, password);
-    await router.push('/wire-report');
+    const token = await login(email, password);
+    const token_payload = JWTPayload(token);
+    console.log("LOGG", token_payload.role)
+    if(token_payload.role === "ADMINISTRATEUR"){
+      await router.push('/security');
+    }
+    else{
+      await router.push('/wire-report');
+    }
+
   } catch (error) {
     isLoading.value = false;
     if (error instanceof Error) {
