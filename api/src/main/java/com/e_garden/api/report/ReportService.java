@@ -49,7 +49,7 @@ public class ReportService {
     }
 
     public PageDTO<Report> getPaginatedReports(int page, int size) {
-        Page<Report> reportPage = reportRepository.findAllByOrderByReportDateAsc(PageRequest.of(page, size));
+        Page<Report> reportPage = reportRepository.findAllByOrderByReportDateDesc(PageRequest.of(page, size));
 
         return (new PageDTO<>(
                 reportPage.getContent(),
@@ -99,7 +99,7 @@ public class ReportService {
      * @return une page avec n rapports
      */
     private PageDTO<Report> getUserReportsByValidated(int page, int size, Long id, boolean validated) {
-        Page<Report> reportPage = reportRepository.findAllByUser_IdAndValidatedOrderByReportDateAsc(id, validated,PageRequest.of(page, size));
+        Page<Report> reportPage = reportRepository.findAllByUser_IdAndValidatedOrderByReportDateDesc(id, validated,PageRequest.of(page, size));
 
         return (new PageDTO<>(
                 reportPage.getContent(),
@@ -117,7 +117,7 @@ public class ReportService {
      * @return une page avec n rapports
      */
     public PageDTO<Report> getPaginatedValidatedReports(int page, int size) {
-        Page<Report> reportPage = reportRepository.findAllByValidatedOrderByReportDateAsc(true, PageRequest.of(page, size));
+        Page<Report> reportPage = reportRepository.findAllByValidatedOrderByReportDateDesc(true, PageRequest.of(page, size));
 
         return (new PageDTO<>(
                 reportPage.getContent(),
