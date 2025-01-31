@@ -80,6 +80,10 @@ import {ref} from 'vue';
 import {callAPI} from "~/services/callAPI";
 import type {User} from "~/model/User";
 
+definePageMeta({
+  middleware: "auth",
+})
+
 const api = new callAPI();
 const errorMessage = ref()
 const userId = ref()
@@ -142,11 +146,6 @@ const router = useRouter();
 const goBack = () => {
   router.back();
 };
-
-definePageMeta({
-  middleware: "auth",
-  role: ["ADMINISTRATEUR", "UTILISATEUR"],
-})
 </script>
 
 <style scoped>
