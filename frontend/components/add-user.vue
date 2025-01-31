@@ -56,9 +56,9 @@ const formSchema = z.object({
   name: z.string().min(2, "Le prénom est obligatoire").max(255, "Ne peut dépasser 255 caractères"),
   surname: z.string().min(2, "Le nom est obligatoire").max(255, "Ne peut dépasser 255 caractères"),
   email: z.string().email("L'email est invalide"),
-  className: z.string().max(20, "Ne peut dépasser 20 caractères"),
+  className: z.string().min(3, "La classe est obligatoire").max(20, "Ne peut dépasser 20 caractères"),
   groupNumber: z.number().int().positive("Le groupe doit être un nombre positif"),
-  role: z.string().min(3, "La classe est obligatoire"),
+  role: z.string(),
 });
 
 const errorMessage = ref('');
