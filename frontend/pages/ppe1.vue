@@ -2,7 +2,6 @@
 
 import NavbarVertical from "~/components/navbar_vertical.vue";
 import Header_title from "~/components/header_title.vue";
-import calendar from "~/components/calendar.vue";
 definePageMeta({
   middleware: "auth",
 })
@@ -14,7 +13,6 @@ definePageMeta({
     <div class="header_bis">
       <header_title title="PPE1" subtitle="Sous titre"></header_title>
     </div>  </div>
-  <calendar/>
 </template>
 
 <style scoped>
