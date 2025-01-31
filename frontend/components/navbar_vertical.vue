@@ -48,12 +48,6 @@ const api = new callAPI();
 // Tableau de liens initial
 const links = ref<Link[]>([
   {
-    order: 0.5,
-    label: 'Historiques',
-    icon: 'i-heroicons-document-check',
-    to: '/wire-report',
-  },
-  {
     order: 2,
     label: 'PPE1',
     icon: 'i-heroicons-bolt',
@@ -72,6 +66,15 @@ const links = ref<Link[]>([
       src: 'https://avatars.githubusercontent.com/u/739984?v=4',
     },
     to: '/profil',
+  },
+]);
+
+const userLinks = ref<Link[]>([
+  {
+    order: 1,
+    label: 'Historiques',
+    icon: 'i-heroicons-document-check',
+    to: '/wire-report',
   },
 ]);
 
@@ -108,10 +111,10 @@ function loadElementsNavBar() {
     isAdmin.value = true;
     isRespo.value = true;
   } else if (getToken().role === 'RESPONSABLE') {
-    updatedLinks = links.value.concat(respoLinks.value);
+    updatedLinks = links.value.concat(respoLinks.value).concat(userLinks.value);
     isRespo.value = true;
   } else {
-    updatedLinks = links.value;
+    updatedLinks = links.value.concat(userLinks.value);
   }
   updatedLinks.sort((a, b) => a.order - b.order);
   links.value = updatedLinks;
