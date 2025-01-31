@@ -78,7 +78,7 @@ const items = row => [
 ]
 
 async function supprimerUtilisateur(id: number) {
-  if (confirm('Êtes-vous sûr de vouloir annuler?')) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer ?')) {
     await api.fetchAPIDelete('user', id);
     await requetUser();
   }

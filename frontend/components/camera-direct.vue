@@ -87,10 +87,11 @@ onMounted(() => {
       justify-content: center;
       align-items: center;
       gap: 0.3rem;
-      width: 15%;
-      height: 8%;
+      width: min(20vw, 100px);
+      height: auto;
+      padding: 0.5rem;
       background-color: black;
-      border-radius: 12rem;
+      border-radius: 10rem;
       position: absolute;
       top: 20px;
       right: 20px;
@@ -108,7 +109,15 @@ onMounted(() => {
     .liveContainer h4{
       color: white;
       font-family: "Gilroy-medium";
-      font-size: 0.7rem;
+      font-size: clamp(0.6rem, 2vw, 0.9rem); 
+    }
+
+    @media screen and (max-width: 800px) {
+
+      .liveContainer{
+        top: 15px;
+        right: 15px;
+      }
     }
 
 </style>
