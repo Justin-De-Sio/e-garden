@@ -3,6 +3,9 @@
 import NavbarVertical from "~/components/navbar_vertical.vue";
 import Header_title from "~/components/header_title.vue";
 import calendar from "~/components/calendar.vue";
+definePageMeta({
+  middleware: "auth",
+})
 </script>
 
 <template>
