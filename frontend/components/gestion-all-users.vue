@@ -2,7 +2,7 @@
   <div class="table-container">
     <UTable :rows="people" :columns="columns"
             :ui="{ th: { base: 'sticky top-0 bg-gray-100'}, 
-            tr: { base: 'bg-white' }}""
+            tr: { base: 'bg-white' }}"
              style="background: #f2f4ef">
       <template #actions-header>
         <UButton @click="ajouterUtilisateur()">
