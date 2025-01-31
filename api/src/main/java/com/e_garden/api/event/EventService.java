@@ -27,7 +27,7 @@ public class EventService {
     }
 
     public PageDTO<EventDTO> getPaginatedEvents(int page, int size) {
-        Page<Event> eventPage = eventRepository.findAll(PageRequest.of(page, size));
+        Page<Event> eventPage = eventRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size));
         List<EventDTO> eventDTOs = eventPage
                 .getContent()
                 .stream()
