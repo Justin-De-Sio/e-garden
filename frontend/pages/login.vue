@@ -68,7 +68,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   try {
     await login(email, password);
-    await router.push('/security');
+    await router.push('/wire-report');
   } catch (error) {
     isLoading.value = false;
     if (error instanceof Error) {

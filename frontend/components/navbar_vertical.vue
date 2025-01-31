@@ -19,14 +19,13 @@
     />
     <div class="button_group">
       <AddReport class="add_button"></AddReport>
-      <Notification class="notif_button"></Notification>
+      <Notification class="notif_button" v-if="isAdmin"></Notification>
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
 import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
@@ -41,6 +40,8 @@ interface Link {
     src: string;
   };
 }
+
+
 
 const api = new callAPI();
 
@@ -81,20 +82,26 @@ const links = ref<Link[]>([
 ]); 
 const isAdmin = ref(false);
 
+
 const fetchProfile = async () => {
   try {
     const response = await api.fetchAPIGet('user/profil') as User;
     isAdmin.value = response.role === 'ADMINISTRATEUR';
+
     const updatedLinks = links.value.filter(link => !(!isAdmin.value && link.label === 'Sécurité'));
+
     updatedLinks[updatedLinks.length - 1].label = response.name || 'Profil';
     links.value = updatedLinks;
+
   } catch (error) {
     console.error('Erreur lors de la récupération du profil :', error);
   }
 };
 
-onMounted(() => {
-  fetchProfile();
+
+onMounted(async() => {
+  console.log("fetchProfile() est exécuté !");
+  await fetchProfile();
 });
 </script>
 
