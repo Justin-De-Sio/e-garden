@@ -74,6 +74,7 @@ import {z} from "zod";
 import {onMounted, reactive, ref} from "vue";
 import type {Reports} from "~/model/Reports";
 import {callAPI} from "~/services/callAPI";
+import type {Pages} from "~/model/Pages";
 
 const notificationVisible = ref(false);
 const notificationTitle = ref("");
@@ -102,15 +103,6 @@ const checkNextPage = () => {
 
   return currentPage.value < totalPages.value - 1;
 };
-
-interface PaginatedResponse {
-  content: Reports[];
-  pageNumber: number;
-  pageSize: number;
-  totalElements: number;
-  totalPages: number;
-}
-
 
 const api = new callAPI();
 const id_report = ref<bigint | undefined>();
@@ -146,8 +138,8 @@ const totalPages = ref(0);
 
 async function fetchReports(page: number) {
   try {
-    const response = await api.fetchAPIGetPaginated("report/myNotValidatedReports", page, 2) as PaginatedResponse;
-    NotValidatedReports.value = response.content;
+    const response = await api.fetchAPIGetPaginated("report/myNotValidatedReports", page, 2) as Pages;
+    NotValidatedReports.value = response.content as Reports[];
     totalPages.value = response.totalPages;
   } catch (error) {
     console.error("Erreur lors de la récupération des rapports :", error);
@@ -286,7 +278,6 @@ function formatDate(date: string) {
   margin-top: 0.2rem;
   cursor: pointer;
 }
-
 
 .button_add button:hover {
   opacity: 0.7;
