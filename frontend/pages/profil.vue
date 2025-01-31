@@ -380,7 +380,7 @@ body {
     .footer_button p{
         background: none;
         border: none;
-        width: min(35vw, 200px); 
+        width: min(50vw, 200px); 
         height: 2.5rem;
         border-radius: 0.3rem;
         color: black;
@@ -389,6 +389,7 @@ body {
         cursor: pointer;
         text-decoration: underline;
         font-style: italic;
+        text-align: center;
     }
 
     .save_button{
