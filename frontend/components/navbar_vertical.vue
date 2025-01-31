@@ -50,7 +50,7 @@ const links = ref<Link[]>([
   {
     order: 0.5,
     label: 'Historiques',
-    icon: 'document-check',
+    icon: 'i-heroicons-document-check',
     to: '/wire-report',
   },
   {
