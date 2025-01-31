@@ -282,13 +282,6 @@ body {
 
 }
 
-.name_input {
-  font-family: "Gilroy-Regular";
-  font-size: 0.9rem;
-  color: #909399;
-
-}
-
 .formulaire form input::placeholder {
   font-family: "Gilroy-Medium";
   color: black;

@@ -30,7 +30,6 @@ import {onMounted, ref} from 'vue';
 import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
-import type {Roles} from "~/model/Roles";
 import AddReport from "~/components/add-report.vue";
 
 // Structure des données pour les liens

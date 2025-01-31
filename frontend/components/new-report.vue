@@ -61,7 +61,7 @@ const fetchNotif = async (page: number) => {
 };
 
 onMounted(async () => {
-  fetchNotif(currentPage.value)
+  await fetchNotif(currentPage.value)
 });
 </script>
 
@@ -146,13 +146,6 @@ onMounted(async () => {
 .header h4 {
   font-size: 1rem;
   font-weight: 200;
-}
-
-.header .avatarImg {
-  flex-shrink: 0;
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
 }
 
 .footer {
