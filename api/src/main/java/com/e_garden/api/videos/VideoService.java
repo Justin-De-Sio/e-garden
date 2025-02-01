@@ -4,14 +4,14 @@ import com.e_garden.api.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -50,6 +50,65 @@ public class VideoService {
 
 
     /**
+     * Streams the video file in chunks based on the HTTP Range header.
+     *
+     * @param fileName The name of the video file.
+     * @param headers  The HTTP request headers.
+     * @return A ResponseEntity containing a ResourceRegion of the video.
+     * @throws IOException if an error occurs accessing the file.
+     */
+    public ResponseEntity<ResourceRegion> streamVideo(String fileName, HttpHeaders headers) throws IOException {
+        Path filePath = Paths.get(OUTPUT_DIRECTORY, fileName);
+        File videoFile = filePath.toFile();
+
+        if (!videoFile.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Create a resource for the video file.
+        UrlResource videoResource = new UrlResource(filePath.toUri());
+        long contentLength = videoFile.length();
+
+        // Define a default chunk size (e.g., 1MB)
+        long chunkSize = 1024 * 1024;
+
+        ResourceRegion region = getResourceRegion(videoResource, headers, chunkSize);
+
+        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                .contentType(MediaType.valueOf("video/mp4"))
+                .header(HttpHeaders.ACCEPT_RANGES, "bytes")
+                .body(region);
+    }
+
+    /**
+     * Creates a ResourceRegion for the video resource based on the request's Range header.
+     *
+     * @param video     The video resource.
+     * @param headers   The HTTP headers from the request.
+     * @param chunkSize The maximum size of the region to return.
+     * @return A ResourceRegion representing the requested part of the video.
+     * @throws IOException if an error occurs reading the file.
+     */
+    private ResourceRegion getResourceRegion(UrlResource video, HttpHeaders headers, long chunkSize) throws IOException {
+        long contentLength = video.contentLength();
+        List<HttpRange> ranges = headers.getRange();
+
+        if (ranges == null || ranges.isEmpty()) {
+            // No Range header present, so return the first chunk of the video.
+            long rangeLength = Math.min(chunkSize, contentLength);
+            return new ResourceRegion(video, 0, rangeLength);
+        } else {
+            // Use the first range specified in the header.
+            HttpRange range = ranges.get(0);
+            long start = range.getRangeStart(contentLength);
+            long end = range.getRangeEnd(contentLength);
+            long rangeLength = Math.min(chunkSize, end - start + 1);
+            return new ResourceRegion(video, start, rangeLength);
+        }
+    }
+
+
+    /**
      * 📌 Enregistre une vidéo toutes les 10 minutes.
      */
     @Scheduled(fixedRate = 600_000) // 10 minutes = 600_000 ms
@@ -82,7 +141,6 @@ public class VideoService {
         System.out.println("🎥 Démarrage de l'enregistrement : " + fileName);
         startRecordingAsync(RTSP_URL, filePath, fileName, Duration.ofMinutes(1));
     }
-
 
 
     /**
@@ -130,7 +188,6 @@ public class VideoService {
                 "ffmpeg -rtsp_transport tcp -probesize 10000000 -analyzeduration 10000000 -i %s -c:v copy -c:a copy -t %d -f mp4 %s",
                 rtspUrl, duration.getSeconds(), filePath
         );
-
 
 
         ffmpegService.executeFfmpegCommand(command);
@@ -215,7 +272,6 @@ public class VideoService {
             }
         }
     }
-
 
 
     /**

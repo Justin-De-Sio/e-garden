@@ -2,6 +2,9 @@ package com.e_garden.api.videos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ public class VideoController {
         this.videoService = videoService;
     }
 
+
     /**
      * Démarre l'enregistrement d'une vidéo.
      * La durée doit être au format ISO-8601. Exemples:
@@ -33,6 +37,22 @@ public class VideoController {
     @PostMapping("/record")
     public ResponseEntity<String> recordVideo(@RequestBody RecordingRequest request) {
         return videoService.startRecording(request.getDuration());
+    }
+
+
+    /**
+     * Endpoint to stream a video using HTTP Range requests.
+     */
+    @GetMapping("/stream/{fileName}")
+    public ResponseEntity<ResourceRegion> streamVideo(
+            @PathVariable String fileName,
+            @RequestHeader HttpHeaders headers) {
+        try {
+            return videoService.streamVideo(fileName, headers);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{fileName}")
