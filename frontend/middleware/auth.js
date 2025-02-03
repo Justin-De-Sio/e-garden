@@ -1,9 +1,7 @@
-import { JWTPayload } from "~/services/jwtpayload";
+import {getTokenObject, JWTPayload} from "~/services/tokenServices.ts";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const jwtCookie = useCookie('session'); 
-  const token = jwtCookie.value;
-
+  const token = getTokenObject();
 
   if (to.path === '/login') {
     return;
@@ -13,7 +11,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (!token) {
     return navigateTo(`/login?redirect=${encodeURIComponent(to.fullPath)}`);
   }
-
 
   let token_payload;
   try {

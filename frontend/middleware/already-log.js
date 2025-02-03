@@ -1,13 +1,13 @@
-import {JWTPayload} from "~/services/jwtpayload.js";
+import {getTokenObject} from "~/services/tokenServices.ts";
 
 export default defineNuxtRouteMiddleware((to, from) => {
   const jwtCookie = useCookie('session'); // Récupérer le cookie
-  const token = jwtCookie.value;
+  const token = getTokenObject();
 
   if (token) {
     try {
       // Décoder le token pour vérifier son expiration
-      const { exp } = JWTPayload(token);
+      const exp = token.exp;
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (exp && exp > currentTime) {
