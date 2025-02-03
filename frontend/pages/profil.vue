@@ -85,7 +85,7 @@ import {onMounted, reactive, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {z} from 'zod';
 import type {FormSubmitEvent} from "#ui/types";
-import {resetToken} from "~/services/tokenServices";
+import {resetToken} from "~/services/SessionServices";
 
 const api = new callAPI();
 const isLoading = ref(false);

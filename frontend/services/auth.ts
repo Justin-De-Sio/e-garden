@@ -1,4 +1,4 @@
-import {saveToken} from "~/services/tokenServices.js";
+import {saveToken} from "~/services/SessionServices.js";
 
 /**
  * Fonction qui permet de réaliser la demande de connexion pour le login utilisateur.

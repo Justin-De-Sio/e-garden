@@ -26,7 +26,7 @@ import {callAPI} from '~/services/callAPI';
 import modifUser from '~/components/edit-user.vue';
 import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
-import {getTokenObject} from "~/services/tokenServices";
+import {getTokenObject} from "~/services/SessionServices";
 
 const api = new callAPI();
 

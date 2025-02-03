@@ -30,7 +30,7 @@ import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
 import AddReport from "~/components/add-report.vue";
-import {getTokenObject} from "~/services/tokenServices";
+import {getTokenObject} from "~/services/SessionServices";
 
 // Structure des données pour les liens
 interface Link {

@@ -44,7 +44,7 @@
 import { z } from 'zod'
 import type {FormSubmitEvent} from "#ui/types";
 import { login } from '~/services/auth';
-import {getTokenObject} from "~/services/tokenServices";
+import {getTokenObject} from "~/services/SessionServices";
 
 const isLoading = ref(false);
 const router = useRouter();

@@ -1,4 +1,4 @@
-import {getTokenObject} from "~/services/tokenServices.ts";
+import {getTokenObject} from "~/services/SessionServices.ts";
 
 export default defineNuxtRouteMiddleware((to, from) => {
   const jwtCookie = useCookie('session'); // Récupérer le cookie
