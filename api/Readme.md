@@ -28,6 +28,7 @@ Il doit contenir plusieurs variables :
 - **POSTGRES_DB=** Nom de la base de données à utiliser
 - **RTSP_URL=** rtsp://NOM:PASSWORD@AdresseIP:PORT
 - **JWT_SECRET=** SECRET
+- **DEFAULT_PASSWORD=** mot de passe par défaut du site lors de la création des utilisateurs et de la réinitialisation.
 
 ### Le secret
 Le secret est utilisé pour chiffrer les mots de passe, et ne doit pas être publié sur github. 
