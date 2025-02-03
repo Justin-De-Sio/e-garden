@@ -1,3 +1,5 @@
+import {saveToken} from "~/services/tokenServices.js";
+
 /**
  * Fonction qui permet de réaliser la demande de connexion pour le login utilisateur.
  * Elle prend en paramètre un email et un mot de passe.
@@ -26,10 +28,7 @@ export async function login(email_var, password_var) {
     if (!token) {
       console.error('Aucun token reçu.');
     }
-    // Stocker le token dans un cookie
-    const jwtCookie = useCookie('session');
-    jwtCookie.value = token;
-
+    saveToken(token);
     return token;
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);

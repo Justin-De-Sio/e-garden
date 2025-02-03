@@ -11,24 +11,35 @@ import type {JWToken} from "~/model/JWToken";
  * @returns {unknown}
  */
 export function getTokenObject():JWToken | null {
-    let sessionCookie;
     try {
-        sessionCookie = useCookie('session'); // Récupérer le cookie
-        const token = sessionCookie.value;
+        const token = getTokenString();
         return token ? jwtDecode(token) : null;
     } catch (error) {
-        sessionCookie = useCookie('session'); // Récupérer le cookie
-        // warining TODO
+        console.error("Impossible de lire la session");
+        resetToken();
         return null;
     }
 }
 
+export function getTokenString(): string {
+    let sessionCookie;
+    try {
+        sessionCookie = (useCookie('session')); // Récupérer le cookie
+        return sessionCookie.value as string;
+    } catch (error) {
+        console.error("Session introuvable");
+        resetToken();
+        return "";
+    }
+}
+
 export function resetToken():void {
+    console.log("Reset token");
     const sessionCookie = useCookie('session');
     sessionCookie.value = null;
 }
 
-export function JWTPayload(token: string) {
-    const split_token = token.split(".");
-    return JSON.parse(atob(split_token[1]))
+export function saveToken(token:string):void {
+    const sessionCookie = useCookie('session');
+    sessionCookie.value = token;
 }

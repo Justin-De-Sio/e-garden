@@ -11,20 +11,16 @@ const api = new callAPI();
 const videoUrl = ref<string | null>(null);
 const loading = ref(false); // Pour afficher un indicateur de chargement si besoin
 
-onMounted(() => getVideo("2025", "01", "25"));
+onMounted(() => getVideo("2025", "02", "1"));
 
 async function getVideo(year: string, month: string, day: string) {
   loading.value = true;
   videoUrl.value = null; // Efface l'ancienne vidéo pour forcer la mise à jour
 
   try {
-    const response = await api.fetchAPIGet(`videos/date?year=${year}&month=${month}&day=${day}`);
+    videoUrl.value = `/api/videos/stream-by-date?year=${year}&month=${month}&day=${day}`;
 
     // Vérifiez que la réponse est bien un objet `Response`
-    console.log(response);
-    const blob = await response.blob();
-    const file = new File([blob], "video.mp4", { type: "video/mp4" });
-    videoUrl.value = URL.createObjectURL(file);
     console.log(videoUrl);
   } catch (error) {
     console.error("Erreur lors de la récupération de la vidéo:", error);
@@ -37,7 +33,7 @@ async function getVideo(year: string, month: string, day: string) {
 
 <template>
   <div>
-    <button @click="getVideo('2025', '01', '25')" :disabled="loading">
+    <button @click="getVideo('2025', '02', '01')" :disabled="loading">
       {{ loading ? "Chargement..." : "Charger la vidéo" }}
     </button>
 
