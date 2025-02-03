@@ -1,5 +1,3 @@
-import {getTokenString} from "~/services/SessionServices";
-
 export class callAPI {
     /**
      * Méthode qui prend en paramètre une route au format string.
@@ -63,9 +61,6 @@ export class callAPI {
         try {
             const data = await $fetch(`/api/${url}/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${getTokenString()}`,
-                },
             });
             return data;
         } catch (error) {
@@ -80,11 +75,7 @@ export class callAPI {
      */
     async #fetchGet(url:string) {
         try {
-            const data = await $fetch("/api/" + url, {
-                headers: {
-                    Authorization: `Bearer ${getTokenString()}`,
-                },
-            });
+            const data = await $fetch("/api/" + url);
             return data;
         } catch (error) {
             console.error('Erreur lors de la requête API :', error);
@@ -103,7 +94,6 @@ export class callAPI {
             const data = await $fetch(`/api/${url}`, {
                 method: methode,
                 headers: {
-                    Authorization: `Bearer ${getTokenString()}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)

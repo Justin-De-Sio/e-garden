@@ -21,6 +21,9 @@ export function getTokenObject():JWToken | null {
     }
 }
 
+/**
+ * Methode qui retourne le JWToken en format string de l'utilisateur.
+ */
 export function getTokenString(): string {
     let sessionCookie;
     try {
@@ -33,12 +36,19 @@ export function getTokenString(): string {
     }
 }
 
+/**
+ * Méthode qui efface le Token courant de l'utilisateur.
+ */
 export function resetToken():void {
     console.log("Reset token");
     const sessionCookie = useCookie('session');
     sessionCookie.value = null;
 }
 
+/**
+ * Méthode qui permet d'enregistrer le JWToken de l'utilisateur.
+ * @param token
+ */
 export function saveToken(token:string):void {
     const sessionCookie = useCookie('session');
     sessionCookie.value = token;
