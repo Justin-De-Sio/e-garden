@@ -38,7 +38,7 @@
 
   @font-face {
     font-family: 'Aeonik-Medium';
-    src: url('/public/assets/fontsAeonik-Medium.otf') format('opentype');
+    src: url('/public/assets/fonts/Aeonik-Medium.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
   }
