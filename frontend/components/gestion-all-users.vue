@@ -26,7 +26,7 @@ import {callAPI} from '~/services/callAPI';
 import modifUser from '~/components/edit-user.vue';
 import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
-import {getToken} from "~/services/getToken";
+import {getTokenObject} from "~/services/SessionServices";
 
 const api = new callAPI();
 
@@ -112,7 +112,7 @@ function handleCloseAdd() {
 }
 
 function isMe(email: string) {
-  const username = getToken().sub;
+  const username = getTokenObject().sub;
   return email !== username;
 }
 

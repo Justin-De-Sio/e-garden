@@ -30,7 +30,7 @@ import {callAPI} from "~/services/callAPI";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
 import AddReport from "~/components/add-report.vue";
-import {getToken} from "~/services/getToken";
+import {getTokenObject} from "~/services/SessionServices";
 
 // Structure des données pour les liens
 interface Link {
@@ -106,11 +106,11 @@ const isRespo = ref(false);
 
 function loadElementsNavBar() {
   let updatedLinks: Link[];
-  if (getToken().role === 'ADMINISTRATEUR') {
+  if (getTokenObject().role === 'ADMINISTRATEUR') {
     updatedLinks = links.value.concat(adminLinks.value).concat(respoLinks.value);
     isAdmin.value = true;
     isRespo.value = true;
-  } else if (getToken().role === 'RESPONSABLE') {
+  } else if (getTokenObject().role === 'RESPONSABLE') {
     updatedLinks = links.value.concat(respoLinks.value).concat(userLinks.value);
     isRespo.value = true;
   } else {
