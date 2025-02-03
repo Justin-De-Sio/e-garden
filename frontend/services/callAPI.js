@@ -70,7 +70,6 @@ export class callAPI {
                     Authorization: `Bearer ${this.#getSession()}`,
                 },
             });
-            console.log("-----------------------------",id);
             return data;
         } catch (error) {
             console.error('Erreur lors de la requête API :', error);

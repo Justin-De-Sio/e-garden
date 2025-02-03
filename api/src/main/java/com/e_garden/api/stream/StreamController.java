@@ -28,8 +28,12 @@ import static com.e_garden.api.stream.StreamConfig.OUTPUT_DIRECTORY;
 @Secured("ADMINISTRATEUR")
 public class StreamController {
 
+    private final StreamService streamService;
+
     @Autowired
-    private StreamService streamService;
+    public StreamController(StreamService streamService) {
+        this.streamService = streamService;
+    }
 
     /**
      * Serves the HLS playlist (.m3u8 file).

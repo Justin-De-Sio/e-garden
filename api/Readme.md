@@ -2,11 +2,12 @@
 
 ## Prérequis
 Il est nécessaire d'installer : 
+- intellij idea
 - Git
 - La version 23 de Java (peut se faire plus tard dans l'IDE)
 - Une base de données Postgres
-- FFMPEG (MacOS `brew install ffmpeg`, Linux: `sudo apt install ffmpeg`, Windows : https://phoenixnap.com/kb/ffmpeg-windows)
-
+- FFMPEG (MacOS `brew install ffmpeg`, Linux: `sudo apt install ffmpeg`, Windows : `winget install ffmpeg` et redémarré)
+- Installer les packages: sur l'IDE Maven -> Lifecycle -> install
 ## Base de données
 Pour ce projet, nous utilisons une base de données Postgres. 
 Nous conseillons d'utiliser Postgres afin d'assurer une bonne compatibilité.
@@ -28,6 +29,7 @@ Il doit contenir plusieurs variables :
 - **POSTGRES_DB=** Nom de la base de données à utiliser
 - **RTSP_URL=** rtsp://NOM:PASSWORD@AdresseIP:PORT
 - **JWT_SECRET=** SECRET
+- **DEFAULT_PASSWORD=** mot de passe par défaut du site lors de la création des utilisateurs et de la réinitialisation.
 
 ### Le secret
 Le secret est utilisé pour chiffrer les mots de passe, et ne doit pas être publié sur github. 
