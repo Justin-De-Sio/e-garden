@@ -28,7 +28,6 @@ export async function login(email_var:string, password_var:string) {
       console.error('Aucun token reçu.');
     }
     saveToken(token);
-    return token;
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);
     throw error;
