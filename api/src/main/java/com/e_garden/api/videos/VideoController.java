@@ -28,47 +28,23 @@ public class VideoController {
 
     /**
      * Démarre l'enregistrement d'une vidéo.
-     * La durée doit être au format ISO-8601. Exemples:
-     * - PT5M (5 minutes)
-     * - PT30S (30 secondes)
-     * - PT1H (1 heure)
-     * - PT1H30M (1 heure et 30 minutes)
+     * La durée doit être au format ISO-8601.
+     * Exemples :
+     * - PT5M (5 minutes) ;
+     * - PT30S (30 secondes) ;
+     * - PT1H (1 heure) ;
+     * - PT1H30M (1 heure et 30 minutes).
      */
     @PostMapping("/record")
     public ResponseEntity<String> recordVideo(@RequestBody RecordingRequest request) {
         return videoService.startRecording(request.getDuration());
     }
 
-
-    /**
-     * Endpoint to stream a video using HTTP Range requests.
-     */
-    @GetMapping("/stream/{fileName}")
-    public ResponseEntity<ResourceRegion> streamVideo(
-            @PathVariable String fileName,
-            @RequestHeader HttpHeaders headers) {
-        try {
-            return videoService.streamVideo(fileName, headers);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/{fileName}")
-    public ResponseEntity<Resource> getVideo(@PathVariable String fileName) {
-        return videoService.getVideo(fileName);
-    }
-
-    @GetMapping("/")
-    public List<Video> getAllVideos() {
-        return videoService.getAllVideos();
-    }
-
-    @GetMapping("/date")
-    public ResponseEntity<Resource> getVideoByDate(@RequestParam(defaultValue = "2000") Integer year,
+    @GetMapping("/stream-by-date/")
+    public ResponseEntity<ResourceRegion> getVideoByDate(@RequestParam(defaultValue = "2000") Integer year,
                                                    @RequestParam(defaultValue = "01") Integer month,
-                                                   @RequestParam(defaultValue = "01") Integer day) {
+                                                   @RequestParam(defaultValue = "01") Integer day,
+                                                   @RequestHeader HttpHeaders headers) {
         if (year == 2000 && month == 1 && day == 1) {
             year = LocalDateTime.now().getYear();
             month = LocalDateTime.now().getMonthValue();
@@ -78,8 +54,23 @@ public class VideoController {
             ResponseEntity.badRequest().build();
         }
         LocalDateTime dateTime = LocalDateTime.of(year, month, day, 0, 0);
-        return videoService.getVideoForOneDay(dateTime);
+        try {
+            return videoService.streamVideo(dateTime, headers);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
+
+    @GetMapping("/{fileName}")
+    public ResponseEntity<Resource> getVideo(@PathVariable String fileName) {
+        return videoService.getVideo(fileName);
+    }
+
+    @GetMapping("/")
+    public List<Video> getAllVideos() {
+        return videoService.getAllVideos();
     }
 
 }
