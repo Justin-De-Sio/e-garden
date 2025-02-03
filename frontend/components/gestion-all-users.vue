@@ -59,8 +59,6 @@ async function requetUser() {
   }
 }
 
-const isSelectedDelete = ref(false);
-
 const items = row => [
   [{
     label: 'Modifier',
