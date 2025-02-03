@@ -67,6 +67,7 @@ onMounted(getReportData);
 
 <style scoped>
 .wrapper {
+
   max-width: 40rem;
   border-radius: 0.8rem;
   background-color: white;

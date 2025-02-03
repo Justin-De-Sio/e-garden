@@ -59,8 +59,8 @@ import calendar from "~/components/calendar.vue";
 import { ref, onMounted } from "vue";
 
 const api = new callAPI();
-const number_passage = ref(0);
-const number_cr = ref(0);
+const number_passage = ref();
+const number_cr = ref();
 
 definePageMeta({
   middleware: "auth",
@@ -126,7 +126,14 @@ onMounted(() => {
   gap: 2rem;
 }
 
-.camera_wrapper, .report_wrapper {
+.camera_wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.report_wrapper{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -144,16 +151,25 @@ footer {
   text-align: center;
   font-family: "Aeonik-Regular";
   padding: 1rem;
-  background: #f8f8f8;
 }
 
 @media screen and (max-width: 1200px) {
   .content_wrapper {
     flex-direction: column;
-    padding: 1rem;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
   .media_section {
     flex-direction: column;
+  }
+  .indicators_grid{
+    justify-content: center;
+  }
+
+  .right_section{
+    width: 100%;
   }
 }
 </style>

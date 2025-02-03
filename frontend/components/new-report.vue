@@ -14,18 +14,19 @@
         </svg>
       </div>
     </div>
-    <div class="container" v-for="(report,index) in reportsObject" :key="index">
-      <img :src="isCompleted(report.validated)" class="validationIcon">
-      <div class="header">
-        <div class="informations">
+    <hr class="separator">
+
+    <div v-for="(report,index) in reportsObject" :key="index" class="main_container_content">
+      <div class="container_content">
+        <div class="head_content">
           <h2>{{ report.user.name }} {{ report.user.surname }}</h2>
           <h4>{{ report.user.className }} - Grp 0{{ report.user.groupNumber }}</h4>
         </div>
+        <div class="body_content">
+          <p>{{ report.content || "Aucun contenu" }}</p>
+        </div>
       </div>
-      <div class="footer">
-        <p>{{ report.content || "Aucun contenu" }}</p>
-      </div>
-      <hr class="separator">
+      <hr class="content-separator" />
     </div>
   </div>
 </template>
@@ -35,15 +36,10 @@ import {callAPI} from '~/services/callAPI';
 import type {Reports} from '~/model/Reports';
 import type {Pages} from '~/model/Pages';
 
-
 const api = new callAPI();
 const reportsObject = ref<Reports[]>([]);
 const pageObject = ref();
 const currentPage = ref(0);
-
-const isCompleted = (isValidated: boolean) => {
-  return isValidated ? "assets/cr_done.png" : "assets/cr_empty.png";
-};
 
 const changePage = (direction: 'prev' | 'next') => {
   if (direction === 'prev' && currentPage.value > 0) {
@@ -55,7 +51,7 @@ const changePage = (direction: 'prev' | 'next') => {
 };
 
 const fetchNotif = async (page: number) => {
-  const response = await api.fetchAPIGetPaginated("report", page, 2) as Pages;
+  const response = await api.fetchAPIGetPaginated("report", page, 4) as Pages;
   pageObject.value = response;
   reportsObject.value = response.content as Reports[];
 };
@@ -72,11 +68,11 @@ onMounted(async () => {
   align-items: center;
   width: 100%;
   height: 100%;
-  max-height: 22rem;
   gap: 1rem;
   background-color: white;
   border-radius: 20px;
-  padding: 1rem 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .wrapperContrainerHeader {
@@ -95,11 +91,9 @@ onMounted(async () => {
   font-size: 0.8rem;
 }
 
-
 .chevron {
   display: flex;
   gap: 1rem;
-  position: sticky;
   padding-right: 1rem;
 }
 
@@ -107,72 +101,74 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-.container {
+.main_container_content {
+  width: 100%;
+}
+
+.container_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+.head_content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  border-radius: 1rem;
-  position: relative;
+  flex: 1;
 }
 
-.header {
-  display: flex;
-  flex-direction: row;
-  font-family: "Aeonik";
-  padding-top: 0.8rem;
-}
-
-.informations {
-  padding-left: 0.5rem;
-}
-
-.validationIcon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 20px;
-  height: 20px;
-}
-
-.header h2 {
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-
-
-.header h4 {
-  font-size: 1rem;
-  font-weight: 200;
-}
-
-.footer {
+.body_content {
   display: -webkit-box;
+  flex-direction: column;
+  flex: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
-  padding: 0 5%;
-  padding-bottom: 1rem;
-  max-height: 3.3em;
-  max-width: 1000px;
+  word-break: break-word;
+  gap: 0.5rem;
 }
 
-.footer p {
-  font-family: "Aeonik";
-  font-weight: regular;
-}
-
-.separator {
-  width: 80%;
-  height: 1px;
-  background-color: #ccc;
+.content-separator {
+  width: 100%;
   border: none;
-  margin: 10px 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 1rem 0;
+}
+
+.head_content h2 {
+  font-family: "Aeonik-Regular";
+  font-family: "Aeonik-Regular";
+  font-size: clamp(0.85rem, 2vw, 1rem);
+}
+
+.head_content h4 {
+  font-family: "Aeonik-Regular";
+  font-size: clamp(0.76rem, 2vw, 1rem);
+}
+
+.body_content p{
+  font-family: "Aeonik-Regular";
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 
+@media screen and (max-width: 768px) {
+  .container_content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .chevron {
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+
+}
 </style>
