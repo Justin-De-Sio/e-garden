@@ -23,14 +23,17 @@
         </div>
         <div class="formulaire">
           <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
+            <UFormGroup label="username" name="username" hidden="hidden">
+              <UInput v-model="username" autocomplete="username" type="text" hidden="hidden"/>
+            </UFormGroup>
             <UFormGroup label="Mot de passe actuel" name="currentpassword">
-              <UInput v-model="formState.currentPassword" type="password" class="!bg-white rounded-md" color="gray"/>
+              <UInput v-model="formState.currentPassword" autocomplete="current-password" type="password" class="!bg-white rounded-md" color="gray"/>
             </UFormGroup>
             <UFormGroup label="Nouveau mot de passe" name="newpassword">
-              <UInput v-model="formState.newPassword" type="password" class="!bg-white rounded-md" color="gray"/>
+              <UInput v-model="formState.newPassword" autocomplete="new-password" type="password" class="!bg-white rounded-md" color="gray"/>
             </UFormGroup>
             <UFormGroup label="Confirmation de mot de passe" name="confirmPassword">
-              <UInput v-model="formState.confirmPassword" type="password" class="!bg-white rounded-md" color="gray"/>
+              <UInput v-model="formState.confirmPassword" autocomplete="new-password" type="password" class="!bg-white rounded-md" color="gray"/>
             </UFormGroup>
 
             <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
@@ -85,8 +88,9 @@ definePageMeta({
 })
 
 const api = new callAPI();
-const errorMessage = ref()
-const userId = ref()
+const errorMessage = ref();
+const userId = ref();
+const username = ref();
 
 const isLoading = ref(false);
 const notificationVisible = ref(false);
@@ -97,6 +101,7 @@ onMounted(async () => {
   try {
     const data = await api.fetchAPIGet('user/profil') as User;
     userId.value = data.id;
+    username.value = data.email;
   } catch (error) {
     console.error('Erreur lors du chargement des données du profil :', error);
   }
