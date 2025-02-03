@@ -61,7 +61,7 @@ watch(() => props.userId, (newId) => {
 
 const submitForm = async () => {
   try {
-    await api.fetchAPIPut(`/user/${props.userId}`, user.value);
+    await api.fetchAPIPutWithId('user', props.userId, user.value);
     emit('close');
     props.requetUser();
   } catch (error) {
