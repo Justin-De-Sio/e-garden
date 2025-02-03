@@ -1,3 +1,5 @@
+import {JWTPayload} from "~/services/jwtpayload.js";
+
 export default defineNuxtRouteMiddleware((to, from) => {
   const jwtCookie = useCookie('session'); // Récupérer le cookie
   const token = jwtCookie.value;
@@ -11,7 +13,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
       if (exp && exp > currentTime) {
         return navigateTo('/wire-report.vue'); // Redirige si le token est valide
       } else {
-        console.warn('Token expiré');
+        console.error('Token expiré');
         jwtCookie.value = null; // Supprimer le cookie si expiré
       }
     } catch (error) {
