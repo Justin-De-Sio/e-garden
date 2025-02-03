@@ -68,6 +68,7 @@ public class VideoController {
         return videoService.getVideo(fileName);
     }
 
+    // TODO by 30 jours
     @GetMapping("/")
     public List<Video> getAllVideos() {
         return videoService.getAllVideos();
