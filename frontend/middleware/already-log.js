@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (exp && exp > currentTime) {
-        return navigateTo('/wire-report.vue'); // Redirige si le token est valide
+        return navigateTo('/wire-report'); // Redirige si le token est valide
       } else {
         console.error('Token expiré');
         jwtCookie.value = null; // Supprimer le cookie si expiré
