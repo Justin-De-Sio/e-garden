@@ -30,10 +30,10 @@
           <div class="formulaire">
             <UForm :schema="formSchema" :state="formState" class="space-y-3" @submit="onSubmit">
               <UFormGroup label="Prénom" name="name">
-                <UInput v-model="formState.name" autocomplete="family-name" class="!bg-white rounded-md" color="gray" />
+                <UInput v-model="formState.name" autocomplete="given-name" class="!bg-white rounded-md" color="gray" />
               </UFormGroup>
               <UFormGroup label="Nom" name="surname">
-                <UInput v-model="formState.surname" autocomplete="given-name" class="!bg-white rounded-md" color="gray" />
+                <UInput v-model="formState.surname" autocomplete="family-name" class="!bg-white rounded-md" color="gray" />
               </UFormGroup>
               <UFormGroup label="Email" name="email">
                 <UInput v-model="formState.email" class="!bg-white rounded-md" color="gray" readonly />
