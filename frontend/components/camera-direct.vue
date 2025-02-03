@@ -77,7 +77,7 @@ onMounted(() => {
   .flux_video video { 
     width: 100%;  
     height: auto;
-    max-height: 20rem; 
+    max-height: 30rem; 
     border-radius: inherit; 
     object-fit: cover; 
   }
