@@ -50,7 +50,7 @@
           <p>Date de création {{ state.createdAt || 'aujourd\'hui' }}</p>
           <div class="placement_button">
             <UButton type="button" @click="onSubmit(true)">{{ isCreating ? "Créer" : "Enregistrer" }}</UButton>
-            <UButton type="button" color="gray" @click="onSubmit(false)" :disabled="isCreating">Brouillon</UButton>
+            <UButton type="button" color="gray" @click="onSubmit(false)">Brouillon</UButton>
           </div>
         </UForm>
       </div>
@@ -65,7 +65,6 @@
       :description="notificationMessage"
       :timeout="6000"
       class="custom-notification"
-
   />
 </template>
 
@@ -100,13 +99,11 @@ const changePage = (direction: 'prev' | 'next') => {
 };
 
 const checkNextPage = () => {
-
   return currentPage.value < totalPages.value - 1;
 };
 
 const api = new callAPI();
 const id_report = ref<bigint | undefined>();
-
 
 const schema = z.object({
   content: z.string().min(8, "Must be at least 8 characters"),
@@ -126,9 +123,7 @@ function editReport(content: string, id?: bigint) {
   state.createdAt = selectedReport ? formatDate(selectedReport.createdAt) : "";
 }
 
-
 const NotValidatedReports = ref<Reports[]>([]);
-
 
 onMounted(async () => {
   await fetchReports(currentPage.value);
@@ -149,7 +144,6 @@ async function fetchReports(page: number) {
 const RequestValidatedReport = reactive({
   content: state.content,
   validated: true,
-
 });
 
 async function onSubmit(isFinal: boolean) {
@@ -180,12 +174,11 @@ async function onSubmit(isFinal: boolean) {
 
     state.content = "";
     state.createdAt = "";
+    isCreating.value = true;
     activeReportId.value = null;
     setTimeout(() => {
       notificationVisible.value = false;
     }, 6000);
-
-
   } catch (error) {
     console.error("Erreur lors de l'envoie des rapports :", error);
   }
