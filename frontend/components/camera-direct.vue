@@ -13,9 +13,6 @@ import { onMounted } from 'vue';
 import Hls from "hls.js";
 
 const videoSrc = '/api/stream/playlist';
-definePageMeta({
-  middleware: "auth"
-})
 
 onMounted(() => {
   const video = document.getElementById('video') as HTMLVideoElement;
