@@ -105,7 +105,7 @@ const isAdmin = ref(false);
 const isRespo = ref(false);
 
 function loadElementsNavBar() {
-  let updatedLinks: Link[] = [];
+  let updatedLinks: Link[];
   if (getToken().role === 'ADMINISTRATEUR') {
     updatedLinks = links.value.concat(adminLinks.value).concat(respoLinks.value);
     isAdmin.value = true;

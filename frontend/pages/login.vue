@@ -18,7 +18,7 @@
           <UFormGroup  label="Email"  name="email" 
               :ui="{
                 label: { 
-                  base: 'text-black dark:text-white',
+                  base: 'text-black dark:text-white'
                 }
               }"
             >

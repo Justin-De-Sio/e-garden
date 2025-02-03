@@ -1,6 +1,12 @@
-
+/**
+ * Fonction qui permet de réaliser la demande de connexion pour le login utilisateur.
+ * Elle prend en paramètre un email et un mot de passe.
+ * La méthode enregistre le Token utilisateur dans une session si la demande est valide, sinon elle n'enregistre rien.
+ * @param email_var au format string
+ * @param password_var au format string
+ * @returns {Promise<string>} retourne un string avec un token si valide ou un message d'erreur.
+ */
 export async function login(email_var, password_var) {
-
   try {
     const response = await fetch('/api/user/login', 
       {
@@ -13,19 +19,15 @@ export async function login(email_var, password_var) {
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Erreur de connexion.');
+      console.error(errorMessage || 'Erreur de connexion.');
     }
     // Extraire le token
     const token = await response.text();
     console.log("Token reçu :", token);
 
     if (!token) {
-      throw new Error('Aucun token reçu. Vérifiez votre backend.');
+      console.error('Aucun token reçu.');
     }
-
-    // Stocker le token dans un cookie
-    const jwtCookie = useCookie('session');
-    jwtCookie.value = token;
 
     return token;
   } catch (error) {

@@ -49,7 +49,6 @@
   import header_title from "~/components/header_title.vue";
   import camera from "~/components/camera-direct.vue";
   import NavbarVertical from "~/components/navbar_vertical.vue"
-  import report from "~/components/report.vue";
   import {callAPI}  from "~/services/callAPI";
   import newReport from '~/components/new-report.vue'
   import calendar from "~/components/calendar.vue";
