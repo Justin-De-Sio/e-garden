@@ -23,11 +23,12 @@ export async function login(email_var, password_var) {
     }
     // Extraire le token
     const token = await response.text();
-    console.log("Token reçu :", token);
-
     if (!token) {
       console.error('Aucun token reçu.');
     }
+    // Stocker le token dans un cookie
+    const jwtCookie = useCookie('session');
+    jwtCookie.value = token;
 
     return token;
   } catch (error) {
