@@ -40,7 +40,7 @@ public class VideoController {
         return videoService.startRecording(request.getDuration());
     }
 
-    @GetMapping("/stream-by-date/")
+    @GetMapping("/stream-by-date")
     public ResponseEntity<ResourceRegion> getVideoByDate(@RequestParam(defaultValue = "2000") Integer year,
                                                    @RequestParam(defaultValue = "01") Integer month,
                                                    @RequestParam(defaultValue = "01") Integer day,
