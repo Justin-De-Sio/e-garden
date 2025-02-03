@@ -27,6 +27,30 @@
     font-weight: 700;
     font-style: normal;
   }
+
+
+  @font-face {
+    font-family: 'Aeonik-Regular';
+    src:  url('/public/assets/fonts/Aeonik-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Aeonik-Medium';
+    src: url('/public/assets/fontsAeonik-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+
+  @font-face {
+    font-family: 'Aeonik-Bold';
+    src: url('/public/assets/fonts/Aeonik-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+
   html, body {
       overflow-x: hidden;
       width: 100%;

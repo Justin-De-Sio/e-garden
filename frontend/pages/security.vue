@@ -87,14 +87,14 @@ onMounted(() => {
 .wrapper_page {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 100vw;
-  max-height: 100vh;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 .content_wrapper {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  display: flex;
+  flex-direction: row;
   gap: 2rem;
   padding: 2rem;
   flex-grow: 1;
@@ -104,9 +104,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  flex: 2;
 }
-
-
 
 .indicators_section h2, .media_item h2 {
   font-family: "Aeonik-Regular";
@@ -122,31 +121,23 @@ onMounted(() => {
 }
 
 .media_section {
-  display: grid;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-  grid-template-columns: 2fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
 }
 
-.camera_wrapper {
+.camera_wrapper, .report_wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.report_wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex: 1;
 }
 
 .right_section {
   display: flex;
   justify-content: center;
   align-items: start;
-  margin-top: 3rem;
+  flex: 1;
 }
 
 footer {
@@ -158,18 +149,11 @@ footer {
 
 @media screen and (max-width: 1200px) {
   .content_wrapper {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     padding: 1rem;
-    width: 100%;
   }
   .media_section {
-    grid-template-columns: 1fr;
-
-  }
-  .right_section {
-    margin-top: 2rem;
+    flex-direction: column;
   }
 }
-
-
 </style>
