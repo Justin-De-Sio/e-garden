@@ -9,7 +9,7 @@ import jwtDecode from "jwt-decode";
  * - le "exp", date d'expiration, du token.
  * @returns {unknown}
  */
-export function getToken() {
+export function getToken():unknown {
     let sessionCookie;
     try {
         sessionCookie = (useCookie('session')); // Récupérer le cookie
