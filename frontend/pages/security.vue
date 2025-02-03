@@ -4,10 +4,11 @@
       <div class="wrapperLeftRight">
         <div class="left_content">
           <div class="header_bis">
-            <header_title title="Section Sécurité" subtitle="Retrouvez tous les indicateurs pour la gestion de votre potager"></header_title>
+            <header_title title="Section Sécurité" subtitle="Retrouvez toutes les fonctionnalités disponibles pour une gestion de votre potager pilotée"></header_title>
           </div>
           <div class="top_wrapper">
             <div class="top_left">
+              <h2>Indicateurs</h2>
               <div class="columns_indicators">
                 <indicators 
                 iconBackgroundColor="#95BD75"
@@ -111,14 +112,17 @@
 
 .header_bis {
   width: 80%;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
 }
 
 
 .top_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  
+  padding-left: 3rem;
 }
 
 .columns_indicators {
@@ -135,20 +139,39 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+  margin-top: 2rem;
+  padding: 1rem 2rem 2rem 2rem ;
+  border-radius: 1rem;
+  background-color: #ececec;
 }
 
 .top_bot_left h2{
-  font-family: "Gilroy-Medium";
+  font-family: "Aeonik-Regular";
   font-size: clamp(1rem, 2vw, 1.5rem); 
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
 }
 
 .top_bot_right h2{
-  font-family: "Gilroy-Medium";
+  font-family: "Aeonik-Regular";
   font-size: clamp(1rem, 2vw, 1.5rem); 
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
+}
+
+.top_left h2{
+  font-family: "Aeonik-Regular";
+  font-size: clamp(1rem, 2vw, 1.5rem); 
+  margin-bottom: 1rem;
+  color: white;
+
+}
+
+.top_left{
+  padding: 1rem 2rem 2rem 2rem ;
+  border-radius: 1rem;
+  margin-right: auto;
+  background-color: #95BD75;
 }
 
 
@@ -160,9 +183,8 @@
 }
 
 footer{ 
-  font-family: "Gilroy-Medium";
+  font-family: "Aeonik-Regular";
   text-align: center;
-  padding: 1rem 0;
   width: 100%;
 }
 

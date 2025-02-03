@@ -26,13 +26,13 @@
     }
 
     .header h1{
-        font-family: "Gilroy-Bold";
+        font-family: "Aeonik-Bold";
         color: black;
-        font-size: clamp(1.4rem, 2.5vw, 2rem);
+        font-size: clamp(1.4rem, 2.5vw, 2.2rem);
     }
     .header h3{
-        font-family: "Gilroy-Medium";
+        font-family: "Aeonik-Regular";
         color: #969696;
-        font-size: clamp(0.8rem, 1.3vw, 1rem);
+        font-size: clamp(0.8rem, 1.3vw, 1.2rem);
     }
 </style>

@@ -42,12 +42,12 @@
     max-width: 18rem;
     min-width: 10.5rem;
     height: 100%;
-    background-color: #FFFFFF; 
+    background-color: #ecedec; 
     display: flex;
     flex-direction: row; 
     align-items: center;
     padding: clamp(0.6rem, 1.5vw, 1rem);
-    font-family: 'gilroy-medium', sans-serif; 
+
     border-radius: 0.8rem; 
   }
   .icon-background {
@@ -74,10 +74,12 @@
   .custom-frame h1 {
     font-size: clamp(0.7rem, 0.8vw, 1rem); 
     margin: 2px;
+    font-family: 'Aeonik-Medium'; 
     color: #000000;
   }
   .custom-frame h2 {
     font-size: clamp(0.6rem, 0.8vw, 0.9rem); 
+    font-family: 'Aeonik-Regular'; 
     color: #7B7B7B;
     margin: 0;
   }

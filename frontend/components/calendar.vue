@@ -3,9 +3,9 @@
     <div class="calendar-header">
       <div class="calendar-month-year-container">
         <div class="calendar-month-year">
-          {{ currentMonth }}
+          <h2>{{ currentMonth }}</h2>
         </div>
-        <button class="today-button" @click="goToToday">Aujourd'hui</button>
+        <!--<button class="today-button" @click="goToToday">Aujourd'hui</button>-->
       </div>
       <div class="calendar-navigation">
         <button @click="prevMonth">
@@ -34,6 +34,10 @@
         </div>
       </div>
     </div>
+    <div class="events">
+      <h2>Évènements</h2>
+    </div>
+
   </div>
 </template>
 
@@ -100,10 +104,11 @@ export default {
 
 <style scoped>
 .calendar {
-  width: 20rem;
-  border: 1px solid #ccc;
+  width: 30rem;
+  height: 100%;
   border-radius: 15px;
-  padding: 10px;
+  padding: 2rem 2rem;
+  background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .calendar-header {
@@ -127,10 +132,12 @@ export default {
 }
 .calendar-month-year-container {
   text-align: center;
+
 }
-.calendar-month-year {
-  font-size: 1.2em;
-  font-weight: bold;
+.calendar-month-year h2 {
+  font-family: "Aeonik-Regular";
+  font-size: clamp(1rem, 2vw, 1.3rem);
+
 }
 .today-button {
   margin-top: 5px;
@@ -148,30 +155,56 @@ export default {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 1.5rem;
 }
 .calendar-weekday {
   text-align: center;
+  font-family: 'Gilroy-Regular';
   color: #7F7F7F;
+  padding-top: 2rem;
 }
 .calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 0.8rem;
 }
 .calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  font-family: 'Gilroy-Medium';
   text-align: center;
-  padding: 5px;
+  padding: 0.5rem;
   cursor: pointer;
   border-radius: 5px;
   position: relative;
   border: none;
+  text-align: center;
+}
+
+.calendar-day:hover{
+  background-color: #95bd75;
+  color: white;
+  border-radius: 1rem;
 }
 .calendar-day.selected {
-  border: 3px solid #49DC82;
-  color: #49DC82;
+  border: 2px solid #95bd75;
+  color: #95bd75;
+  border-radius: 1rem;
 }
 .calendar-day.not-in-month {
   color: #7F7F7F;
 }
+
+.events{
+  padding-top: 2rem;
+}
+
+.events h2{
+  font-family: "Aeonik-Regular";
+  font-size: clamp(1rem, 2vw, 1.3rem);
+}
+
 </style>
