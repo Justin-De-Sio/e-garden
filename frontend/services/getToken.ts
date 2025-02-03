@@ -7,7 +7,7 @@ import jwtDecode from "jwt-decode";
  * - le "sub", email, de l'utilisateur ;
  * - le "iat", date de création, du token :
  * - le "exp", date d'expiration, du token.
- * @returns {object Token}
+ * @returns {unknown}
  */
 export function getToken() {
     let sessionCookie;
