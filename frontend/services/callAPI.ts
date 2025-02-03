@@ -59,10 +59,9 @@ export class callAPI {
      */
     async fetchAPIDelete(url:string, id:string) {
         try {
-            const data = await $fetch(`/api/${url}/${id}`, {
+            return await $fetch(`/api/${url}/${id}`, {
                 method: 'DELETE',
             });
-            return data;
         } catch (error) {
             console.error('Erreur lors de la requête API :', error);
             throw error;
@@ -75,8 +74,7 @@ export class callAPI {
      */
     async #fetchGet(url:string) {
         try {
-            const data = await $fetch("/api/" + url);
-            return data;
+            return await $fetch("/api/" + url);
         } catch (error) {
             console.error('Erreur lors de la requête API :', error);
             throw error;
@@ -91,14 +89,13 @@ export class callAPI {
      */
     async #fetchPostPut(url:string, body:any, methode:any) {
         try {
-            const data = await $fetch(`/api/${url}`, {
+            return await $fetch(`/api/${url}`, {
                 method: methode,
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
             });
-            return data;
         } catch (error) {
             console.error('Erreur lors de la requête API :', error);
             throw error;
