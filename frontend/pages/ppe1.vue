@@ -12,7 +12,8 @@ definePageMeta({
     <NavbarVertical></NavbarVertical>
     <div class="header_bis">
       <header_title title="PPE1" subtitle="Sous titre"></header_title>
-    </div>  </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>

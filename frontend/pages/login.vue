@@ -22,11 +22,11 @@
                 }
               }"
             >
-              <UInput  v-model="formState.email"  class="!bg-white rounded-md has-[:invalid]:ring-red-500" color="gray"/>
+              <UInput v-model="formState.email" autocomplete="email" class="!bg-white rounded-md has-[:invalid]:ring-red-500" color="gray"/>
             </UFormGroup>
 
           <UFormGroup label="Password" name="password" :ui="{ label: { base: 'text-black dark:text-white' } }">
-            <UInput v-model="formState.password" type="password" class="!bg-white rounded-md" color="gray" required/>
+            <UInput v-model="formState.password" autocomplete="current-password" type="password" class="!bg-white rounded-md" color="gray" required/>
           </UFormGroup> 
           <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
             {{ errorMessage }}
@@ -48,6 +48,9 @@ import { login } from '~/services/auth';
 
 const isLoading = ref(false);
 const router = useRouter();
+const route = useRoute();
+const redirectTo = route.query.redirect || '/';
+
 const formState = reactive({
   email: undefined,
   password: undefined,
@@ -70,7 +73,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
     const token = await login(email, password);
     const token_payload = JWTPayload(token);
-    console.log("LOGG", token_payload.role)
+    if (redirectTo !== '/') {
+      return navigateTo(redirectTo);
+    }
     if(token_payload.role === "ADMINISTRATEUR"){
       await router.push('/security');
     }

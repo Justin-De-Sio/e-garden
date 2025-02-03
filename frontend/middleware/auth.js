@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   // Si le token n'existe pas, rediriger vers login
   if (!token) {
-    return navigateTo('/login');
+    return navigateTo(`/login?redirect=${encodeURIComponent(to.fullPath)}`);
   }
 
 
@@ -21,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   } catch (error) {
     console.error("Erreur de décryptage du token:", error);
     jwtCookie.value = null;
-    return navigateTo('/login');
+    return navigateTo(`/login?redirect=${encodeURIComponent(to.fullPath)}`);
   }
 
   // Vérifier si le token est expiré
@@ -29,7 +29,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (token_payload.exp && token_payload.exp < currentTime) {
     console.warn("Token expiré");
     jwtCookie.value = null; 
-    return navigateTo('/login');
+    return navigateTo(`/login?redirect=${encodeURIComponent(to.fullPath)}`);
   }
 
   // Vérifier les rôles si définis
