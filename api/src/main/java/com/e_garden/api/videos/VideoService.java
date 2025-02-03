@@ -71,7 +71,7 @@ public class VideoService {
         long contentLength = videoFile.length();
 
         // Define a default chunk size (e.g., 1MB)
-        long chunkSize = 1024 * 1024;
+        long chunkSize = 4 * 1024 * 1024;
 
         ResourceRegion region = getResourceRegion(videoResource, headers, chunkSize);
 
