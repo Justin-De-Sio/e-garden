@@ -42,28 +42,27 @@
     max-width: 18rem;
     min-width: 10.5rem;
     height: 100%;
-    background-color: #ecedec; 
+    background-color: white; 
     display: flex;
     flex-direction: row; 
     align-items: center;
-    padding: clamp(0.6rem, 1.5vw, 1rem);
-
-    border-radius: 0.8rem; 
+    padding: clamp(0.4rem, 1vw, 1rem);
+    border-radius: min(1rem, 20px); 
   }
   .icon-background {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 15px; 
-    width: 20%;
+    width: 16%;
     height: auto;
-    padding: 0.09rem;
-    border-radius: 0.5rem; 
+    border-radius: clamp(0.5rem, 0.7vw, 0.8rem);
   }
   .icon-image {
     width: 100%; 
     height: auto;
-    padding: clamp(0.3rem, 0.7vw, 3rem);
+    padding: clamp(0.1rem, 0.7vw, 0.7rem);
+
 
   }
   .text-container {
@@ -99,14 +98,11 @@
   }
   @media screen and (max-width: 400px) {
 
-  .custom-frame{
-    padding: 0.5rem  
-  }
+
 
   .icon-image {
   width: 100%; 
   height: auto;
-  padding: 0.3rem;
 
   }
     

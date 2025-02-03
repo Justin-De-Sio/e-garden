@@ -127,7 +127,7 @@
 .columns_indicators {
   display: flex;
   flex-wrap: nowrap; 
-  gap: 1rem;
+  gap: 2rem;
   justify-content: flex-start; 
   white-space: nowrap; 
   max-width: 100%;
@@ -139,9 +139,6 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
-  padding: 1rem 2rem 2rem 2rem ;
-  border-radius: 1rem;
-  background-color: #ececec;
 }
 
 .top_bot_left h2{
@@ -162,15 +159,12 @@
   font-family: "Aeonik-Regular";
   font-size: clamp(1rem, 2vw, 1.5rem); 
   margin-bottom: 1rem;
-  color: white;
+  color: black;
 
 }
 
 .top_left{
-  padding: 1rem 2rem 2rem 2rem ;
-  border-radius: 1rem;
-  margin-right: auto;
-  background-color: #95BD75;
+
 }
 
 
