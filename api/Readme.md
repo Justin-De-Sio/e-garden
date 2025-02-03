@@ -2,11 +2,12 @@
 
 ## Prérequis
 Il est nécessaire d'installer : 
+- intellij idea
 - Git
 - La version 23 de Java (peut se faire plus tard dans l'IDE)
 - Une base de données Postgres
-- FFMPEG (MacOS `brew install ffmpeg`, Linux: `sudo apt install ffmpeg`, Windows : `winget install ffmpeg`
-
+- FFMPEG (MacOS `brew install ffmpeg`, Linux: `sudo apt install ffmpeg`, Windows : `winget install ffmpeg` et redémarré)
+- Installer les packages: sur l'IDE Maven -> Lifecycle -> install
 ## Base de données
 Pour ce projet, nous utilisons une base de données Postgres. 
 Nous conseillons d'utiliser Postgres afin d'assurer une bonne compatibilité.
