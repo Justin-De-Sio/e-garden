@@ -71,7 +71,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   const { email, password } = formState;
 
   try {
-    const token = await login(email, password);
+    await login(email, password);
     const token_payload = getTokenObject();
     if (token_payload === null) {
       return router.push('/login');

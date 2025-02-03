@@ -1,7 +1,6 @@
-import {getTokenObject} from "~/services/SessionServices.ts";
+import {getTokenObject, resetToken} from "~/services/SessionServices.ts";
 
 export default defineNuxtRouteMiddleware((to, from) => {
-  const jwtCookie = useCookie('session'); // Récupérer le cookie
   const token = getTokenObject();
 
   if (token) {
@@ -14,13 +13,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
         return navigateTo('/wire-report'); // Redirige si le token est valide
       } else {
         console.error('Token expiré');
-        jwtCookie.value = null; // Supprimer le cookie si expiré
+        resetToken();
       }
     } catch (error) {
       console.error('Erreur lors du décryptage du token:', error);
-      jwtCookie.value = null; // Supprimer le cookie si invalide
+      resetToken();
     }
   }
-
   // Laisser l'utilisateur sur la page de login s'il n'a pas de token ou si le token est invalide
 });

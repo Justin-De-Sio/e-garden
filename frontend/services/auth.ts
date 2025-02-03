@@ -6,9 +6,8 @@ import {saveToken} from "~/services/SessionServices.js";
  * La méthode enregistre le Token utilisateur dans une session si la demande est valide, sinon elle n'enregistre rien.
  * @param email_var au format string
  * @param password_var au format string
- * @returns {Promise<string>} retourne un string avec un token si valide ou un message d'erreur.
  */
-export async function login(email_var, password_var) {
+export async function login(email_var:string, password_var:string) {
   try {
     const response = await fetch('/api/user/login', 
       {
