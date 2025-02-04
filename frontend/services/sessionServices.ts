@@ -1,5 +1,5 @@
-import jwtDecode from "jwt-decode";
 import type {JWToken} from "~/model/JWToken";
+import jwtDecode from "jwt-decode";
 
 /**
  * Fonction pour récupérer le token de l'utilisateur.
