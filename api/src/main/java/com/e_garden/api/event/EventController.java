@@ -14,6 +14,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Le type Event controller.
+ */
 @RestController
 @RequestMapping("/event")
 @CrossOrigin
@@ -23,6 +26,14 @@ public class EventController {
     private final ReportService reportService;
     private final DoorService doorService;
 
+    /**
+     * Instancie un nouveau Event controller.
+     *
+     * @param eventService  le event service
+     * @param userService   le user service
+     * @param reportService le report service
+     * @param doorService   le door service
+     */
     @Autowired
     public EventController(EventService eventService, UserService userService, ReportService reportService, DoorService doorService) {
         this.eventService = eventService;
@@ -31,11 +42,24 @@ public class EventController {
         this.doorService = doorService;
     }
 
+    /**
+     * Gets events by identifiant.
+     *
+     * @param id l'identifiant
+     * @return l'events l'identifiant
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventsById(@PathVariable Long id) {
         return ResponseEntity.ok(eventService.getEventsById(id));
     }
 
+    /**
+     * Gets paginated events.
+     *
+     * @param size the size
+     * @param page the page
+     * @return le paginated events
+     */
     @GetMapping("/paginated")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<PageDTO<EventDTO>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
@@ -43,6 +67,12 @@ public class EventController {
         return ResponseEntity.ok(eventService.getPaginatedEvents(page, size));
     }
 
+    /**
+     * Delete events response entity.
+     *
+     * @param id l'identifiant
+     * @return le response entity
+     */
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Void> deleteEvents(@PathVariable Long id) {
@@ -53,6 +83,7 @@ public class EventController {
     /**
      * Méthode qui permet d'enregistrer un passage.
      * La méthode enregistre un événement lié à l'utilisateur et crée un rapport non rempli lié à l'utilisateur.
+     *
      * @param id identifiant de la porte
      * @return un objet rapport non rempli
      */
@@ -70,6 +101,11 @@ public class EventController {
         return ResponseEntity.ok(reportService.saveReport(new Report(userByEmail)));
     }
 
+    /**
+     * Gets event statistique.
+     *
+     * @return l'event statistique
+     */
     @GetMapping("/statistique")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Integer> getEventStatistique() {

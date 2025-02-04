@@ -6,9 +6,24 @@ package com.e_garden.api.log;
  * TODO : Ajouter les objects dont vous avez besoin.
  */
 public enum Levels {
+    /**
+     * User levels.
+     */
     USER,
+    /**
+     * Report levels.
+     */
     REPORT,
+    /**
+     * Event levels.
+     */
     EVENT,
+    /**
+     * Door levels.
+     */
     DOOR,
+    /**
+     * Api levels.
+     */
     API
 }

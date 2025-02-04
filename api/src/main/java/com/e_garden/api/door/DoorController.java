@@ -9,34 +9,65 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Le type Door controller.
+ */
 @Controller
-@RequestMapping("/report")
+@RequestMapping("/door")
 @CrossOrigin
 @Secured("ADMINISTRATEUR")
 public class DoorController {
 
     private final DoorService doorService;
 
+    /**
+     * Instancie un nouveau Door controller.
+     *
+     * @param doorService le door service
+     */
     @Autowired
     public DoorController(DoorService doorService) {
         this.doorService = doorService;
     }
 
+    /**
+     * Gets all doors.
+     *
+     * @return all doors
+     */
     @GetMapping
     public List<Door> getAllDoors() {
         return doorService.getAllDoor();
     }
 
+    /**
+     * Create door response entity.
+     *
+     * @param door la porte
+     * @return response entity
+     */
     @PostMapping
     public ResponseEntity<Door> createDoor(@RequestBody Door door) {
         return ResponseEntity.ok(doorService.saveDoor(door));
     }
 
+    /**
+     * Update door response entity.
+     *
+     * @param door la porte
+     * @return response entity
+     */
     @PutMapping
     public ResponseEntity<Door> updateDoor(@RequestBody Door door) {
         return ResponseEntity.ok(doorService.saveDoor(door));
     }
 
+    /**
+     * Delete door response entity.
+     *
+     * @param id l'identifiant
+     * @return le response entity
+     */
     @DeleteMapping
     public ResponseEntity<Void> deleteDoor(@RequestBody Long id) {
         doorService.deleteDoor(doorService.getDoorById(id));

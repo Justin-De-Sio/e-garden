@@ -13,22 +13,42 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Le type Report service.
+ */
 @Service
 public class ReportService {
 
     private final ReportRepository reportRepository;
     private final LogService logService;
 
+    /**
+     * Instancie un nouveau Report service.
+     *
+     * @param reportRepository le report repository
+     * @param logService       le log service
+     */
     @Autowired
     public ReportService(ReportRepository reportRepository, LogService logService) {
         this.reportRepository = reportRepository;
         this.logService = logService;
     }
 
+    /**
+     * Gets all reports.
+     *
+     * @return all reports
+     */
     public List<Report> getAllReports() {
         return reportRepository.findAll();
     }
 
+    /**
+     * Gets rapport by identifiant.
+     *
+     * @param id l'identifiant
+     * @return le report by identifiant
+     */
     public Report getReportById(Long id) {
         Optional<Report> report = reportRepository.findById(id);
         if (report.isEmpty())
@@ -37,17 +57,35 @@ public class ReportService {
             return report.get();
     }
 
+    /**
+     * Save rapport.
+     *
+     * @param report le report
+     * @return le report
+     */
     public Report saveReport(Report report) {
         report.setReportDate(LocalDateTime.now());
         logService.createLog(String.valueOf(Levels.REPORT), "Enregistrement d'un rapport", "report id : " + report.toString());
         return reportRepository.save(report);
     }
 
+    /**
+     * Delete rapport.
+     *
+     * @param id l'identifiant
+     */
     public void deleteReport(Long id) {
         logService.createLog(String.valueOf(Levels.REPORT), "Suppression d'un rapport", "report id : " + id);
         reportRepository.deleteById(id);
     }
 
+    /**
+     * Gets paginated reports.
+     *
+     * @param page la page
+     * @param size la size
+     * @return la paginated reports
+     */
     public PageDTO<Report> getPaginatedReports(int page, int size) {
         Page<Report> reportPage = reportRepository.findAllByOrderByReportDateDesc(PageRequest.of(page, size));
 
@@ -62,6 +100,7 @@ public class ReportService {
 
     /**
      * Méthode qui retourne le nombre de rapports non validé sur les 30 derniers jours.
+     *
      * @return un entier
      */
     public int getUnvalidatedReportsCount() {
@@ -70,9 +109,10 @@ public class ReportService {
 
     /**
      * Retourne une page de rapports validés pour un utilisateur.
+     *
      * @param page numéro de la page
      * @param size taille de la page
-     * @param id identifiant de l'utilisateur
+     * @param id   identifiant de l'utilisateur
      * @return une page avec n rapports validés
      */
     public PageDTO<Report> getMyValidatedReports(int page, int size, Long id) {
@@ -81,9 +121,10 @@ public class ReportService {
 
     /**
      * Retourne une page de rapports non validés pour un utilisateur.
+     *
      * @param page numéro de la page
      * @param size taille de la page
-     * @param id identifiant de l'utilisateur
+     * @param id   identifiant de l'utilisateur
      * @return une page avec n rapports non validés
      */
     public PageDTO<Report> getMyNotValidatedReports(int page, int size, Long id) {
@@ -112,6 +153,7 @@ public class ReportService {
 
     /**
      * Méthode pour retournant les rapports validés les plus recent par page.
+     *
      * @param page numéro de la page
      * @param size taille de la page
      * @return une page avec n rapports
@@ -128,6 +170,12 @@ public class ReportService {
         ));
     }
 
+    /**
+     * Create rapport.
+     *
+     * @param report le report
+     * @return le report
+     */
     public Report createReport(Report report) {
         return saveReport(report);
     }

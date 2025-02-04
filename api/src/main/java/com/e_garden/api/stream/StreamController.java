@@ -30,6 +30,11 @@ public class StreamController {
 
     private final StreamService streamService;
 
+    /**
+     * Instancie un nouveau Stream controller.
+     *
+     * @param streamService le stream service
+     */
     @Autowired
     public StreamController(StreamService streamService) {
         this.streamService = streamService;
@@ -54,6 +59,13 @@ public class StreamController {
                 .body(resource);
     }
 
+    /**
+     * Gets hls segment.
+     *
+     * @param filename le filename
+     * @return le hls segment
+     * @throws IOException l'exception
+     */
     @GetMapping("/{filename}")
     public ResponseEntity<InputStreamResource> getHlsSegment(@PathVariable String filename) throws IOException {
         File file = new File(OUTPUT_DIRECTORY + File.separator + filename);

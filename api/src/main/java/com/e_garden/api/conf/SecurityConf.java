@@ -20,6 +20,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Le type Security conf.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -28,6 +31,12 @@ public class SecurityConf {
     private final UserDetailsService userService;
     private final JWTFilter jwtFilter;
 
+    /**
+     * Instancie un nouveau Security conf.
+     *
+     * @param userService le user service
+     * @param jwtFilter   le jwt filter
+     */
     @Autowired
     public SecurityConf(UserDetailsService userService, JWTFilter jwtFilter) {
         this.userService = userService;
@@ -41,7 +50,7 @@ public class SecurityConf {
      * Il faut ajouter uniquement les routes nécessitant aucune vérification.
      *
      * @param httpSecurity la requête
-     * @return HttpSecurity
+     * @return HttpSecurity security filter chain
      * @throws Exception une exception est retourné en cas d'accès refusé
      */
     @Bean
@@ -58,6 +67,11 @@ public class SecurityConf {
                 .build();
     }
 
+    /**
+     * Custom access denied handlers access denied handler.
+     *
+     * @return l'access denied handler
+     */
     @Bean
     public AccessDeniedHandler customAccessDeniedHandlers() {
         return new CustomAccessDeniedHandler();
@@ -67,7 +81,7 @@ public class SecurityConf {
      * Fonction qui permet de vérifier l'authentification avec un email et un password.
      * Elle définit l'encodeur qui permettra de hacher le password et de le comparer avec le password de la DB.
      *
-     * @return AuthenticationProvider
+     * @return AuthenticationProvider authentication provider
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -80,6 +94,7 @@ public class SecurityConf {
     /**
      * Fonction qui permet de définir des informations sur l'aspect Rôle et autorité de l'application.
      * La méthode précise que le rôle ne contient pas de préfixe, par défaut les rôles débutent par "ROLE_".
+     *
      * @return un Objet GrantedAuthorityDefaults
      */
     @Bean
@@ -87,6 +102,13 @@ public class SecurityConf {
         return new GrantedAuthorityDefaults(""); // Supprime le préfixe "ROLE_"
     }
 
+    /**
+     * Authentication manager.
+     *
+     * @param configuration le configuration
+     * @return le authentication manager
+     * @throws Exception le exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
