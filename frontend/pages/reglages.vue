@@ -5,88 +5,129 @@
     </div>
     <div class="wrapper_padding">
       <h2 class="title_setting">Paramètres du potager</h2>
-      <div class="wrapper_settings_page" >
-          <div class="left_section">
-            <ul>
-              <li 
+      <div class="wrapper_settings_page">
+        <div class="left_section">
+          <ul>
+            <li 
               v-for="([key, value], index) in Object.entries(items)" 
               :key="index"
               :class="{ selected: selectedItem === key }"
               @click="selectedItem = key"
-              >
-                {{ value }}
+            >
+              {{ value }}
+            </li>
+          </ul>
+        </div>
+        <hr class="separator">
+        
+        <!-- Gestion des cartes -->
+        <div class="right_section_gestion" v-if="selectedItem === 'gestion'">
+          <div class="header">
+            <h3>Les liens</h3>
+          </div>
+          <div class="grid_card">
+            <button class="card" 
+              v-for="(card, index) in card_details" 
+              :key="index" 
+              @click="$router.push(card.route)">
+              <div class="top">
+                <img :src="card.icon" alt="" class="icon-card">
+              </div>
+              <div class="bottom">
+                <h2>{{ card.title }}</h2>
+                <h3>{{ card.subtitle }}</h3>
+              </div>
+            </button>
+          </div>
+        </div>
+
+
+        <div class="right_section_gestion" v-if="selectedItem === 'door'">
+          <div class="header">
+            <h3>Doors</h3>
+          </div>
+          <div class="nav_changement">
+            <ul ref="navList">
+              <div class="background" 
+                :style="{ transform: `translateX(${backgroundX}px)`, width: `${backgroundWidth}px` }">
+              </div>
+              <li v-for="(choice, index) in doors_edit" 
+                :key="index" 
+                ref="navItems"
+                :class="{ selected: selectedDoorEdit === index }"
+                @click="updateBackground(index)">
+                {{ choice }}
               </li>
             </ul>
           </div>
-          <hr class="separator">
-          <div class="right_section_gestion" v-if="selectedItem === 'gestion'">
-            <div class="header">
-              <h3>Les liens</h3>
-            </div>
-            <div class="grid_card" >
-              <button class="card" v-for="card, index in card_details" :key="index" @click="$router.push(card.route)">
-                <div class="top">
-                  <img :src=card.icon alt="" class="icon-card">
-                </div>
-                <div class="bottom">
-                  <h2>{{card.title}}</h2>
-                  <h3>{{card.subtitle}}</h3>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <div class="right_section_gestion" v-if="selectedItem === 'door'">
-            <div class="header">
-              <h3>Doors</h3>
-            </div>
-            
-          </div>
         </div>
       </div>
+    </div>
   </div>
-  
 </template>
 
 <script setup lang="ts">
-
+import { ref, nextTick, onMounted, type Ref } from "vue";
 import NavbarVertical from "~/components/navbar_vertical.vue";
-import Header_title from "~/components/header_title.vue";
-import infosServer from "~/components/infos-server.vue";
 
 definePageMeta({
   middleware: "auth",
   role: ["ADMINISTRATEUR"],
-})
+});
 
+// Navigation principale
 const items = {
   gestion: "Gestions du potager",
   door: "Portes"
 };
+const selectedItem = ref("door");
 
-const selectedItem = ref("gestion");
+// Sections des portes
+const doors_edit = ["Supprimer", "Créer", "Modifier"];
+const selectedDoorEdit = ref(0);
+
+const backgroundX = ref(0);
+const backgroundWidth = ref(0);
+const navItems = ref([]) as Ref<HTMLLIElement[]>;
+
+
+const updateBackground = (index: number) => {
+  selectedDoorEdit.value = index;
+
+  nextTick(() => {
+    const item = navItems.value[index]; 
+    if (item) {
+      backgroundX.value = item.offsetLeft ; 
+      backgroundWidth.value = item.offsetWidth; 
+    }
+  });
+};
+
+onMounted(() => {
+  updateBackground(selectedDoorEdit.value);
+});
+
 
 const card_details = [
   {
-    title:"Rapports", 
+    title: "Rapports", 
     subtitle: "Tous les comptes rendus effectués pour un suivi détaillé des rapports.",
     icon: "/assets/image_gestionnaire.jpg",
     route: "/gestion-reports"
   },
   { 
-    title:"Notifications", 
+    title: "Notifications", 
     subtitle: "Consultez toutes les notifications pour rester informé en temps réel des derniers évènements.",
     icon: "/assets/image-notifications.jpg",
-     route: "/gestion-notifications"
+    route: "/gestion-notifications"
   },
   { 
-    title:"Utilisateurs", 
+    title: "Utilisateurs", 
     subtitle: "Gérez et visualisez les informations de tous les utilisateurs.",
     icon: "/assets/image_users.jpg",
     route: "/gestion-users"
-  }];
-
-
+  }
+];
 </script>
 
 <style scoped>
@@ -251,6 +292,54 @@ const card_details = [
   object-fit: cover;
   object-position: center;
 }
+
+/* DOOR SECTION */ 
+
+.nav_changement {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.nav_changement ul {
+  padding: 0.4rem;
+  border-radius: 2rem;
+  width: fit-content;
+  background-color: #F7F6F9;
+  display: flex;
+  position: relative;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.nav_changement .background {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: calc(100% - 8px);
+  background-color: white;
+  border-radius: 2rem;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.nav_changement ul li {
+  padding: 0.3rem 1.5rem;
+  border-radius: 2rem;
+  font-family: "Aeonik-Regular";
+  color: #99989D;
+  font-size: clamp(1rem, 1.3vw, 1rem);
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nav_changement ul li.selected {
+  color: black;
+}
+
 
 @media screen and (max-width: 1024px)
 {
