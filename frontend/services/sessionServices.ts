@@ -1,5 +1,5 @@
 import type {JWToken} from "~/model/JWToken";
-const { jwtDecode } = await import("jwt-decode");
+import jwtDecode from "jwt-decode";
 
 /**
  * Fonction pour récupérer le token de l'utilisateur.
