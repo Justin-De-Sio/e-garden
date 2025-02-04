@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 public class Door {
     @JsonIgnore
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "door", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private final List<Event> events = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

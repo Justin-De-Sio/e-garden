@@ -1,6 +1,8 @@
 package com.e_garden.api.event;
 
 import com.e_garden.api.PageDTO;
+import com.e_garden.api.door.Door;
+import com.e_garden.api.door.DoorService;
 import com.e_garden.api.report.Report;
 import com.e_garden.api.report.ReportService;
 import com.e_garden.api.user.User;
@@ -19,12 +21,14 @@ public class EventController {
     private final EventService eventService;
     private final UserService userService;
     private final ReportService reportService;
+    private final DoorService doorService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService, ReportService reportService) {
+    public EventController(EventService eventService, UserService userService, ReportService reportService, DoorService doorService) {
         this.eventService = eventService;
         this.userService = userService;
         this.reportService = reportService;
+        this.doorService = doorService;
     }
 
     @GetMapping("/{id}")
@@ -57,7 +61,7 @@ public class EventController {
         Event event = new Event();
         event.setTitle("Enregistrement de passage");
         event.setEventType(0);
-        event.setDoorNumber(Math.toIntExact(id));
+        event.setDoor(doorService.getDoorById(id));
 
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());

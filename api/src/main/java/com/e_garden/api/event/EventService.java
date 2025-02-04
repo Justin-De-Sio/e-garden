@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -77,7 +78,7 @@ public class EventService {
             case 0 -> {
                 eventDTO.setDescription(event.getUser().getName() + " " +
                         event.getUser().getSurname() + " a badgé " + date +
-                        " à la porte numéro : " + event.getDoorNumber() + ".");
+                        " à la porte numéro : " + event.getDoor().getName() + ".");
                 yield eventDTO;
             }
             case 1 -> {
