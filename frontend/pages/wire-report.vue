@@ -16,7 +16,7 @@ import header_title from "~/components/header_title.vue";
 
 definePageMeta({
   middleware: "auth",
-  role: ["ADMINISTRATEUR", "RESPONSABLE"],
+  role: ["ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"],
 })
 </script>
 

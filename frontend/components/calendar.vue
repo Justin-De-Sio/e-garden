@@ -33,12 +33,18 @@
     </div>
     <div class="events">
       <h2>Évènements</h2>
+      <div class="wrapper_content">
+
+        <replay />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, startOfToday, isSameDay, isSameMonth } from 'date-fns';
+import replay from './replay.vue';
+
 
 export default {
   data() {
