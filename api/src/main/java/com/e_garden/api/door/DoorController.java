@@ -33,7 +33,7 @@ public class DoorController {
      *
      * @return all doors
      */
-    @GetMapping("/")
+    @GetMapping
     public List<Door> getAllDoors() {
         return doorService.getAllDoor();
     }
