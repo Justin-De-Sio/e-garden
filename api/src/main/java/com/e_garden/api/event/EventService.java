@@ -13,19 +13,36 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Le type Event service.
+ */
 @Service
 public class EventService {
     private final EventRepository eventRepository;
     private final LogService log;
 
+    /**
+     * Instancies un nouveau Event service.
+     *
+     * @param eventRepository le event repository
+     * @param log             le log service
+     */
     @Autowired
     public EventService(EventRepository eventRepository, LogService log) {
         this.eventRepository = eventRepository;
         this.log = log;
     }
 
+    /**
+     * Gets paginated events.
+     *
+     * @param page la page
+     * @param size la size
+     * @return la paginated events
+     */
     public PageDTO<EventDTO> getPaginatedEvents(int page, int size) {
         Page<Event> eventPage = eventRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size));
         List<EventDTO> eventDTOs = eventPage
@@ -42,6 +59,12 @@ public class EventService {
         ));
     }
 
+    /**
+     * Gets events by id.
+     *
+     * @param id l'identifiant
+     * @return l'events trouvé avec id
+     */
     public Event getEventsById(Long id) {
         Optional<Event> event = eventRepository.findById(id);
         if (event.isEmpty())
@@ -50,11 +73,21 @@ public class EventService {
             return event.get();
     }
 
+    /**
+     * Enregistre events.
+     *
+     * @param event le event
+     */
     public void saveEvents(Event event) {
         log.createLog(String.valueOf(Levels.EVENT), "Événement ajouté", event.toString());
         eventRepository.save(event);
     }
 
+    /**
+     * Supprime events.
+     *
+     * @param id l'identifiant
+     */
     public void deleteEvents(Long id) {
         eventRepository.deleteById(id);
         log.createLog(String.valueOf(Levels.EVENT), "Événement supprimé", "event id :" + id);
@@ -77,7 +110,7 @@ public class EventService {
             case 0 -> {
                 eventDTO.setDescription(event.getUser().getName() + " " +
                         event.getUser().getSurname() + " a badgé " + date +
-                        " à la porte numéro : " + event.getDoorNumber() + ".");
+                        " à la porte numéro : " + event.getDoor().getName() + ".");
                 yield eventDTO;
             }
             case 1 -> {
@@ -94,6 +127,7 @@ public class EventService {
     /**
      * Méthode afin de récupérer le nombre d'événements lié à utilisateur, soit le nombre de passages
      * sur les 30 derniers jours.
+     *
      * @return un entier
      */
     public int getCountOfEventTypeUserBadge() {

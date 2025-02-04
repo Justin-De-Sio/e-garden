@@ -9,10 +9,18 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 
+/**
+ * Le type My user details service.
+ */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    /**
+     * Instancie un nouveau My user details service.
+     *
+     * @param userRepository le user repository
+     */
     @Autowired
     public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -23,7 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
      * UserPrincipal est renseigné à partir d'un utilisateur trouvé en DB avec un email.
      *
      * @param username email de l'utilisateur
-     * @return l'UserPrincipal correspondant à l'email
+     * @return l 'UserPrincipal correspondant à l'email
      * @throws UsernameNotFoundException Exception en cas d'absence de l'utilisateur
      */
     @Override

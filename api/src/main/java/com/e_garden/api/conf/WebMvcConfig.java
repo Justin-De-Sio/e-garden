@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Le type Web mvc config.
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

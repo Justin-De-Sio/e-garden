@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 
+/**
+ * Le type Jwt service.
+ */
 @Service
 public class JWTService {
     private final String secretKey;

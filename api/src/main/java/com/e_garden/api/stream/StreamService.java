@@ -18,6 +18,11 @@ public class StreamService {
     private static final Logger logger = Logger.getLogger(StreamService.class.getName());
     private final Process streamingProcess;
 
+    /**
+     * Instancie un nouveau Stream service.
+     *
+     * @param streamingProcess le streaming process
+     */
     @Autowired
     public StreamService(Process streamingProcess) {
         this.streamingProcess = streamingProcess;

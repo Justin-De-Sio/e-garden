@@ -6,7 +6,7 @@ import java.util.List;
  * Class formant une Page, elle contient des objects et des informations sur la position de la page actuelle, le nombre
  * total de pages, le nombre total d'éléments, et la taille de la page.
  *
- * @param <T>
+ * @param <T> objet
  */
 public class PageDTO<T> {
 

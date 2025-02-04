@@ -7,7 +7,16 @@ package com.e_garden.api.user;
  * l'administrateur a accès à toutes les fonctionnalités.
  */
 public enum Roles {
+    /**
+     * Utilisateur roles.
+     */
     UTILISATEUR,
+    /**
+     * Responsable roles.
+     */
     RESPONSABLE,
+    /**
+     * Administrateur roles.
+     */
     ADMINISTRATEUR
 }

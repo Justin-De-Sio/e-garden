@@ -18,12 +18,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * Le type Jwt filter.
+ */
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private final ApplicationContext applicationContext;
 
+    /**
+     * Instancie un nouveau Jwt filter.
+     *
+     * @param jwtService         le jwt service
+     * @param applicationContext l'application context
+     */
     @Autowired
     public JWTFilter(JWTService jwtService, ApplicationContext applicationContext) {
         this.jwtService = jwtService;

@@ -16,11 +16,17 @@ import java.util.logging.Logger;
 public class StreamConfig {
 
     private static final Logger logger = Logger.getLogger(StreamConfig.class.getName());
+    /**
+     * La constante OUTPUT_DIRECTORY.
+     */
     protected static final String OUTPUT_DIRECTORY = "videos" + File.separator + "stream";
     private static final String OUTPUT_FILE = OUTPUT_DIRECTORY + File.separator + "output.m3u8";
     private static final String RTSP_URL = System.getenv("RTSP_URL");
     private Process currentProcess;
 
+    /**
+     * Stop streaming.
+     */
     @PreDestroy
     public void stopStreaming() {
         if (currentProcess != null) {

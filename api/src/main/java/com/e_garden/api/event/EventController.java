@@ -1,6 +1,8 @@
 package com.e_garden.api.event;
 
 import com.e_garden.api.PageDTO;
+import com.e_garden.api.door.Door;
+import com.e_garden.api.door.DoorService;
 import com.e_garden.api.report.Report;
 import com.e_garden.api.report.ReportService;
 import com.e_garden.api.user.User;
@@ -12,6 +14,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Le type Event controller.
+ */
 @RestController
 @RequestMapping("/event")
 @CrossOrigin
@@ -19,19 +24,42 @@ public class EventController {
     private final EventService eventService;
     private final UserService userService;
     private final ReportService reportService;
+    private final DoorService doorService;
 
+    /**
+     * Instancie un nouveau Event controller.
+     *
+     * @param eventService  le event service
+     * @param userService   le user service
+     * @param reportService le report service
+     * @param doorService   le door service
+     */
     @Autowired
-    public EventController(EventService eventService, UserService userService, ReportService reportService) {
+    public EventController(EventService eventService, UserService userService, ReportService reportService, DoorService doorService) {
         this.eventService = eventService;
         this.userService = userService;
         this.reportService = reportService;
+        this.doorService = doorService;
     }
 
+    /**
+     * Gets events by identifiant.
+     *
+     * @param id l'identifiant
+     * @return l'events l'identifiant
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventsById(@PathVariable Long id) {
         return ResponseEntity.ok(eventService.getEventsById(id));
     }
 
+    /**
+     * Gets paginated events.
+     *
+     * @param size the size
+     * @param page the page
+     * @return le paginated events
+     */
     @GetMapping("/paginated")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<PageDTO<EventDTO>> getPaginatedEvents(@RequestParam(defaultValue = "10") Integer size,
@@ -39,6 +67,12 @@ public class EventController {
         return ResponseEntity.ok(eventService.getPaginatedEvents(page, size));
     }
 
+    /**
+     * Delete events response entity.
+     *
+     * @param id l'identifiant
+     * @return le response entity
+     */
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Void> deleteEvents(@PathVariable Long id) {
@@ -49,6 +83,7 @@ public class EventController {
     /**
      * Méthode qui permet d'enregistrer un passage.
      * La méthode enregistre un événement lié à l'utilisateur et crée un rapport non rempli lié à l'utilisateur.
+     *
      * @param id identifiant de la porte
      * @return un objet rapport non rempli
      */
@@ -57,7 +92,7 @@ public class EventController {
         Event event = new Event();
         event.setTitle("Enregistrement de passage");
         event.setEventType(0);
-        event.setDoorNumber(Math.toIntExact(id));
+        event.setDoor(doorService.getDoorById(id));
 
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());
@@ -66,6 +101,11 @@ public class EventController {
         return ResponseEntity.ok(reportService.saveReport(new Report(userByEmail)));
     }
 
+    /**
+     * Gets event statistique.
+     *
+     * @return l'event statistique
+     */
     @GetMapping("/statistique")
     @Secured({"ADMINISTRATEUR"})
     public ResponseEntity<Integer> getEventStatistique() {
