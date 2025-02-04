@@ -34,7 +34,6 @@
     <div class="events">
       <h2>Évènements</h2>
       <div class="wrapper_content">
-
         <replay />
       </div>
     </div>
@@ -190,11 +189,18 @@ export default {
 
 .events {
   padding-top: 1.5rem;
-  text-align: center;
+
+  width: 100%;
 }
 
 .events h2 {
   font-size: clamp(1rem, 2vw, 1.3rem);
+  text-align: center;
+}
+
+.wrapper_content{
+  margin-top: 1.5rem;
+  width: 100%;
 }
 
 @media screen and (max-width: 1024px) {
