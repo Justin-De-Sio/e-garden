@@ -21,7 +21,7 @@
         <UFormGroup label="Rôle" name="role">
           <USelect v-model="user.role" :options="roles"/>
         </UFormGroup>
-        <UFormGroup>
+        <UFormGroup style="margin-top: 10px">
           <u-button type="primary" native-type="submit">Enregistrer</u-button>
           <u-button class="cancel-button" @click="handleCancel">Annuler</u-button>
         </UFormGroup>

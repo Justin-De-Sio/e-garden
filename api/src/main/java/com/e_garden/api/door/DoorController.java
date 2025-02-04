@@ -55,7 +55,7 @@ public class DoorController {
      * @param door la porte
      * @return response entity
      */
-    @PutMapping("/{id}")
+    @PutMapping()
     public ResponseEntity<Door> updateDoor(@RequestBody Door door) {
         return ResponseEntity.ok(doorService.saveDoor(door));
     }
