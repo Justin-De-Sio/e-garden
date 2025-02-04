@@ -68,11 +68,30 @@ public class VideoController {
         return videoService.getVideo(fileName);
     }
 
-    // TODO by 30 jours
+    @GetMapping("/last-videos")
+    public List<Video> getLastVideos() {
+        return videoService.getLastVideos();
+    }
+
     @GetMapping("/")
     public List<Video> getAllVideos() {
         return videoService.getAllVideos();
     }
+
+    /**
+     * Endpoint pour récupérer les vidéos du mois et de l'année demandés.
+     * Exemple d'appel : GET /videos/month-videos?year=2025&month=2
+     *
+     * @param year l'année demandée
+     * @param month le mois demandé (entre 1 et 12)
+     * @return la liste des vidéos correspondant au mois demandé
+     */
+    @GetMapping("/month-videos")
+    public ResponseEntity<List<Video>> getVideosByMonth(@RequestParam int year, @RequestParam int month) {
+        List<Video> videos = videoService.getVideosByMonth(year, month);
+        return ResponseEntity.ok(videos);
+    }
+
 
 }
 

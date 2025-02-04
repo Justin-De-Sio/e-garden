@@ -70,7 +70,6 @@ public class VideoService {
         UrlResource videoResource = new UrlResource(filePath.toUri());
         long contentLength = videoFile.length();
 
-        // Define a default chunk size (e.g., 1MB)
         long chunkSize = 4 * 1024 * 1024;
 
         ResourceRegion region = getResourceRegion(videoResource, headers, chunkSize);
@@ -247,7 +246,7 @@ public class VideoService {
                 if (!fileName.endsWith(".mp4")) continue;
 
                 // Vérifier que le fichier respecte le format attendu (yyyy-MM-dd_HH-mm.mp4)
-                if (!fileName.matches("\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}\\.mp4")) {
+                if (!fileName.matches("\\d{4}-\\d{2}-\\d{2}\\.mp4")) {
                     System.err.println("❌ Fichier ignoré : " + fileName + " (format incorrect)");
                     continue;
                 }
@@ -297,5 +296,30 @@ public class VideoService {
         if (video == null)
             throw new ObjectNotFoundException("Video non trouvé avec la date : " + date.toString());
         return video.getFileName();
+    }
+
+    /**
+     * Récupère la liste des vidéos enregistrées durant les 30 derniers jours.
+     *
+     * @return la liste des vidéos récentes
+     */
+    public List<Video> getLastVideos() {
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+        return videoRepository.findByFileDateAfter(thirtyDaysAgo);
+    }
+
+    /**
+     * Récupère les vidéos du mois et de l'année demandés.
+     *
+     * @param year l'année demandée
+     * @param month le mois demandé (entre 1 et 12)
+     * @return la liste des vidéos enregistrées durant le mois spécifié
+     */
+    public List<Video> getVideosByMonth(int year, int month) {
+        // Début du mois demandé
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
+        // Fin du mois : début du mois suivant
+        LocalDateTime end = start.plusMonths(1);
+        return videoRepository.findByFileDateBetween(start, end);
     }
 }
