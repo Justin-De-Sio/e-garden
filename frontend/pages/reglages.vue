@@ -5,26 +5,26 @@
     </div>
     <div class="wrapper_padding">
       <h2 class="title_setting">Paramètres du potager</h2>
-      <div class="wrapper_settings_page">
+      <div class="wrapper_settings_page" >
           <div class="left_section">
             <ul>
               <li 
-              v-for="(item, index) in items" 
+              v-for="([key, value], index) in Object.entries(items)" 
               :key="index"
-              :class="{ selected: selectedItem === index }"
-              @click="selectedItem = index"
+              :class="{ selected: selectedItem === key }"
+              @click="selectedItem = key"
               >
-                {{ item }}
+                {{ value }}
               </li>
             </ul>
           </div>
           <hr class="separator">
-          <div class="right_section">
+          <div class="right_section_gestion" v-if="selectedItem === 'gestion'">
             <div class="header">
               <h3>Les liens</h3>
             </div>
             <div class="grid_card" >
-              <button class="card" v-for="card, index in card_details" :key="index">
+              <button class="card" v-for="card, index in card_details" :key="index" @click="$router.push(card.route)">
                 <div class="top">
                   <img :src=card.icon alt="" class="icon-card">
                 </div>
@@ -35,45 +35,17 @@
               </button>
             </div>
           </div>
+
+          <div class="right_section_gestion" v-if="selectedItem === 'door'">
+            <div class="header">
+              <h3>Doors</h3>
+            </div>
+            
+          </div>
         </div>
       </div>
   </div>
-    <!--
-    <div class="header_bis">
-      <header_title title="Réglages" subtitle="Retrouvez tous les réglages d'E-garden ici"></header_title>
-    </div>
-    <div>
-      <h2>Afficher les données</h2>
-      <ULink
-          to="/gestion-notifications"
-          active-class="text-primary"
-          inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-      >
-        Gestion des notifications
-      </ULink>
-      <br>
-      <ULink
-          to="/gestion-reports"
-          active-class="text-primary"
-          inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-      >
-        Gestion des rapports
-      </ULink>
-      <br>
-      <ULink
-          to="/gestion-users"
-          active-class="text-primary"
-          inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-      >
-        Gestion des utilisateurs
-      </ULink>
-      <br>
-    </div>
-    <div>
-      <infosServer></infosServer>
-    </div>
-  </div>
-  -->
+  
 </template>
 
 <script setup lang="ts">
@@ -87,26 +59,34 @@ definePageMeta({
   role: ["ADMINISTRATEUR"],
 })
 
-const items = ["Gestions du potager", "Portes"];
+const items = {
+  gestion: "Gestions du potager",
+  door: "Portes"
+};
+
+const selectedItem = ref("gestion");
 
 const card_details = [
   {
     title:"Rapports", 
-    subtitle: "Test1",
-    icon: "/assets/image_gestionnaire.jpg"
+    subtitle: "Tous les comptes rendus effectués pour un suivi détaillé des rapports.",
+    icon: "/assets/image_gestionnaire.jpg",
+    route: "/gestion-reports"
   },
   { 
     title:"Notifications", 
-    subtitle: "Test2",
-    icon: "/assets/image-notifications.jpg"
+    subtitle: "Consultez toutes les notifications pour rester informé en temps réel des derniers évènements.",
+    icon: "/assets/image-notifications.jpg",
+     route: "/gestion-notifications"
   },
   { 
     title:"Utilisateurs", 
-    subtitle: "Test3",
-    icon: "/assets/image_users.jpg"
+    subtitle: "Gérez et visualisez les informations de tous les utilisateurs.",
+    icon: "/assets/image_users.jpg",
+    route: "/gestion-users"
   }];
 
-const selectedItem = ref(0);
+
 </script>
 
 <style scoped>
@@ -126,13 +106,17 @@ const selectedItem = ref(0);
 .title_setting{
   font-family: "Aeonik-Regular";
   color: black;
-  font-size: clamp(0.8rem, 1.3vw, 1.4rem);
+  font-size: clamp(1.2rem, 1.3vw, 1.4rem);
   padding-bottom: 1rem;
   padding-left: 1rem;
 }
 .wrapper_settings_page {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    max-width: 100%;
     flex-grow: 1; 
     background-color: white;
     border-radius: 1rem;
@@ -172,14 +156,29 @@ const selectedItem = ref(0);
   border-radius: 1.5rem;
   cursor: pointer;
   color: #787D85;
+  font-family: "Aeonik-Regular";
+  color: black;
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
   transition: background-color 0.3s ease;
 }
 
-.right_section {
+.right_section_gestion {
   display: flex;
   flex-direction: column;
   flex: 6;
   height: 100%;
+}
+
+.header{
+  text-align: center;
+}
+
+.header h3{
+  font-family: "Aeonik-Regular";
+  color: black;
+  font-size: clamp(1rem, 1.3vw, 1.9rem);
+  padding-top: 3rem;
+  padding-left: 2rem;
 }
 
 .left_section ul li.selected{
@@ -223,15 +222,16 @@ const selectedItem = ref(0);
   flex: 1; 
   display: flex;
   flex-direction: column;
-  text-align: center;
   align-items: flex-start;
-  padding: 1rem;
+  text-align: left;
+  padding: 1rem 1.3rem;
+  gap: 1rem;
 }
 
 .bottom h2{
   font-family: "Aeonik-Regular";
   color: black;
-  font-size: clamp(0.8rem, 1.3vw, 1.4rem);
+  font-size: clamp(1rem, 1.3vw, 1.4rem);
 }
 
 .bottom h3{
@@ -252,6 +252,38 @@ const selectedItem = ref(0);
   object-position: center;
 }
 
+@media screen and (max-width: 1024px)
+{
+  .wrapper_settings_page{
+    flex-direction: column;
+  }
 
+  .left_section{
+      padding-top: 1rem;
+  }
+  .left_section ul{
+    flex-direction: row;
+  }
+
+  .left_section ul li{
+    padding: 0.5rem 1rem;
+  }
+
+  .grid_card{
+    padding: 2rem;
+  }
+
+  .separator{
+    margin-top: 1rem;
+    width: 100%;
+
+  }
+
+  .header h3{
+    padding-top: 2rem;
+    padding-left: 0;
+  }
+
+}
 
 </style>
