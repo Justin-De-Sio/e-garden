@@ -25,6 +25,11 @@
       <template #user-data="{ row }">
         {{ row.user.email }}
       </template>
+      <template #content-data="{ row }">
+        <div class="rapport-column">
+          {{ row.content }}
+        </div>
+      </template>
       <template #actions-data="{ row }">
         <UButton color="orange" variant="solid" @click="deleteReport(row.id)" ><span>Supprimer</span></UButton>
       </template>
@@ -91,5 +96,9 @@ onMounted(fetchReport);
 </script>
 
 <style scoped>
-/* Ajoutez vos styles ici */
+.rapport-column {
+  width: auto; /* Ajustez la largeur selon vos besoins */
+  white-space: normal; /* Permet au texte d'aller à la ligne */
+  word-wrap: break-word; /* Permet de couper les mots longs */
+}
 </style>
