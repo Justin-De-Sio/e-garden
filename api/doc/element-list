@@ -1,0 +1,11 @@
+com.e_garden.api
+com.e_garden.api.conf
+com.e_garden.api.door
+com.e_garden.api.event
+com.e_garden.api.exception
+com.e_garden.api.log
+com.e_garden.api.report
+com.e_garden.api.security
+com.e_garden.api.stream
+com.e_garden.api.user
+com.e_garden.api.videos
