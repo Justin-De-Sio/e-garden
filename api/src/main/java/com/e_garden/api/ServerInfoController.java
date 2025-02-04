@@ -13,10 +13,18 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Le type Server info controller.
+ */
 @RestController
 @Secured({"ADMINISTRATEUR"})
 public class ServerInfoController {
 
+    /**
+     * Gets server info.
+     *
+     * @return le server info
+     */
     @GetMapping("/server-info")
     public Map<String, Object> getServerInfo() {
         Map<String, Object> info = new HashMap<>();

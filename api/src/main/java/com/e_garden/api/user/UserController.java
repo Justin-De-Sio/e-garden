@@ -12,23 +12,43 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * Le type User controller.
+ */
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
 public class UserController {
     private final UserService userService;
 
+    /**
+     * Instancie un nouveau User controller.
+     *
+     * @param userService le user service
+     */
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Gets user profil.
+     *
+     * @return le user profil
+     */
     @GetMapping("/profil")
     public ResponseEntity<User> getUserProfil() {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(userService.getUserByEmail(user.getUsername()));
     }
 
+    /**
+     * Update user profil response entity.
+     *
+     * @param id      l'identifiant
+     * @param newUser le new user
+     * @return la response entity
+     */
     @PutMapping("/profil/{id}")
     public ResponseEntity<User> updateUserProfil(@PathVariable Long id, @RequestBody User newUser) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -39,6 +59,13 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(currentUser, newUser));
     }
 
+    /**
+     * Change user password response entity.
+     *
+     * @param id                   l'identifiant
+     * @param objectChangePassword l'object change password
+     * @return le response entity
+     */
     @PostMapping("/changePassword/{id}")
     public ResponseEntity<User> changeUserPassword(@PathVariable Long id,
                                                    @RequestBody ObjectChangePassword objectChangePassword) {
@@ -53,6 +80,12 @@ public class UserController {
                 ResponseEntity.ok(userByEmail) : ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Delete user profil response entity.
+     *
+     * @param id le id
+     * @return le response entity
+     */
     @DeleteMapping("/profil/{id}")
     public ResponseEntity<Void> deleteUserProfil(@PathVariable Long id) {
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -61,6 +94,12 @@ public class UserController {
         return deleteUser(id);
     }
 
+    /**
+     * Login response entity.
+     *
+     * @param user le user
+     * @return le response entity
+     */
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO user) {
         Object verify = userService.verify(new User(user.getEmail().toLowerCase(Locale.ROOT), user.getPassword()));
@@ -69,12 +108,23 @@ public class UserController {
         return ResponseEntity.ok(verify.toString());
     }
 
+    /**
+     * Gets user by id.
+     *
+     * @param id the id
+     * @return le user by id
+     */
     @GetMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
+    /**
+     * Gets all user.
+     *
+     * @return le all user
+     */
     @GetMapping("/all")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public List<User> getAllUser() {
@@ -87,6 +137,12 @@ public class UserController {
             return userService.getAllResponsableUsers();
     }
 
+    /**
+     * Create user user.
+     *
+     * @param user le user
+     * @return le user
+     */
     @PostMapping
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public User createUser(@RequestBody User user) {
@@ -95,6 +151,12 @@ public class UserController {
         return userService.createUser(user);
     }
 
+    /**
+     * Reset password response entity.
+     *
+     * @param id le id
+     * @return le response entity
+     */
     @PostMapping("/resetPassword/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> resetPassword(@PathVariable Long id) {
@@ -106,6 +168,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Update user response entity.
+     *
+     * @param id   le id
+     * @param user le user
+     * @return le response entity
+     */
     @PutMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
@@ -116,6 +185,12 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(userService.getUserById(id), user));
     }
 
+    /**
+     * Delete user response entity.
+     *
+     * @param id le id
+     * @return le response entity
+     */
     @DeleteMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
@@ -127,6 +202,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Block unblock user response entity.
+     *
+     * @param id le id
+     * @return le response entity
+     */
     @GetMapping("/block/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public ResponseEntity<Void> blockUnblockUser(@PathVariable Long id) {
@@ -138,6 +219,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Gets roles.
+     *
+     * @return le roles
+     */
     @GetMapping("/roles")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
     public List<Roles> getRoles() {

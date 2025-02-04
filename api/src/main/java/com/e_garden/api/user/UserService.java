@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
+/**
+ * Le type User service.
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -23,6 +26,14 @@ public class UserService {
     private final JWTService jwtService;
     private final LogService log;
 
+    /**
+     * Instancies un nouveau User service.
+     *
+     * @param userRepository        l'user repository
+     * @param authenticationManager l'authentication manager
+     * @param jwtService            le jwt service
+     * @param log                   le log
+     */
     @Autowired
     public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, JWTService jwtService, LogService log) {
         this.userRepository = userRepository;
@@ -31,12 +42,18 @@ public class UserService {
         this.log = log;
     }
 
+    /**
+     * Gets all users.
+     *
+     * @return le all users
+     */
     public List<User> getAllUsers() {
         return userRepository.findAllByEnable(true);
     }
 
     /**
      * Méthode permettant de retourner les utilisateurs avec le Rôle Responsable ou le Rôle utilisateur.
+     *
      * @return une liste d'utilisateur
      */
     public List<User> getAllResponsableUsers() {
@@ -44,6 +61,12 @@ public class UserService {
                 true, Roles.UTILISATEUR.toString(), Roles.RESPONSABLE.toString());
     }
 
+    /**
+     * Gets user by identifiant.
+     *
+     * @param id l'identifiant
+     * @return le user by identifiant
+     */
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findByIdAndEnable(id, true);
         if (user.isEmpty())
@@ -51,6 +74,12 @@ public class UserService {
         return user.get();
     }
 
+    /**
+     * Create user.
+     *
+     * @param user l'user
+     * @return l'user
+     */
     public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             return null;
@@ -91,6 +120,12 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Save users list.
+     *
+     * @param users l'users
+     * @return la liste
+     */
     public List<User> saveUsers(Iterable<User> users) {
         List<User> usersSaved = new ArrayList<>();
         for (User u : users) {
@@ -101,6 +136,7 @@ public class UserService {
 
     /**
      * Réinitialise le mot de passe de l'utilisateur avec le mot de pass par défaut défini dans la configuration du projet.
+     *
      * @param user à réinitialiser
      */
     public void resetPassword(User user) {
@@ -122,6 +158,12 @@ public class UserService {
         log.createLog(String.valueOf(Levels.USER), "Utilisateur supprimé", "user id : " + id);
     }
 
+    /**
+     * Gets user by email.
+     *
+     * @param email the email
+     * @return le user by email
+     */
     public User getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmailAndEnable(email, true);
         if (user.isEmpty()) {
@@ -152,6 +194,12 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Verify object.
+     *
+     * @param user le user
+     * @return le object
+     */
     public Object verify(User user) {
         Optional<User> userOptional = userRepository.findByEmailAndEnable(user.getEmail(), true);
         User userInfo;
@@ -180,6 +228,14 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Update password boolean.
+     *
+     * @param user            l'user
+     * @param currentPassword le current password
+     * @param newPassword     le new password
+     * @return le boolean
+     */
     public boolean updatePassword(User user, String currentPassword, String newPassword) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), currentPassword)
@@ -197,9 +253,10 @@ public class UserService {
 
     /**
      * Méthode spécifique pour la mise à jour d'un utilisateur.
+     *
      * @param currentUser utilisateur avec les informations connues
-     * @param newUser utilisateur avec les nouvelles informations
-     * @return l'utilisateur à jour
+     * @param newUser     utilisateur avec les nouvelles informations
+     * @return l 'utilisateur à jour
      */
     public User updateUser(User currentUser, User newUser) {
         currentUser.setName(newUser.getName());
@@ -214,6 +271,7 @@ public class UserService {
 
     /**
      * Méthode permettant d'archiver un utilisateur.
+     *
      * @param id identifiant de l'utilisateur
      */
     public void archiveUSer(Long id) {
@@ -241,6 +299,7 @@ public class UserService {
 
     /**
      * Méthode permettant de bloquer ou de débloqué un utilisateur.
+     *
      * @param id identifiant de l'utilisateur
      */
     public void blockUnBlock(Long id) {

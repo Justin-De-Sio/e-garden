@@ -13,10 +13,14 @@ import java.time.Duration;
  * - "45S" -> 45 secondes
  * - "1H30M" -> 1 heure et 30 minutes
  */
-
 public class RecordingRequest {
     private Duration duration;
 
+    /**
+     * Sets duration.
+     *
+     * @param durationStr la duration str
+     */
     @JsonProperty("duration")
     public void setDuration(String durationStr) {
         // Ajoute le préfixe PT si nécessaire
@@ -26,10 +30,20 @@ public class RecordingRequest {
         this.duration = Duration.parse(durationStr);
     }
 
+    /**
+     * Gets duration.
+     *
+     * @return la duration
+     */
     public Duration getDuration() {
         return duration;
     }
 
+    /**
+     * Sets duration.
+     *
+     * @param duration la duration
+     */
     public void setDuration(Duration duration) {
         this.duration = duration;
     }

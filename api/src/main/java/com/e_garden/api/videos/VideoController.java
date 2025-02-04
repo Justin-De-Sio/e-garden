@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Le type Video controller.
+ */
 @RestController
 @RequestMapping("/videos")
 @CrossOrigin
@@ -20,6 +23,11 @@ public class VideoController {
 
     private final VideoService videoService;
 
+    /**
+     * Instancie un nouveau Video controller.
+     *
+     * @param videoService le video service
+     */
     @Autowired
     public VideoController(VideoService videoService) {
         this.videoService = videoService;
@@ -34,12 +42,24 @@ public class VideoController {
      * - PT30S (30 secondes) ;
      * - PT1H (1 heure) ;
      * - PT1H30M (1 heure et 30 minutes).
+     *
+     * @param request le request
+     * @return le response entity
      */
     @PostMapping("/record")
     public ResponseEntity<String> recordVideo(@RequestBody RecordingRequest request) {
         return videoService.startRecording(request.getDuration());
     }
 
+    /**
+     * Gets video by date.
+     *
+     * @param year    l'année
+     * @param month   le mois
+     * @param day     le jour
+     * @param headers headers
+     * @return le video by date
+     */
     @GetMapping("/stream-by-date")
     public ResponseEntity<ResourceRegion> getVideoByDate(@RequestParam(defaultValue = "2000") Integer year,
                                                    @RequestParam(defaultValue = "01") Integer month,
@@ -63,16 +83,32 @@ public class VideoController {
     }
 
 
+    /**
+     * Gets video.
+     *
+     * @param fileName le file name
+     * @return le video
+     */
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> getVideo(@PathVariable String fileName) {
         return videoService.getVideo(fileName);
     }
 
+    /**
+     * Gets last videos.
+     *
+     * @return le last videos
+     */
     @GetMapping("/last-videos")
     public List<Video> getLastVideos() {
         return videoService.getLastVideos();
     }
 
+    /**
+     * Gets all videos.
+     *
+     * @return all videos
+     */
     @GetMapping("/")
     public List<Video> getAllVideos() {
         return videoService.getAllVideos();
@@ -82,7 +118,7 @@ public class VideoController {
      * Endpoint pour récupérer les vidéos du mois et de l'année demandés.
      * Exemple d'appel : GET /videos/month-videos?year=2025&month=2
      *
-     * @param year l'année demandée
+     * @param year  l'année demandée
      * @param month le mois demandé (entre 1 et 12)
      * @return la liste des vidéos correspondant au mois demandé
      */
@@ -91,8 +127,4 @@ public class VideoController {
         List<Video> videos = videoService.getVideosByMonth(year, month);
         return ResponseEntity.ok(videos);
     }
-
-
 }
-
-

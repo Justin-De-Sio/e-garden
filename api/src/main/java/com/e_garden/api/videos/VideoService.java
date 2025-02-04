@@ -29,7 +29,9 @@ import java.util.List;
 @Service
 public class VideoService {
 
-    // Répertoire de sortie pour stocker les vidéos enregistrées
+    /**
+     * Répertoire de sortie pour stocker les vidéos enregistrées.
+     */
     protected static final String OUTPUT_DIRECTORY = "videos";
     private static final String RTSP_URL = System.getenv("RTSP_URL");
 
@@ -181,6 +183,11 @@ public class VideoService {
 
     /**
      * Exécute l'enregistrement vidéo en arrière-plan avec FFmpeg.
+     *
+     * @param rtspUrl  le rtsp url
+     * @param filePath le file path
+     * @param fileName le file name
+     * @param duration le duration
      */
     @Async
     protected void startRecordingAsync(String rtspUrl, String filePath, String fileName, Duration duration) {
@@ -199,6 +206,9 @@ public class VideoService {
 
     /**
      * Récupère une vidéo en fonction de son nom de fichier.
+     *
+     * @param fileName the file name
+     * @return le video
      */
     public ResponseEntity<Resource> getVideo(String fileName) {
         try {
@@ -311,7 +321,7 @@ public class VideoService {
     /**
      * Récupère les vidéos du mois et de l'année demandés.
      *
-     * @param year l'année demandée
+     * @param year  l'année demandée
      * @param month le mois demandé (entre 1 et 12)
      * @return la liste des vidéos enregistrées durant le mois spécifié
      */

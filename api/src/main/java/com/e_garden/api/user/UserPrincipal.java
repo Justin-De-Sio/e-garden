@@ -8,16 +8,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Le type User principal.
+ */
 public class UserPrincipal implements UserDetails {
 
     private final User user;
 
+    /**
+     * Instancies un nouveau User principal.
+     *
+     * @param user l'user
+     */
     public UserPrincipal(User user) {
         this.user = user;
     }
 
     /**
-     * @return Collections
+     * Gets authorities.
+     *
+     * @return Collections authorities
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -25,6 +35,8 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
+     * Gets password.
+     *
      * @return le mot de passe
      */
     @Override
@@ -43,7 +55,9 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return true
+     * Is account non expired boolean.
+     *
+     * @return true boolean
      */
     @Override
     public boolean isAccountNonExpired() {
@@ -62,7 +76,9 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * @return true
+     * Is credentials non expired boolean.
+     *
+     * @return true boolean
      */
     @Override
     public boolean isCredentialsNonExpired() {
@@ -71,6 +87,7 @@ public class UserPrincipal implements UserDetails {
 
     /**
      * True l'utilisateur est activé, False l'utilisateur est archivé.
+     *
      * @return un boolean si l'utilisateur est activé ou archivé
      */
     @Override
