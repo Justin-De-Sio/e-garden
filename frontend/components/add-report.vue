@@ -147,6 +147,9 @@ const RequestValidatedReport = reactive({
 });
 
 async function onSubmit(isFinal: boolean) {
+  if (state.content.length < 8) {
+    return;
+  }
   try {
     RequestValidatedReport.content = state.content;
     RequestValidatedReport.validated = isFinal;
