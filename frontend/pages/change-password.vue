@@ -35,7 +35,6 @@
             <UFormGroup label="Confirmation de mot de passe" name="confirmPassword">
               <UInput v-model="formState.confirmPassword" autocomplete="new-password" type="password" class="!bg-white rounded-md" color="gray"/>
             </UFormGroup>
-
             <div v-if="errorMessage" class="text-red-500 text-sm font-medium text-center mt-2">
               {{ errorMessage }}
             </div>

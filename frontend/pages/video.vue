@@ -1,31 +1,27 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { callAPI } from '~/services/callAPI';
 
 definePageMeta({
   middleware: "auth",
   role: ["ADMINISTRATEUR"],
-})
+});
 
-const api = new callAPI();
+// The video URL is constructed to point to our proxy endpoint.
+// The JWT token stored in the cookie will be automatically attached via the proxy middleware.
 const videoUrl = ref<string | null>(null);
-const loading = ref(false); // Pour afficher un indicateur de chargement si besoin
+const loading = ref(false);
 
-onMounted(() => getVideo("2025", "01", "25"));
+onMounted(() => getVideo("2025", "02", "01"));
 
 async function getVideo(year: string, month: string, day: string) {
   loading.value = true;
-  videoUrl.value = null; // Efface l'ancienne vidéo pour forcer la mise à jour
+  videoUrl.value = null; // Clear previous video URL to force update
 
   try {
-    const response = await api.fetchAPIGet(`videos/date?year=${year}&month=${month}&day=${day}`);
-
-    // Vérifiez que la réponse est bien un objet `Response`
-    console.log(response);
-    const blob = await response.blob();
-    const file = new File([blob], "video.mp4", { type: "video/mp4" });
-    videoUrl.value = URL.createObjectURL(file);
-    console.log(videoUrl);
+    // Build the URL to stream the video.
+    // The proxy (configured to intercept `/api`) will forward this request to your backend.
+    videoUrl.value = `/api/videos/stream-by-date?year=${year}&month=${month}&day=${day}`;
+    console.log("Video URL:", videoUrl.value);
   } catch (error) {
     console.error("Erreur lors de la récupération de la vidéo:", error);
   } finally {
@@ -37,7 +33,7 @@ async function getVideo(year: string, month: string, day: string) {
 
 <template>
   <div>
-    <button @click="getVideo('2025', '01', '25')" :disabled="loading">
+    <button @click="getVideo('2025', '02', '01')" :disabled="loading">
       {{ loading ? "Chargement..." : "Charger la vidéo" }}
     </button>
 
@@ -45,7 +41,7 @@ async function getVideo(year: string, month: string, day: string) {
     <p v-if="!loading && !videoUrl">Aucune vidéo disponible</p>
 
     <video v-if="videoUrl" controls>
-      <source :src="videoUrl" type="video/mp4">
+      <source :src="videoUrl" type="video/mp4" />
       Votre navigateur ne supporte pas la lecture de vidéos.
     </video>
   </div>

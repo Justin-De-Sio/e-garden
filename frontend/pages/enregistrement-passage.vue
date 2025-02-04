@@ -1,5 +1,5 @@
 <script setup>
-import {callAPI} from "~/services/callAPI.js";
+import {callAPI} from "~/services/callAPI.ts";
 import Header_title from "~/components/header_title.vue";
 import NavbarVertical from "~/components/navbar_vertical.vue";
 

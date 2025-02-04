@@ -85,6 +85,7 @@ import {onMounted, reactive, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {z} from 'zod';
 import type {FormSubmitEvent} from "#ui/types";
+import {resetToken} from "~/services/SessionServices";
 
 const api = new callAPI();
 const isLoading = ref(false);
@@ -227,7 +228,8 @@ const goBack = () => {
 };
 
 const logout = () => {
-  document.cookie = "session=;";
+  //document.cookie = "session=;";
+  resetToken();
   router.push("/login");
 };
 </script>

@@ -41,10 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { JWTPayload } from "~/services/jwtpayload";
 import { z } from 'zod'
 import type {FormSubmitEvent} from "#ui/types";
 import { login } from '~/services/auth';
+import {getTokenObject} from "~/services/SessionServices";
 
 const isLoading = ref(false);
 const router = useRouter();
@@ -71,8 +71,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   const { email, password } = formState;
 
   try {
-    const token = await login(email, password);
-    const token_payload = JWTPayload(token);
+    await login(email, password);
+    const token_payload = getTokenObject();
+    if (token_payload === null) {
+      return router.push('/login');
+    }
     if (redirectTo !== '/') {
       return navigateTo(redirectTo);
     }

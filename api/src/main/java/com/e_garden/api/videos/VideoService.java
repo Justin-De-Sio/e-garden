@@ -52,12 +52,13 @@ public class VideoService {
     /**
      * Streams the video file in chunks based on the HTTP Range header.
      *
-     * @param fileName The name of the video file.
+     * @param dateTime Date de la vidéo.
      * @param headers  The HTTP request headers.
      * @return A ResponseEntity containing a ResourceRegion of the video.
      * @throws IOException if an error occurs accessing the file.
      */
-    public ResponseEntity<ResourceRegion> streamVideo(String fileName, HttpHeaders headers) throws IOException {
+    public ResponseEntity<ResourceRegion> streamVideo(LocalDateTime dateTime, HttpHeaders headers) throws IOException {
+        String fileName = getVideoForOneDay(dateTime);
         Path filePath = Paths.get(OUTPUT_DIRECTORY, fileName);
         File videoFile = filePath.toFile();
 
@@ -70,7 +71,7 @@ public class VideoService {
         long contentLength = videoFile.length();
 
         // Define a default chunk size (e.g., 1MB)
-        long chunkSize = 1024 * 1024;
+        long chunkSize = 4 * 1024 * 1024;
 
         ResourceRegion region = getResourceRegion(videoResource, headers, chunkSize);
 
@@ -289,12 +290,12 @@ public class VideoService {
      * @param date Date recherchée
      * @return Fichier vidéo correspondant à la journée recherchée
      */
-    public ResponseEntity<Resource> getVideoForOneDay(LocalDateTime date) {
+    public String getVideoForOneDay(LocalDateTime date) {
         LocalDateTime startOfDay = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0, 0);
         LocalDateTime endOfDay = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 23, 59, 59, 999999999);
         Video video = videoRepository.findFirstByFileDateBetweenOrderByFileDurationDesc(startOfDay, endOfDay);
         if (video == null)
             throw new ObjectNotFoundException("Video non trouvé avec la date : " + date.toString());
-        return getVideo(video.getFileName());
+        return video.getFileName();
     }
 }
