@@ -107,7 +107,7 @@ const isRespo = ref(false);
 function loadElementsNavBar() {
   let updatedLinks: Link[];
   if (getTokenObject().role === 'ADMINISTRATEUR') {
-    updatedLinks = links.value.concat(adminLinks.value).concat(respoLinks.value);
+    updatedLinks = links.value.concat(adminLinks.value);
     isAdmin.value = true;
     isRespo.value = true;
   } else if (getTokenObject().role === 'RESPONSABLE') {
