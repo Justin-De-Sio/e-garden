@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Le type Door controller.
  */
-@Controller
+@RestController
 @RequestMapping("/door")
 @CrossOrigin
 @Secured("ADMINISTRATEUR")
@@ -34,7 +34,7 @@ public class DoorController {
      *
      * @return all doors
      */
-    @GetMapping
+    @GetMapping("/")
     public List<Door> getAllDoors() {
         return doorService.getAllDoor();
     }
