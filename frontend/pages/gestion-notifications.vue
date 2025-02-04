@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import {callAPI} from "~/services/callAPI";
+import {callAPIServices} from "~/services/callAPIServices";
 import {onMounted, ref} from "vue";
 import type {Pages} from "~/model/Pages";
 import type {Events} from "~/model/Events";
@@ -47,7 +47,7 @@ const columns = [
   {key: "userId", label: "Identifiant utilisateur", sortable: true},
 ];
 
-const api = new callAPI();
+const api = new callAPIServices();
 const notifs = ref<Events[]>([]);
 const page = ref(1)
 let pageCount = 1;

@@ -1,4 +1,4 @@
-import {getTokenObject, resetToken} from "~/services/SessionServices.ts";
+import {getTokenObject, resetToken} from "~/services/sessionServices.ts";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const token = getTokenObject();

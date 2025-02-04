@@ -22,13 +22,13 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import {callAPI} from '~/services/callAPI';
+import {callAPIServices} from '~/services/callAPIServices';
 import modifUser from '~/components/edit-user.vue';
 import ajouter from '~/components/add-user.vue'
 import type {User} from "~/model/User";
-import {getTokenObject} from "~/services/SessionServices";
+import {getTokenObject} from "~/services/sessionServices";
 
-const api = new callAPI();
+const api = new callAPIServices();
 
 const selectedUserId = ref<number | null>(null);
 

@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import {callAPI} from "~/services/callAPI";
+import {callAPIServices} from "~/services/callAPIServices";
 import Notification from "~/components/notifications.vue"
 import type {User} from "~/model/User";
 import AddReport from "~/components/add-report.vue";
-import {getTokenObject} from "~/services/SessionServices";
+import {getTokenObject} from "~/services/sessionServices";
 
 // Structure des données pour les liens
 interface Link {
@@ -43,7 +43,7 @@ interface Link {
   };
 }
 
-const api = new callAPI();
+const api = new callAPIServices();
 
 // Tableau de liens initial
 const links = ref<Link[]>([

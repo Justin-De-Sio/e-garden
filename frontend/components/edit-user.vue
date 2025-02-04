@@ -32,14 +32,14 @@
 
 <script setup lang="ts">
 import {onMounted, ref, watch} from 'vue';
-import {callAPI} from '~/services/callAPI';
+import {callAPIServices} from '~/services/callAPIServices';
 import type {User} from '~/model/User.js'
 import type {Roles} from '~/model/Roles.ts'
 
 const props = defineProps<{ userId: number, requetUser: () => void }>();
 const emit = defineEmits(['close']);
 
-const api = new callAPI();
+const api = new callAPIServices();
 const user = ref<User>();
 const roles = ref<Roles>();
 

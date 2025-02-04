@@ -72,7 +72,7 @@
 import {z} from "zod";
 import {onMounted, reactive, ref} from "vue";
 import type {Reports} from "~/model/Reports";
-import {callAPI} from "~/services/callAPI";
+import {callAPIServices} from "~/services/callAPIServices";
 import type {Pages} from "~/model/Pages";
 
 const notificationVisible = ref(false);
@@ -102,7 +102,7 @@ const checkNextPage = () => {
   return currentPage.value < totalPages.value - 1;
 };
 
-const api = new callAPI();
+const api = new callAPIServices();
 const id_report = ref<bigint | undefined>();
 
 const schema = z.object({

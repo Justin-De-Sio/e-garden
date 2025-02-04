@@ -43,8 +43,8 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type {FormSubmitEvent} from "#ui/types";
-import { login } from '~/services/auth';
-import {getTokenObject} from "~/services/SessionServices";
+import { login } from '~/services/authServices';
+import {getTokenObject} from "~/services/sessionServices";
 
 const isLoading = ref(false);
 const router = useRouter();

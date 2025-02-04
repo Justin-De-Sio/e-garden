@@ -79,14 +79,14 @@
 <script setup lang="ts">
 import {z} from 'zod';
 import {ref} from 'vue';
-import {callAPI} from "~/services/callAPI";
+import {callAPIServices} from "~/services/callAPIServices";
 import type {User} from "~/model/User";
 
 definePageMeta({
   middleware: "auth",
 })
 
-const api = new callAPI();
+const api = new callAPIServices();
 const errorMessage = ref();
 const userId = ref();
 const username = ref();
