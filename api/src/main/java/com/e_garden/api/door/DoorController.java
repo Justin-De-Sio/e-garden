@@ -57,7 +57,7 @@ public class DoorController {
      * @param door la porte
      * @return response entity
      */
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<Door> updateDoor(@RequestBody Door door) {
         return ResponseEntity.ok(doorService.saveDoor(door));
     }
@@ -68,9 +68,9 @@ public class DoorController {
      * @param id l'identifiant
      * @return le response entity
      */
-    @DeleteMapping
-    public ResponseEntity<Void> deleteDoor(@RequestBody Long id) {
-        doorService.deleteDoor(doorService.getDoorById(id));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDoor(@PathVariable String id) {
+        doorService.deleteDoor(doorService.getDoorById(Long.valueOf(id)));
         return ResponseEntity.noContent().build();
     }
 }
