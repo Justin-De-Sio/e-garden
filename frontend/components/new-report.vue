@@ -32,11 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import {callAPI} from '~/services/callAPI';
+import {callAPIServices} from '~/services/callAPIServices';
 import type {Reports} from '~/model/Reports';
 import type {Pages} from '~/model/Pages';
 
-const api = new callAPI();
+const api = new callAPIServices();
 const reportsObject = ref<Reports[]>([]);
 const pageObject = ref();
 const currentPage = ref(0);

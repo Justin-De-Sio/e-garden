@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import {callAPI} from "~/services/callAPI";
+import {callAPIServices} from "~/services/callAPIServices";
 import {onMounted, ref} from "vue";
 import type {Reports} from "~/model/Reports";
 import type {Pages} from "~/model/Pages";
@@ -57,7 +57,7 @@ const columns = [
   {key: "actions", label: "Actions"}
 ];
 
-const api = new callAPI();
+const api = new callAPIServices();
 const report = ref<Reports[]>([]);
 const page = ref(1)
 let pageCount = 1;

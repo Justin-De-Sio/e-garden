@@ -19,10 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import {callAPI} from "~/services/callAPI";
+import {callAPIServices} from "~/services/callAPIServices";
 import type {ServerInfo} from "~/model/ServerInfo";
 import {ref} from "vue";
-const api = new callAPI();
+const api = new callAPIServices();
 
 let infos = ref<ServerInfo>();
 

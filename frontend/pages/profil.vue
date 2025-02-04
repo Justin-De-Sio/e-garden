@@ -80,14 +80,14 @@
   </template>
   
 <script setup lang="ts">
-import {callAPI} from '~/services/callAPI';
+import {callAPIServices} from '~/services/callAPIServices';
 import {onMounted, reactive, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {z} from 'zod';
 import type {FormSubmitEvent} from "#ui/types";
-import {resetToken} from "~/services/SessionServices";
+import {resetToken} from "~/services/sessionServices";
 
-const api = new callAPI();
+const api = new callAPIServices();
 const isLoading = ref(false);
 const id = ref();
 const notificationVisible = ref(false);

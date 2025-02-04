@@ -1,12 +1,12 @@
 <script setup>
-import {callAPI} from "~/services/callAPI.ts";
+import {callAPIServices} from "~/services/callAPIServices.ts";
 import Header_title from "~/components/header_title.vue";
 import NavbarVertical from "~/components/navbar_vertical.vue";
 
 definePageMeta({
   middleware: 'auth',
 });
-const api = new callAPI();
+const api = new callAPIServices();
 const route = useRoute();
 const porte = route.query.porte;
 const message = ref('');

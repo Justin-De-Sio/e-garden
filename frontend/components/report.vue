@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { callAPI } from '~/services/callAPI';
+import { callAPIServices } from '~/services/callAPIServices';
 import type {Pages} from "~/model/Pages";
 import type {Reports} from "~/model/Reports";
 
@@ -28,7 +28,7 @@ const pageSize = 5;
 const pageCount = ref(1);
 const totalPages = ref(0);
 const varGetReportData = ref<Reports[]>([]);
-const api = new callAPI();
+const api = new callAPIServices();
 
 
 const columns = [

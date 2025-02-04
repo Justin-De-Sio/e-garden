@@ -1,4 +1,4 @@
-export class callAPI {
+export class callAPIServices {
     /**
      * Méthode qui prend en paramètre une route au format string.
      * Le format peut être :

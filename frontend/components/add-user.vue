@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue';
 import {z} from "zod";
-import {callAPI} from '~/services/callAPI';
+import {callAPIServices} from '~/services/callAPIServices';
 import type {Roles} from '~/model/Roles.ts'
 
 const props = defineProps<{ requetUser: () => void }>();
@@ -62,7 +62,7 @@ const formSchema = z.object({
 });
 
 const errorMessage = ref('');
-const api = new callAPI();
+const api = new callAPIServices();
 
 async function getRoles() {
   try {

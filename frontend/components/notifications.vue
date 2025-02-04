@@ -66,10 +66,10 @@
 </template>
 
 <script setup lang="ts">
-import { callAPI } from '~/services/callAPI';
+import { callAPIServices } from '~/services/callAPIServices';
 const isOpen = ref(false);
 const notifications = ref();
-const api = new callAPI();
+const api = new callAPIServices();
 const currentPage = ref(0);
 
 interface UserProfileContent {

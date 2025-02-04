@@ -53,12 +53,12 @@ import indicators from "~/components/indicators.vue";
 import header_title from "~/components/header_title.vue";
 import camera from "~/components/camera-direct.vue";
 import NavbarVertical from "~/components/navbar_vertical.vue";
-import { callAPI } from "~/services/callAPI";
+import { callAPIServices } from "~/services/callAPIServices";
 import newReport from "~/components/new-report.vue";
 import calendar from "~/components/calendar.vue";
 import { ref, onMounted } from "vue";
 
-const api = new callAPI();
+const api = new callAPIServices();
 const number_passage = ref();
 const number_cr = ref();
 
