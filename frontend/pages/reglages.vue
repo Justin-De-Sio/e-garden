@@ -42,7 +42,7 @@
         </div>
 
 
-        <div class="right_section_gestion" v-if="selectedItem === 'door'">
+        <div class="right_section_doors" v-if="selectedItem === 'door'">
           <div class="header">
             <h3>Doors</h3>
           </div>
@@ -60,6 +60,76 @@
               </li>
             </ul>
           </div>
+          <div class="container_door_content">
+            <div class="left_sec">
+                <h2>Les portes</h2>
+                <div class="wrapper_doors">
+                  <ul>
+                      <li v-for="(door, index) in doors" :key="index"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door"> {{ door.name }}</li>
+                  </ul>
+                </div>
+            </div>  
+            <hr class="separator_door">
+            <div class="right_sec" v-if="selectedDoorEdit == 0">
+              <div class="wrapper_text">
+                <h3>Vous souhaitez supprimer une porte ? </h3>
+                <p>Cette action est définitive ! </p>
+              </div>
+              <div class="wrapper_form">
+                <UForm :schema="schema" :state="state" class="space-y-6" @submit="onSubmit" >
+                <UFormGroup label="Porte" name="door">
+                  <UInput v-model="state.door" />
+                </UFormGroup>
+                <UButton type="submit" color="red">
+                  Supprimer
+                </UButton>
+              </UForm>
+              </div>
+            </div>
+
+            <!-- CREATE DOOR -->
+
+            <div class="right_sec" v-if="selectedDoorEdit == 1">
+              <div class="wrapper_text">
+                <h3>Vous souhaitez créer une porte ? </h3>
+                <p> Votre tracabilité sera améliorée ! </p>
+              </div>
+              <div class="wrapper_form">
+                <UForm :schema="schema" :state="state" class="space-y-6" @submit="onSubmit_create" >
+                <UFormGroup label="Porte" name="door">
+                  <UInput v-model="state.door" />
+                </UFormGroup>
+                <UButton type="submit">
+                  Créer
+                </UButton>
+              </UForm>
+              </div>
+            </div>
+
+             <!-- MODIFY DOOR -->
+
+             <div class="right_sec" v-if="selectedDoorEdit == 2">
+              <div class="wrapper_text">
+                <h3>Vous souhaitez modifier une porte ? </h3>
+                <p> Donner un nom parlant à votre porte ! </p>
+              </div>
+              <div class="wrapper_form">
+                <UForm :schema="schema_edit" :state="state_edit" class="space-y-6" @submit="onSubmit_modify" >
+                <UFormGroup label="Porte actuelle" name="door_current">
+                  <UInput v-model="state.door_current" />
+                </UFormGroup>
+
+                <UFormGroup label= "Porte modifée" name="door_edit">
+                  <UInput v-model="state.door_edit" />
+                </UFormGroup>
+                <UButton type="submit" color="orange">
+                  Modifier
+                </UButton>
+              </UForm>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
@@ -69,27 +139,113 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted, type Ref } from "vue";
 import NavbarVertical from "~/components/navbar_vertical.vue";
+import { callAPIServices } from "~/services/callAPIServices";
+import { z } from 'zod'
+import type { FormSubmitEvent } from '#ui/types'
+
+const api = new callAPIServices();
+
 
 definePageMeta({
   middleware: "auth",
   role: ["ADMINISTRATEUR"],
 });
 
-// Navigation principale
+const schema = z.object({
+  door: z.string(),
+})
+
+const schema_edit = z.object({
+  door_current: z.string(),
+  door_edit: z.string(),
+})
+
+type Schema = z.output<typeof schema>
+
+type Schema_edit = z.output<typeof schema_edit>
+
+const state = reactive({
+  door: undefined,
+})
+
+const state_edit = reactive({
+  door_current: undefined,
+  door_edit: undefined,
+})
+
+const doorToDelete = ref();
+const doorToCreate = ref();
+const willDeleted = ref();
+const doorToGet = ref();
+const doorEdit= ref();
+
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  doorToDelete.value = event.data.door;
+  console.log("Saisie de l'utilisateur :", event.data.door);
+
+  if (!doors.value || doors.value.length === 0) {
+    console.error("Aucune porte disponible !");
+    return;
+  }
+
+  for (let i = 0; i < doors.value.length; i++) {
+    if (doors.value[i].name === `${event.data.door}`) {
+      console.log("ID trouvé :", doors.value[i].id);
+      willDeleted.value = doors.value[i].id; 
+    }
+  }
+  await api.fetchAPIDelete("door",willDeleted.value)
+  await getdoors();
+}
+const getRequestBodyPost = () => ({
+  name: `porte ${doorToCreate.value}` 
+});
+
+async function onSubmit_create(event: FormSubmitEvent<Schema>) {
+  doorToCreate.value = event.data.door.toLowerCase();
+  console.log("creation", getRequestBodyPost())
+  await api.fetchAPIPost("door",getRequestBodyPost())
+
+  await getdoors();
+}
+
+const getRequestBodyPUT = () => ({
+  name: `porte ${doorToGet.value}` 
+});
+
+const id_found_edit = ref();
+async function onSubmit_modify(event: FormSubmitEvent<Schema_edit>) {
+  doorToGet.value = event.data.door_current.toLowerCase();
+  doorEdit.value = event.data.door_edit.toLowerCase();
+
+  for (let i = 0; i < doors.value.length; i++) {
+    if (doors.value[i].name === `${doorToGet.value}`) {
+      console.log("ID trouvé :", doors.value[i].id);
+      id_found_edit.value = doors.value[i].id; 
+    }
+  }
+  await api.fetchAPIPutWithId("door", id_found_edit.value, getRequestBodyPUT());
+
+  await getdoors();
+}
+
+
+
 const items = {
   gestion: "Gestions du potager",
   door: "Portes"
 };
 const selectedItem = ref("door");
 
-// Sections des portes
+
 const doors_edit = ["Supprimer", "Créer", "Modifier"];
 const selectedDoorEdit = ref(0);
 
 const backgroundX = ref(0);
 const backgroundWidth = ref(0);
 const navItems = ref([]) as Ref<HTMLLIElement[]>;
-
+const doors = ref()
 
 const updateBackground = (index: number) => {
   selectedDoorEdit.value = index;
@@ -103,7 +259,23 @@ const updateBackground = (index: number) => {
   });
 };
 
-onMounted(() => {
+
+
+async function getdoors() {
+  try {
+    const response_get_doors = await api.fetchAPIGet("door");
+    doors.value = response_get_doors.map(door => ({
+      ...door,
+      name: door.name.replace(/porte/, "").trim() // Remplace "porte" par rien et enlève les espaces inutiles
+    }));
+    console.log("doors", doors.value)
+  } catch (error) {
+    console.error("Erreur lors de la récupération des portes :", error);
+  }
+}
+
+onMounted(async () => {
+  await getdoors();
   updateBackground(selectedDoorEdit.value);
 });
 
@@ -193,7 +365,7 @@ const card_details = [
   display: inline-block;
   width: fit-content;
   white-space: nonwrap;
-  padding: 0.9rem 1rem;
+  padding: 0.7rem 1rem;
   border-radius: 1.5rem;
   cursor: pointer;
   color: #787D85;
@@ -207,7 +379,19 @@ const card_details = [
   display: flex;
   flex-direction: column;
   flex: 6;
+  width: 100%;
   height: 100%;
+  gap: 2rem;
+}
+
+.right_section_doors{
+  display: flex;
+  flex-direction: column;
+  flex: 6;
+  width: 100%;
+  height: 100%;
+  gap: 2rem;
+
 }
 
 .header{
@@ -296,7 +480,7 @@ const card_details = [
 /* DOOR SECTION */ 
 
 .nav_changement {
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -338,6 +522,113 @@ const card_details = [
 
 .nav_changement ul li.selected {
   color: black;
+}
+
+
+/* SECTION DELETE */
+
+.container_door_content {
+  flex-grow: 1; 
+  width: 50%;
+  min-height: 300px; 
+  background-color: #F7F6F9;
+  display: flex;
+  align-items: stretch;
+  margin: auto;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+ .left_sec{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  text-align: left;
+ }
+
+ .left_sec h2{
+  font-family: "Aeonik-Regular";
+  color: black;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  padding: 1.5rem 2rem;
+ }
+
+ .right_sec{
+  flex: 2;
+  width: 100%;
+  padding: 1rem;
+ }
+
+ .wrapper_text{
+  padding-bottom: 2rem;
+  text-align: center;
+ }
+
+ .wrapper_text h3{
+  font-family: "Aeonik-Regular";
+  color: black;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+ }
+ .wrapper_text p{
+  font-family: "Aeonik-Medium";
+  color: black;
+  font-size: clamp(0.5rem, 1.3vw, 1rem);
+ }
+
+ .wrapper_form{
+  padding-right: 5rem;
+  padding-left: 1rem;
+ }
+
+
+ .wrapper_doors {
+  flex: 1;
+  width: 100%;
+  max-height: 300px; /* Hauteur max pour déclencher le scroll */
+  overflow-y: auto;  /* Active le scroll si le contenu dépasse */
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper_doors ul {
+  display: flex;
+  flex-direction: column;
+  padding: 0rem 0.5rem;
+  list-style: none;
+  gap: 1rem;
+}
+
+.wrapper_doors ul li {
+  display: flex;
+  align-items: center; /* Alignement des éléments */
+  padding: 0.5rem;
+  gap: 1rem;
+  font-family: "Aeonik-Regular";
+  color: black;
+  font-size: clamp(1rem, 1.3vw, 1rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon_door{
+  width: 30px;
+  height: 30px;
+ 
+}
+
+.separator_door{
+  width: 2px; 
+  height: auto; 
+  flex-shrink: 0; 
+  background-color: #99989D;
 }
 
 
