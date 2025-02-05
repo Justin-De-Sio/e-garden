@@ -6,40 +6,23 @@ definePageMeta({
   role: ["ADMINISTRATEUR"],
 });
 
-// The video URL is constructed to point to our proxy endpoint.
-// The JWT token stored in the cookie will be automatically attached via the proxy middleware.
 const videoUrl = ref<string | null>(null);
-const loading = ref(false);
+const route = useRoute();
+const today = new Date();
+const year = route.query.year as string || today.getFullYear().toString();
+const month = route.query.month as string || (today.getMonth() + 1).toString();// Mois (0-11) donc +1 pour avoir (1-12)
+const day = route.query.day as string || today.getDate().toString();
 
-onMounted(() => getVideo("2025", "02", "01"));
+onMounted(() => getVideo(year, month, day));
 
-async function getVideo(year: string, month: string, day: string) {
-  loading.value = true;
-  videoUrl.value = null; // Clear previous video URL to force update
-
-  try {
-    // Build the URL to stream the video.
-    // The proxy (configured to intercept `/api`) will forward this request to your backend.
+function getVideo(year: string, month: string, day: string) {
     videoUrl.value = `/api/videos/stream-by-date?year=${year}&month=${month}&day=${day}`;
     console.log("Video URL:", videoUrl.value);
-  } catch (error) {
-    console.error("Erreur lors de la récupération de la vidéo:", error);
-  } finally {
-    loading.value = false;
-  }
-  console.log("Vidéo chargée:", videoUrl.value);
 }
 </script>
 
 <template>
   <div>
-    <button @click="getVideo('2025', '02', '01')" :disabled="loading">
-      {{ loading ? "Chargement..." : "Charger la vidéo" }}
-    </button>
-
-    <p v-if="loading">Chargement de la vidéo...</p>
-    <p v-if="!loading && !videoUrl">Aucune vidéo disponible</p>
-
     <video v-if="videoUrl" controls>
       <source :src="videoUrl" type="video/mp4" />
       Votre navigateur ne supporte pas la lecture de vidéos.
