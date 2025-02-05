@@ -106,7 +106,7 @@ const api = new callAPIServices();
 const id_report = ref<bigint | undefined>();
 
 const schema = z.object({
-  content: z.string().min(8, "Must be at least 8 characters"),
+  content: z.string().min(8, "Un minimum de 8 caractères est requis"),
 });
 const state = reactive({
   content: "",

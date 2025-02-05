@@ -7,13 +7,13 @@
         </div>
         <div class="inside_content">
           <h2>Rediffusion</h2>
-          <h4 v-if="year != 1970 || !isVideo">{{ day }} - {{ month }} - {{ year }}</h4>
+          <h4 v-if="Number(year) != 1970 || !isVideo">{{ day }} - {{ month }} - {{ year }}</h4>
           <h4 v-else>Sélectionner un jour</h4>
         </div>
       </div>
       <div class="right_section">
         <div class="background_button">
-          <button :disabled="year == 1970 || !isVideo" type="button" @click="SeeVideo(year, month, day)">Visionner</button>
+          <button :disabled="Number(year) == 1970 || !isVideo" type="button" @click="SeeVideo(year, month, day)">Visionner</button>
         </div>
       </div>
     </div>
@@ -29,11 +29,11 @@ const router = useRouter();
 defineProps<{
   day: string | "";
   month: string | "";
-  year: string | "";
+  year: string | 1970;
   isVideo: boolean | false;
 }>();
 
-async function SeeVideo(year, month, day) {
+async function SeeVideo(year: string | number, month: string, day: string) {
   const url = router.resolve(`video?year=${year}&month=${month}&day=${day}`).href;  // Résolution de l'URL interne
   window.open(url, '_blank');
 }

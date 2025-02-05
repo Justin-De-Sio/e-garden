@@ -115,7 +115,7 @@
               </div>
               <div class="wrapper_form">
                 <UForm :schema="schema_edit" :state="state_edit" class="space-y-6" @submit="onSubmit_modify" >
-                <UFormGroup label="Nom de la porte à modifiée" name="door_current">
+                <UFormGroup label="Nom de la porte à modifier" name="door_current">
                   <UInput v-model="state_edit.door_current" />
                 </UFormGroup>
 
