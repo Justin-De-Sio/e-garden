@@ -1,4 +1,5 @@
 <template>
+  <div class="wrapperContainer">
   <div class="feed">
     <div v-for="post in reports" :key="post.id" class="post">
       <p class="date">
@@ -8,6 +9,7 @@
       <p class="content">{{ post.content }}</p>
     </div>
     <div ref="loadTrigger" v-if="(numPages + 1) <= numTotalPages" class="loading-trigger"></div>
+  </div>
   </div>
 </template>
 
@@ -63,10 +65,23 @@ onUnmounted(() => {
 });
 </script>
 
+
 <style scoped>
 .loading-trigger {
   height: 50px;
 }
+.wrapperContainer {
+  flex-direction: row;
+  align-items: center;
+  width: 50%;
+  max-height: 100%;
+  gap: 1rem;
+  background-color: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .feed {
   width: 100%;
   max-width: 600px;

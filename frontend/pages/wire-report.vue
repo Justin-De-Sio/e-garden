@@ -7,9 +7,9 @@
       </div>
 
     </div>
-    <div class="media_item report_wrapper">
+
     <Report_queue/>
-    </div>
+
   </div>
 </template>
 
