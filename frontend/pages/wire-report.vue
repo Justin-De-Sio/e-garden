@@ -6,7 +6,11 @@
         <header_title title="Page d'accueil" subtitle="Retrouvez tous les rapports pour la gestion de votre potager"/>
       </div>
     </div>
-    <Report_queue/>
+
+    <div class="report_container">
+      <Report_queue/>
+    </div>
+
   </div>
 </template>
 
@@ -15,16 +19,13 @@ import navbarVertical from "~/components/navbar_vertical.vue"
 import header_title from "~/components/header_title.vue";
 import report_queue from "~/components/report_queue.vue";
 
-
-
 definePageMeta({
   middleware: "auth",
 })
 </script>
 
 <style scoped>
-
-.wrapper_page{
+.wrapper_page {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -36,37 +37,37 @@ definePageMeta({
   min-height: 100vh;
 }
 
-.wrapperLeftRight{
+.wrapperLeftRight {
   display: flex;
   flex-grow: 1;
 }
 
-.left_content{
+.left_content {
   display: flex;
   flex-direction: column;
   width: 60%;
   flex-grow: 1;
   padding: 0 2rem;
 }
-.header_bis{
+
+.header_bis {
   width: 80%;
   height: auto;
-  padding: 2rem 0;
+  padding: 2rem 2rem;
 }
 
-
-.columns_indicators{
+.columns_indicators {
   display: flex;
   flex-direction: row;
   gap: 1rem;
 }
 
-.top_wrapper{
-
+.top_wrapper {
   width: 100%;
   height: 100%;
 }
-.bot_left{
+
+.bot_left {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -75,39 +76,36 @@ definePageMeta({
   gap: 5rem;
 }
 
-.top_bot_left{
+.top_bot_left {
   width: 100%;
   height: auto;
 }
 
-.top_bot_left h2{
+.top_bot_left h2 {
   font-family: "Gilroy-Medium";
   font-size: clamp(1rem, 2vw, 1.5rem);
   margin-bottom: 2rem;
-
 }
 
-.top_bot_right h2{
+.top_bot_right h2 {
   font-family: "Gilroy-Medium";
   font-size: clamp(1rem, 2vw, 1.5rem);
   margin-bottom: 2rem;
-
 }
 
-.right_calendar{
+.right_calendar {
   margin-top: 5rem;
   margin-right: 4rem;
 }
 
-footer{
+footer {
   font-family: "Gilroy-Medium";
   text-align: center;
   padding: 1rem 0;
   width: 100%;
 }
 
-
-@media screen and (max-width: 800px){
+@media screen and (max-width: 800px) {
   .wrapper_content {
     display: flex;
     flex-direction: column;
@@ -117,16 +115,14 @@ footer{
     padding: 0 1rem;
   }
 
-  .bot_left{
+  .bot_left {
     width: 100%;
   }
 
-  .header_bis{
+  .header_bis {
     text-align: center;
   }
-
 }
-
 
 h1 {
   font-family: "Gilroy-Medium", sans-serif;
@@ -145,7 +141,17 @@ h3 {
   font-size: 1rem;
 }
 
+.report_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
 
-
-
+.report_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
 </style>
