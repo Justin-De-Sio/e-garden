@@ -20,6 +20,8 @@ public class Door {
     private Long id;
     @Column(nullable = false, unique = true, length = 125)
     private String name;
+    @Column(nullable = false, unique = true, name = "door_number")
+    private int doorNumber;
 
     /**
      * Instancie un nouveau Door.
@@ -39,7 +41,7 @@ public class Door {
     /**
      * Gets events.
      *
-     * @return l'events
+     * @return l 'events
      */
     public List<Event> getEvents() {
         return events;
@@ -82,6 +84,24 @@ public class Door {
     }
 
     /**
+     * Gets order.
+     *
+     * @return le order
+     */
+    public int getOrder() {
+        return doorNumber;
+    }
+
+    /**
+     * Sets order.
+     *
+     * @param order le order
+     */
+    public void setOrder(int order) {
+        this.doorNumber = order;
+    }
+
+    /**
      * To string string.
      *
      * @return le string
@@ -89,8 +109,10 @@ public class Door {
     @Override
     public String toString() {
         return "Door{" +
-                "id=" + id +
+                "events=" + events +
+                ", id=" + id +
                 ", name='" + name + '\'' +
+                ", order=" + doorNumber +
                 '}';
     }
 }
