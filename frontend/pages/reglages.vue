@@ -80,7 +80,7 @@
                 <UFormGroup label="Porte" name="door">
                   <UInput v-model="state.door" />
                 </UFormGroup>
-                <UButton type="submit" color="red">
+                <UButton type="submit" color="red" class="button_3_function">
                   Supprimer
                 </UButton>
               </UForm>
@@ -99,7 +99,7 @@
                 <UFormGroup label="Porte" name="door">
                   <UInput v-model="state.door" />
                 </UFormGroup>
-                <UButton type="submit">
+                <UButton type="submit" class="button_3_function">
                   Créer
                 </UButton>
               </UForm>
@@ -115,14 +115,14 @@
               </div>
               <div class="wrapper_form">
                 <UForm :schema="schema_edit" :state="state_edit" class="space-y-6" @submit="onSubmit_modify" >
-                <UFormGroup label="Porte actuelle" name="door_current">
-                  <UInput v-model="state.door_current" />
+                <UFormGroup label="Nom de la porte à modifiée" name="door_current">
+                  <UInput v-model="state_edit.door_current" />
                 </UFormGroup>
 
-                <UFormGroup label= "Porte modifée" name="door_edit">
-                  <UInput v-model="state.door_edit" />
+                <UFormGroup label= "Nouveau nom de la porte" name="door_edit">
+                  <UInput v-model="state_edit.door_edit" />
                 </UFormGroup>
-                <UButton type="submit" color="orange">
+                <UButton type="submit" color="orange" class="button_3_function">
                   Modifier
                 </UButton>
               </UForm>
@@ -134,6 +134,17 @@
       </div>
     </div>
   </div>
+  <UNotification
+        v-if="notificationVisible"
+        icon="i-heroicons-check-badge"
+        :color="notificationColor"
+        :id="6"
+        :title="notificationTitle"
+        :description="notificationMessage"
+        :timeout="6000"
+        class="custom-notification"
+        
+        />
 </template>
 
 <script setup lang="ts">
@@ -179,6 +190,11 @@ const willDeleted = ref();
 const doorToGet = ref();
 const doorEdit= ref();
 
+const notificationVisible = ref(false);
+const notificationTitle = ref("");
+const notificationMessage = ref("");
+const notificationColor =  ref("");
+
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   doorToDelete.value = event.data.door;
@@ -197,6 +213,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
   await api.fetchAPIDelete("door",willDeleted.value)
   await getdoors();
+
+  notificationColor.value = "red";
+  notificationTitle.value = "Suppresion de porte"; 
+  notificationMessage.value = "Vous venez de supprimer une de vos portes !"; 
+  notificationVisible.value = true;
+
+  setTimeout(() => {
+      notificationVisible.value = false;
+    }, 6000);
 }
 const getRequestBodyPost = () => ({
   name: `porte ${doorToCreate.value}` 
@@ -206,12 +231,22 @@ async function onSubmit_create(event: FormSubmitEvent<Schema>) {
   doorToCreate.value = event.data.door.toLowerCase();
   console.log("creation", getRequestBodyPost())
   await api.fetchAPIPost("door",getRequestBodyPost())
-
+    
   await getdoors();
+  notificationColor.value = "primary";
+  notificationTitle.value = "Création de porte"; 
+  notificationMessage.value = "Vous venez de créer une nouvelle porte !"; 
+  notificationVisible.value = true;
+
+
+
+    setTimeout(() => {
+      notificationVisible.value = false;
+    }, 6000);
 }
 
 const getRequestBodyPUT = () => ({
-  name: `porte ${doorToGet.value}` 
+  name: `porte ${doorEdit.value}` 
 });
 
 const id_found_edit = ref();
@@ -225,9 +260,18 @@ async function onSubmit_modify(event: FormSubmitEvent<Schema_edit>) {
       id_found_edit.value = doors.value[i].id; 
     }
   }
-  await api.fetchAPIPutWithId("door", id_found_edit.value, getRequestBodyPUT());
+  const response = await api.fetchAPIPutWithId("door", id_found_edit.value, getRequestBodyPUT());
+  console.log("respose", response)
 
   await getdoors();
+  notificationColor.value = "orange";
+  notificationTitle.value = "Modification de porte"; 
+  notificationMessage.value = "Vous venez de modifier le nom d'une porte !"; 
+  notificationVisible.value = true;
+
+  setTimeout(() => {
+      notificationVisible.value = false;
+    }, 6000);
 }
 
 
@@ -514,7 +558,7 @@ const card_details = [
   border-radius: 2rem;
   font-family: "Aeonik-Regular";
   color: #99989D;
-  font-size: clamp(1rem, 1.3vw, 1rem);
+  font-size: clamp(0.7rem, 1.3vw, 1rem);
   position: relative;
   cursor: pointer;
   z-index: 1;
@@ -528,27 +572,23 @@ const card_details = [
 /* SECTION DELETE */
 
 .container_door_content {
-  flex-grow: 1; 
-  width: 50%;
-  min-height: 300px; 
-  background-color: #F7F6F9;
   display: flex;
-  align-items: stretch;
   margin: auto;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1000px;
+  padding: 1rem;
   border-radius: 2rem;
-  overflow: hidden;
+  background-color: #F7F6F9;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 
- .left_sec{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.left_sec {
   flex: 1;
-  text-align: left;
- }
+  min-width: 250px;
+  padding: 1rem;
+}
 
  .left_sec h2{
   font-family: "Aeonik-Regular";
@@ -557,11 +597,11 @@ const card_details = [
   padding: 1.5rem 2rem;
  }
 
- .right_sec{
+ .right_sec {
   flex: 2;
-  width: 100%;
+  min-width: 300px;
   padding: 1rem;
- }
+}
 
  .wrapper_text{
   padding-bottom: 2rem;
@@ -576,7 +616,7 @@ const card_details = [
  .wrapper_text p{
   font-family: "Aeonik-Medium";
   color: black;
-  font-size: clamp(0.5rem, 1.3vw, 1rem);
+  font-size: clamp(0.7rem, 1.3vw, 1rem);
  }
 
  .wrapper_form{
@@ -588,8 +628,8 @@ const card_details = [
  .wrapper_doors {
   flex: 1;
   width: 100%;
-  max-height: 300px; /* Hauteur max pour déclencher le scroll */
-  overflow-y: auto;  /* Active le scroll si le contenu dépasse */
+  max-height: 300px; 
+  overflow-y: auto;  
   border-radius: 1rem;
   margin-left: 0.5rem;
   padding: 1rem;
@@ -600,6 +640,7 @@ const card_details = [
 .wrapper_doors ul {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   padding: 0rem 0.5rem;
   list-style: none;
   gap: 1rem;
@@ -607,12 +648,12 @@ const card_details = [
 
 .wrapper_doors ul li {
   display: flex;
-  align-items: center; /* Alignement des éléments */
+  align-items: center; 
   padding: 0.5rem;
   gap: 1rem;
   font-family: "Aeonik-Regular";
   color: black;
-  font-size: clamp(1rem, 1.3vw, 1rem);
+  font-size: clamp(0.9rem, 1.3vw, 1rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -632,6 +673,14 @@ const card_details = [
 }
 
 
+.custom-notification {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+    width: min(90vw, 30rem);
+    max-width: 30rem; 
+    }
 @media screen and (max-width: 1024px)
 {
   .wrapper_settings_page{
@@ -658,11 +707,63 @@ const card_details = [
     width: 100%;
 
   }
+  .right_section_doors{
+    padding: 1rem;
+    gap: 1rem;
+  }
+
 
   .header h3{
     padding-top: 2rem;
     padding-left: 0;
   }
+
+  .container_door_content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .left_sec, .right_sec {
+    width: 100%;
+  }
+
+  .wrapper_doors ul {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding: 0;
+  gap: 0;
+
+}
+
+.left_sec{
+  padding: 0;
+}
+
+.left_sec h2{
+  text-align: center;
+}
+
+.left_sec p{
+  text-align: left;
+}
+
+
+
+.wrapper_form {
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .wrapper_form UForm {
+    width: 100%;
+  }
+
+  .nav_changement ul li {
+  padding: 0.3rem 1.2rem;
+}
 
 }
 
