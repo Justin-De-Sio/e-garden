@@ -23,7 +23,6 @@ function getVideo(year: string, month: string, day: string) {
 
 <template>
   <div>
-    <button @click="getVideo('2025', '02', '01')">Charger la vidéo</button>
     <video v-if="videoUrl" controls>
       <source :src="videoUrl" type="video/mp4" />
       Votre navigateur ne supporte pas la lecture de vidéos.
