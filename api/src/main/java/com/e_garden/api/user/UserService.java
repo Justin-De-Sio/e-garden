@@ -148,6 +148,8 @@ public class UserService {
 
     private User saveUser(User user) {
         user.setSurname(user.getSurname().toUpperCase(Locale.ROOT));
+        String formattedName = user.getName().substring(0, 1).toUpperCase(Locale.ROOT) + user.getName().substring(1).toLowerCase(Locale.ROOT);
+        user.setName(formattedName);
         user = userRepository.save(user);
         log.createLog(String.valueOf(Levels.USER), "Utilisateur mis à jour", user.toString());
         return user;
