@@ -74,4 +74,11 @@ public class DoorService {
             throw new ObjectNotFoundException("Porte non trouvé avec l'ID : " + id);
         return doorOptional.get();
     }
+
+    public Door getDoorByOrder(Long id) {
+        Optional<Door> doorOptional = doorRepository.findByDoorNumber(Math.toIntExact(id));
+        if (doorOptional.isEmpty())
+            throw new ObjectNotFoundException("Porte non trouvé avec l'ID : " + id);
+        return doorOptional.get();
+    }
 }
