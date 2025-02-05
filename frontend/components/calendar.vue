@@ -102,7 +102,6 @@ function isPresentVideo(date: Date): boolean {
     // Vérifiez si la date formatée est présente dans l'une des vidéos
     return video.value.some((videoItem: Video) => videoItem.fileDate.split("T")[0] === formattedDate);
   }
-
   // Retourne false si aucune vidéo ou mauvais format
   return false;
 }
@@ -115,7 +114,6 @@ const isInCurrentMonth = (date: Date) => isSameMonth(date, currentDate.value);
 // 📌 Sélection d'un jour
 const selectDay = (date: Date) => {
   selectedDate.value = date;
-  console.log("Jour sélectionné:", format(date, "yyyy-MM-dd"));
 };
 
 // 🎥 Récupération des vidéos
