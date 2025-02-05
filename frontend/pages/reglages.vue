@@ -65,7 +65,7 @@
                 <h2>Les portes</h2>
                 <div class="wrapper_doors">
                   <ul>
-                      <li v-for="(door, index) in doors" :key="index" @click="selectDoor(door)" class="selectDOOR"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door" > {{ door.name }}</li>
+                      <li v-for="(door, index) in doors" :key="index" @click="selectDoor(door)" class="selectDOOR"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door" > N°{{ door.order }} : {{ door.name }}</li>
                   </ul>
                 </div>
             </div>  
