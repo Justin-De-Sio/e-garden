@@ -343,6 +343,8 @@ const card_details = [
     icon: "/assets/image_gestionnaire.jpg",
     route: "/gestion-reports"
   },
+  {
+    title: "Notifications",
     subtitle: "Consultez toutes les notifications pour rester informé en temps réel des derniers évènements.",
     icon: "/assets/image-notifications.jpg",
     route: "/gestion-notifications"
@@ -398,6 +400,13 @@ const card_details = [
 }
 
 .left_section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  padding-top: 3rem;
 
 }
 
