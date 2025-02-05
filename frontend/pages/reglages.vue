@@ -100,7 +100,7 @@
                   <UInput v-model="state.door" />
                 </UFormGroup>
                 <UFormGroup label="Nombre" name="order">
-                  <UInput v-model="state.order" />
+                  <UInput v-model.number="state.order" />
                 </UFormGroup>
                 <UButton type="submit" class="button_3_function">
                   Créer
@@ -167,7 +167,7 @@ definePageMeta({
 
 const schema = z.object({
   door: z.string(),
-  order: z.number().int(),
+  order: z.number(),
 })
 
 const schema_edit = z.object({
@@ -191,6 +191,9 @@ const state_edit = reactive({
 
 const doorToDelete = ref();
 const doorToCreate = ref();
+const orderToCreate = ref(0);
+
+
 const willDeleted = ref();
 const doorToGet = ref();
 const doorEdit= ref();
@@ -228,16 +231,21 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       notificationVisible.value = false;
     }, 6000);
 }
+
+
 const getRequestBodyPost = () => ({
-  name: `porte ${doorToCreate.value}` 
+  name: `porte ${doorToCreate.value}`,
+  order: orderToCreate.value,
 });
 
 async function onSubmit_create(event: FormSubmitEvent<Schema>) {
   doorToCreate.value = event.data.door.toLowerCase();
+  orderToCreate.value = event.data.order;
   console.log("creation", getRequestBodyPost())
   await api.fetchAPIPost("door",getRequestBodyPost())
     
-  await getDoors();
+  const response = await getDoors();
+  console.log("Response", response)
   notificationColor.value = "primary";
   notificationTitle.value = "Création de porte"; 
   notificationMessage.value = "Vous venez de créer une nouvelle porte !"; 
