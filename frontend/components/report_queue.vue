@@ -4,6 +4,9 @@
       <p class="date">{{ post.reportDate }}</p>
       <p class="content">{{ post.content }}</p>
     </div>
+    <div>
+      <UButton @click="LoadMore">Charger plus...</UButton>
+    </div>
   </div>
 </template>
 
@@ -15,14 +18,20 @@ import { onMounted, ref } from "vue";
 
 const api = new callAPIServices();
 const reports = ref<Reports[]>([]);
+const numPages = ref<number>(0);
 
 onMounted(async () => {
   await requetRepport();
 });
 
+async function LoadMore() {
+  numPages.value++;
+  await requetRepport();
+}
+
 async function requetRepport() {
   try {
-    const response = await api.fetchAPIGetPaginated('report/history', "0", "10") as Pages;
+    const response = await api.fetchAPIGetPaginated('report/history', numPages.value.toString(), "10") as Pages;
     console.log(response.content);
     // Mise à jour de reports en concaténant le contenu
     reports.value = reports.value.concat(response.content as Reports[]);
