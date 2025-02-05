@@ -53,7 +53,7 @@ definePageMeta({
 .header_bis {
   width: 80%;
   height: auto;
-  padding: 2rem 0;
+  padding: 2rem 2rem;
 }
 
 .columns_indicators {
