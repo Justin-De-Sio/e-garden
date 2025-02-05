@@ -65,7 +65,7 @@
                 <h2>Les portes</h2>
                 <div class="wrapper_doors">
                   <ul>
-                      <li v-for="(door, index) in doors" :key="index"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door"> {{ door.name }}</li>
+                      <li v-for="(door, index) in doors" :key="index"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door" @click="selectDoor(door)"> {{ door.name }}</li>
                   </ul>
                 </div>
             </div>  
@@ -118,14 +118,14 @@
               </div>
               <div class="wrapper_form">
                 <UForm :schema="schema_edit" :state="state_edit" class="space-y-6" @submit="onSubmit_modify" >
-                <UFormGroup label="Nom de la porte à modifier" name="door_current">
-                  <UInput v-model="state_edit.door_current" />
+                <UFormGroup label="Numéro de la porte" name="order_door">
+                  <UInput v-model="state_edit.order_door" />
                 </UFormGroup>
 
                 <UFormGroup label= "Nouveau nom de la porte" name="door_edit">
                   <UInput v-model="state_edit.door_edit" />
                 </UFormGroup>
-                <UButton type="submit" color="orange" class="button_3_function">
+                <UButton type="submit" color="orange" class="button_3_function" >
                   Modifier
                 </UButton>
               </UForm>
@@ -171,7 +171,7 @@ const schema = z.object({
 })
 
 const schema_edit = z.object({
-  door_current: z.string(),
+  id_door: z.string(),
   door_edit: z.string(),
 })
 
@@ -185,9 +185,20 @@ const state = reactive({
 })
 
 const state_edit = reactive({
-  door_current: undefined,
+  id_door: undefined,
+  order_door: undefined,
   door_edit: undefined,
 })
+
+const selectDoor = (door) => {
+  state_edit.id_door = door.id;
+  state_edit.order_door = door.order;
+  state_edit.door_edit = door.name;
+
+  console.log("Après mise à jour, state_edit :", { ...state_edit });
+};
+
+
 
 const doorToDelete = ref();
 const doorToCreate = ref();
@@ -235,7 +246,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 const getRequestBodyPost = () => ({
   name: `porte ${doorToCreate.value}`,
-  order: orderToCreate.value,
+  order: orderToCreate,
 });
 
 async function onSubmit_create(event: FormSubmitEvent<Schema>) {
@@ -259,33 +270,24 @@ async function onSubmit_create(event: FormSubmitEvent<Schema>) {
 }
 
 const getRequestBodyPUT = () => ({
-  name: `porte ${doorEdit.value}` 
+  name: `porte ${doorEdit.value}`,
+  order: doorToGet.value,
 });
 
 const id_found_edit = ref();
 async function onSubmit_modify(event: FormSubmitEvent<Schema_edit>) {
-  doorToGet.value = event.data.door_current.toLowerCase();
-  doorEdit.value = event.data.door_edit.toLowerCase();
+  console.log("onSubmit_modify déclenché avec :", {
+    id_door: state_edit.id_door,
+    order_door: state_edit.order_door,
+    door_edit: state_edit.door_edit,
+  });
 
-  for (let i = 0; i < doors.value.length; i++) {
-    if (doors.value[i].name === `${doorToGet.value}`) {
-      console.log("ID trouvé :", doors.value[i].id);
-      id_found_edit.value = doors.value[i].id; 
-    }
+  if (!state_edit.id_door) {
+    console.error("Aucun ID de porte sélectionné !");
+    return;
   }
-  const response = await api.fetchAPIPutWithId("door", id_found_edit.value, getRequestBodyPUT());
 
-  await getDoors();
-  notificationColor.value = "orange";
-  notificationTitle.value = "Modification de porte"; 
-  notificationMessage.value = "Vous venez de modifier le nom d'une porte !"; 
-  notificationVisible.value = true;
-
-  setTimeout(() => {
-      notificationVisible.value = false;
-    }, 6000);
 }
-
 
 
 const items = {
@@ -320,6 +322,7 @@ const updateBackground = (index: number) => {
 async function getDoors() {
   try {
     const response_get_doors = await api.fetchAPIGet("door");
+    console.log("Doors",response_get_doors)
     doors.value = response_get_doors.map(door => ({
       ...door,
       name: door.name.replace(/porte/, "").trim() // Remplace "porte" par rien et enlève les espaces inutiles
