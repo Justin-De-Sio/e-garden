@@ -49,7 +49,7 @@
           <div class="nav_changement">
             <ul ref="navList">
               <div class="background" 
-                :style="{ transform: `translateX(${backgroundX}px)`, width: `${backgroundWidth}px` }">
+              :style="{ transform: `translateX(${backgroundX}px)`, width: `${backgroundWidth}px` }"
               </div>
               <li v-for="(choice, index) in doors_edit" 
                 :key="index" 
@@ -125,7 +125,7 @@
                 <UFormGroup label= "Nouveau nom de la porte" name="door_edit">
                   <UInput v-model="state_edit.door_edit" />
                 </UFormGroup>
-                <UButton type="submit" color="orange" class="button_3_function" >
+                <UButton type="submit" color="orange" class="button_3_function">
                   Modifier
                 </UButton>
               </UForm>
@@ -171,7 +171,7 @@ const schema = z.object({
 })
 
 const schema_edit = z.object({
-  id_door: z.string(),
+  order_door: z.string(),
   door_edit: z.string(),
 })
 
@@ -191,14 +191,14 @@ const state_edit = reactive({
 })
 
 const selectDoor = (door) => {
+  console.log("Porte sélectionnée :", door);
+
   state_edit.id_door = door.id;
   state_edit.order_door = door.order;
   state_edit.door_edit = door.name;
 
-  console.log("Après mise à jour, state_edit :", { ...state_edit });
+  console.log("Après assignation, state_edit :", state_edit);
 };
-
-
 
 const doorToDelete = ref();
 const doorToCreate = ref();
@@ -206,7 +206,7 @@ const orderToCreate = ref(0);
 
 
 const willDeleted = ref();
-const doorToGet = ref();
+const doorOrder = ref();
 const doorEdit= ref();
 
 const notificationVisible = ref(false);
@@ -246,7 +246,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 const getRequestBodyPost = () => ({
   name: `porte ${doorToCreate.value}`,
-  order: orderToCreate,
+  order: orderToCreate.value,
 });
 
 async function onSubmit_create(event: FormSubmitEvent<Schema>) {
@@ -271,23 +271,30 @@ async function onSubmit_create(event: FormSubmitEvent<Schema>) {
 
 const getRequestBodyPUT = () => ({
   name: `porte ${doorEdit.value}`,
-  order: doorToGet.value,
+  order: Number(doorOrder.value)
 });
 
-const id_found_edit = ref();
+const doorID = ref();
 async function onSubmit_modify(event: FormSubmitEvent<Schema_edit>) {
-  console.log("onSubmit_modify déclenché avec :", {
-    id_door: state_edit.id_door,
-    order_door: state_edit.order_door,
-    door_edit: state_edit.door_edit,
-  });
+  doorOrder.value = event.data.order_door;
+  doorEdit.value = event.data.door_edit.toLowerCase();
+  doorID.value = state_edit.id_door;
 
-  if (!state_edit.id_door) {
-    console.error("Aucun ID de porte sélectionné !");
-    return;
-  }
+  console.log("req", getRequestBodyPUT())
 
+  const response = await api.fetchAPIPutWithId("door", doorID.value, getRequestBodyPUT());
+
+  await getDoors();
+  notificationColor.value = "orange";
+  notificationTitle.value = "Modification de porte"; 
+  notificationMessage.value = "Vous venez de modifier le nom d'une porte !"; 
+  notificationVisible.value = true;
+
+  setTimeout(() => {
+      notificationVisible.value = false;
+    }, 6000);
 }
+
 
 
 const items = {
@@ -322,7 +329,6 @@ const updateBackground = (index: number) => {
 async function getDoors() {
   try {
     const response_get_doors = await api.fetchAPIGet("door");
-    console.log("Doors",response_get_doors)
     doors.value = response_get_doors.map(door => ({
       ...door,
       name: door.name.replace(/porte/, "").trim() // Remplace "porte" par rien et enlève les espaces inutiles
