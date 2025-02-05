@@ -62,13 +62,16 @@
           </div>
           <div class="container_door_content">
             <div class="left_sec">
-                <h2>Les portes</h2>
-                <div class="wrapper_doors">
-                  <ul>
-                      <li v-for="(door, index) in doors" :key="index"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door"> {{ door.name }}</li>
-                  </ul>
-                </div>
-            </div>  
+              <h2>Les portes</h2>
+              <div class="wrapper_doors">
+                <ul>
+                  <li v-for="(door, index) in doors" :key="index">
+                    <img src="/public/assets/porte-ouverte.png" alt="" class="icon_door">
+                    N°{{ door.order }} : {{ door.name }}
+                  </li>
+                </ul>
+              </div>
+            </div>
             <hr class="separator_door">
             <div class="right_sec" v-if="selectedDoorEdit == 0">
               <div class="wrapper_text">
