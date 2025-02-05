@@ -7,7 +7,7 @@
       </p>
       <p class="content">{{ post.content }}</p>
     </div>
-    <div v-if="(numPages + 1) >= numTotalPages">
+    <div v-if="(numPages + 1) <= numTotalPages">
       <UButton @click="requetRepport">Charger plus...</UButton>
     </div>
   </div>
