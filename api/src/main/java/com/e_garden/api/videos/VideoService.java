@@ -110,39 +110,6 @@ public class VideoService {
     }
 
 
-    /**
-     * 📌 Enregistre une vidéo toutes les 10 minutes.
-     */
-    @Scheduled(fixedRate = 600_000) // 10 minutes = 600_000 ms
-    public void scheduleTenMinuteRecording() {
-        System.out.println("⏳ [Scheduler] Démarrage de l'enregistrement pour 10 minutes...");
-        startTenMinuteRecording();
-    }
-
-    /**
-     * Démarre l'enregistrement d'une vidéo de 10 minutes.
-     */
-    public void startTenMinuteRecording() {
-        if (RTSP_URL == null || RTSP_URL.isEmpty()) {
-            System.err.println("⚠️ RTSP_URL environment variable is not set or empty.");
-            return;
-        }
-
-        // Génération d'un nom de fichier basé sur la date et l'heure
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm")) + ".mp4";
-        String filePath = OUTPUT_DIRECTORY + File.separator + fileName;
-
-        // Création du répertoire de sortie si nécessaire
-        File outputDir = new File(OUTPUT_DIRECTORY);
-        if (!outputDir.exists() && !outputDir.mkdirs()) {
-            System.err.println("⚠️ Échec de la création du répertoire de sortie.");
-            return;
-        }
-
-        // Lancer l'enregistrement en arrière-plan
-        System.out.println("🎥 Démarrage de l'enregistrement : " + fileName);
-        startRecordingAsync(RTSP_URL, filePath, fileName, Duration.ofMinutes(1));
-    }
 
 
     /**
