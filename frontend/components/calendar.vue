@@ -35,7 +35,7 @@
     <div class="events">
       <h2>Évènements</h2>
       <div class="wrapper_content">
-        <Replay/>
+        <Replay :day="selectedDateDay" :month="selectedDateMonth" :year="selectedDateYear" :isVideo="isPresentVideo(selectedDate)"/>
       </div>
     </div>
   </div>
@@ -67,6 +67,11 @@ const weekdays = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 
 // 📅 Calcul du mois actuel
 const currentMonth = computed(() => format(currentDate.value, "MMMM yyyy"));
+
+const selectedDateYear = computed(() => format(selectedDate.value, "yyyy"));
+const selectedDateMonth = computed(() => format(selectedDate.value, "MM"));
+const selectedDateDay = computed(() => format(selectedDate.value, "dd"));
+
 
 // 📆 Calcul des jours du mois affiché
 const days = computed(() => {
