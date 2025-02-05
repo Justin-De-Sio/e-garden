@@ -8,10 +8,10 @@
 </template>
 
 <script setup lang="ts">
-import {callAPIServices} from "~/services/callAPIServices";
-import type {Reports} from "~/model/Reports.js";
-import type {Pages} from "~/model/Pages.js"
-import {onMounted, ref} from "vue";
+import { callAPIServices } from "~/services/callAPIServices";
+import type { Reports } from "~/model/Reports.js";
+import type { Pages } from "~/model/Pages.js";
+import { onMounted, ref } from "vue";
 
 const api = new callAPIServices();
 const reports = ref<Reports[]>([]);
@@ -22,20 +22,17 @@ onMounted(async () => {
 
 async function requetRepport() {
   try {
-    const response = await api.fetchAPIGetPaginated('report/history', 0,10) as Pages;
+    const response = await api.fetchAPIGetPaginated('report/history', "0", "10") as Pages;
     console.log(response.content);
-    reports.value.concat(response.content);
+    // Mise à jour de reports en concaténant le contenu
+    reports.value = reports.value.concat(response.content as Reports[]);
     console.log(reports.value);
-  }
-
-  catch (error) {
+  } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
 }
-
-
-
 </script>
+
 
 <style scoped>
 .feed {
