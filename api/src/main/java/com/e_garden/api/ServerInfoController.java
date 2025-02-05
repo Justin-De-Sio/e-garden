@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Le type Server info controller.
+ * Le type Server information controller.
  */
 @RestController
 @Secured({"ADMINISTRATEUR"})

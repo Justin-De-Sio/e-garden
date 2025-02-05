@@ -101,7 +101,7 @@ public class VideoService {
             return new ResourceRegion(video, 0, rangeLength);
         } else {
             // Use the first range specified in the header.
-            HttpRange range = ranges.get(0);
+            HttpRange range = ranges.getFirst();
             long start = range.getRangeStart(contentLength);
             long end = range.getRangeEnd(contentLength);
             long rangeLength = Math.min(chunkSize, end - start + 1);
@@ -185,8 +185,8 @@ public class VideoService {
      * Exécute l'enregistrement vidéo en arrière-plan avec FFmpeg.
      *
      * @param rtspUrl  le rtsp url
-     * @param filePath le file path
-     * @param fileName le file name
+     * @param filePath le path
+     * @param fileName le filename
      * @param duration le duration
      */
     @Async
@@ -230,7 +230,7 @@ public class VideoService {
                     .body(videoResource);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

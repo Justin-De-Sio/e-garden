@@ -25,7 +25,7 @@ public class LogService {
     }
 
     /**
-     * Create log.
+     * Create a log.
      *
      * @param level   le level
      * @param message le message

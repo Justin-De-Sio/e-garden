@@ -1,7 +1,6 @@
 package com.e_garden.api.event;
 
 import com.e_garden.api.PageDTO;
-import com.e_garden.api.door.Door;
 import com.e_garden.api.door.DoorService;
 import com.e_garden.api.report.Report;
 import com.e_garden.api.report.ReportService;

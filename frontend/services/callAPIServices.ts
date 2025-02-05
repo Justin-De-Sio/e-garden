@@ -4,7 +4,7 @@ export class callAPIServices {
      * Le format peut être :
      * user/profil
      * user/profil/12
-     * object/info?nom=egaren
+     * object/info?nom=egarden
      * video/stream?titre=film&sousTitre=auteur
      * @return valide ou non en fonction de la demande et de l'authentification
      * @param url

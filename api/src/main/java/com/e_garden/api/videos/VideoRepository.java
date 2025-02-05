@@ -19,14 +19,14 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Video findFirstByFileDateBetweenOrderByFileDurationDesc(LocalDateTime start, LocalDateTime end);
 
     /**
-     * Delete by file name.
+     * Delete it by a filename.
      *
-     * @param fileName le file name
+     * @param fileName le filename
      */
     void deleteByFileName(String fileName); // Suppression par le nom du fichier
 
     /**
-     * Find by file date after list.
+     * Find by file date after a list.
      *
      * @param date le date
      * @return le list
@@ -34,7 +34,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findByFileDateAfter(LocalDateTime date);
 
     /**
-     * Find by file date between list.
+     * Find by file date between a list.
      *
      * @param start le start
      * @param end   le end

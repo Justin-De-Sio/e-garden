@@ -107,7 +107,7 @@ public class SecurityConf {
      *
      * @param configuration le configuration
      * @return le authentication manager
-     * @throws Exception le exception
+     * @throws Exception l'exception
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

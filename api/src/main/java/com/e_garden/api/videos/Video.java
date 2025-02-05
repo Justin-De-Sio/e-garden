@@ -31,7 +31,7 @@ public class Video {
     /**
      * Instancie un nouveau Video.
      *
-     * @param fileName     le file name
+     * @param fileName     le filename
      * @param fileDuration le file duration
      */
     public Video(String fileName, Duration fileDuration) {
@@ -59,18 +59,18 @@ public class Video {
     }
 
     /**
-     * Gets file name.
+     * Gets filename.
      *
-     * @return le file name
+     * @return le filename
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * Sets file name.
+     * Sets filename.
      *
-     * @param fileName le file name
+     * @param fileName le filename
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;

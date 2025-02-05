@@ -92,7 +92,7 @@
             <div class="right_sec" v-if="selectedDoorEdit == 1">
               <div class="wrapper_text">
                 <h3>Vous souhaitez créer une porte ? </h3>
-                <p> Votre tracabilité sera améliorée ! </p>
+                <p> Votre traçabilité sera améliorée ! </p>
               </div>
               <div class="wrapper_form">
                 <UForm :schema="schema" :state="state" class="space-y-6" @submit="onSubmit_create" >
@@ -212,10 +212,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     }
   }
   await api.fetchAPIDelete("door",willDeleted.value)
-  await getdoors();
+  await getDoors();
 
   notificationColor.value = "red";
-  notificationTitle.value = "Suppresion de porte"; 
+  notificationTitle.value = "Suppression de porte";
   notificationMessage.value = "Vous venez de supprimer une de vos portes !"; 
   notificationVisible.value = true;
 
@@ -232,7 +232,7 @@ async function onSubmit_create(event: FormSubmitEvent<Schema>) {
   console.log("creation", getRequestBodyPost())
   await api.fetchAPIPost("door",getRequestBodyPost())
     
-  await getdoors();
+  await getDoors();
   notificationColor.value = "primary";
   notificationTitle.value = "Création de porte"; 
   notificationMessage.value = "Vous venez de créer une nouvelle porte !"; 
@@ -261,9 +261,8 @@ async function onSubmit_modify(event: FormSubmitEvent<Schema_edit>) {
     }
   }
   const response = await api.fetchAPIPutWithId("door", id_found_edit.value, getRequestBodyPUT());
-  console.log("respose", response)
 
-  await getdoors();
+  await getDoors();
   notificationColor.value = "orange";
   notificationTitle.value = "Modification de porte"; 
   notificationMessage.value = "Vous venez de modifier le nom d'une porte !"; 
@@ -305,7 +304,7 @@ const updateBackground = (index: number) => {
 
 
 
-async function getdoors() {
+async function getDoors() {
   try {
     const response_get_doors = await api.fetchAPIGet("door");
     doors.value = response_get_doors.map(door => ({
@@ -319,7 +318,7 @@ async function getdoors() {
 }
 
 onMounted(async () => {
-  await getdoors();
+  await getDoors();
   updateBackground(selectedDoorEdit.value);
 });
 

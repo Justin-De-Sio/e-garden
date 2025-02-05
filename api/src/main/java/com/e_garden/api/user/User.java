@@ -163,7 +163,7 @@ public class User {
     /**
      * Sets enable.
      *
-     * @param enable l'enable
+     * @param enable enable
      */
     public void setEnable(boolean enable) {
         this.enable = enable;

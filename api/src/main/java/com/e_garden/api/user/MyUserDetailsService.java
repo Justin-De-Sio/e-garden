@@ -31,7 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
      * UserPrincipal est renseigné à partir d'un utilisateur trouvé en DB avec un email.
      *
      * @param username email de l'utilisateur
-     * @return l 'UserPrincipal correspondant à l'email
+     * @return l'UserPrincipal correspondant à l'email
      * @throws UsernameNotFoundException Exception en cas d'absence de l'utilisateur
      */
     @Override

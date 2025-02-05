@@ -76,7 +76,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     /**
-     * Is credentials non expired boolean.
+     * Are credentials non expired boolean.
      *
      * @return true boolean
      */
