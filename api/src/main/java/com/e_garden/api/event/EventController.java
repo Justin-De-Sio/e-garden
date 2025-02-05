@@ -91,7 +91,7 @@ public class EventController {
         Event event = new Event();
         event.setTitle("Enregistrement de passage");
         event.setEventType(0);
-        event.setDoor(doorService.getDoorById(id));
+        event.setDoor(doorService.getDoorByOrder(id));
 
         UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userByEmail = userService.getUserByEmail(user.getUsername());
