@@ -99,6 +99,9 @@
                 <UFormGroup label="Porte" name="door">
                   <UInput v-model="state.door" />
                 </UFormGroup>
+                <UFormGroup label="Nombre" name="order">
+                  <UInput v-model="state.order" />
+                </UFormGroup>
                 <UButton type="submit" class="button_3_function">
                   Créer
                 </UButton>
@@ -151,7 +154,7 @@
 import { ref, nextTick, onMounted, type Ref } from "vue";
 import NavbarVertical from "~/components/navbar_vertical.vue";
 import { callAPIServices } from "~/services/callAPIServices";
-import { z } from 'zod'
+import { number, z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
 const api = new callAPIServices();
@@ -164,6 +167,7 @@ definePageMeta({
 
 const schema = z.object({
   door: z.string(),
+  order: z.number().int(),
 })
 
 const schema_edit = z.object({
@@ -177,6 +181,7 @@ type Schema_edit = z.output<typeof schema_edit>
 
 const state = reactive({
   door: undefined,
+  order: undefined,
 })
 
 const state_edit = reactive({
