@@ -279,7 +279,7 @@ const items = {
   gestion: "Gestions du potager",
   door: "Portes"
 };
-const selectedItem = ref("door");
+const selectedItem = ref('gestion');
 
 
 const doors_edit = ["Supprimer", "Créer", "Modifier"];
