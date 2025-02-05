@@ -21,11 +21,11 @@
       </div>
       <div class="calendar-days">
         <div
-          v-for="day in days"
-          :key="day.date"
-          class="calendar-day"
-          :class="{ selected: isSelected(day.date), 'not-in-month': !isInCurrentMonth(day.date) }"
-          @click="selectDay(day.date)"
+            v-for="day in days"
+            :key="day.date.toISOString()"
+            class="calendar-day"
+            :class="{ selected: isSelected(day.date), 'not-in-month': !isInCurrentMonth(day.date) }"
+            @click="selectDay(day.date)"
         >
           {{ day.label }}
         </div>
@@ -34,61 +34,78 @@
     <div class="events">
       <h2>Évènements</h2>
       <div class="wrapper_content">
-        <replay />
+        <Replay />
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, startOfToday, isSameDay, isSameMonth } from 'date-fns';
-import replay from './replay.vue';
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, startOfToday, isSameDay, isSameMonth } from "date-fns";
+import {callAPIServices} from "~/services/callAPIServices";
+import type {Video} from "~/model/Videos";
 
+// 🗓️ États réactifs
+const currentDate = ref<Date>(startOfToday());
+const selectedDate = ref<Date | null>(null);
+const video = ref(null);
+const weekdays = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 
-export default {
-  data() {
-    return {
-      currentDate: startOfToday(),
-      selectedDate: null,
-      weekdays: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-    };
-  },
-  computed: {
-    currentMonth() {
-      return format(this.currentDate, 'MMMM yyyy');
-    },
-    days() {
-      const start = startOfWeek(startOfMonth(this.currentDate));
-      const end = endOfWeek(endOfMonth(this.currentDate));
-      let day = start;
-      const days = [];
-      while (day <= end) {
-        days.push({ date: day, label: format(day, 'd') });
-        day = addDays(day, 1);
-      }
-      return days;
-    },
-  },
-  methods: {
-    prevMonth() {
-      this.currentDate = subMonths(this.currentDate, 1);
-    },
-    nextMonth() {
-      this.currentDate = addMonths(this.currentDate, 1);
-    },
-    isSelected(date) {
-      return this.selectedDate && isSameDay(date, this.selectedDate);
-    },
-    isInCurrentMonth(date) {
-      return isSameMonth(date, this.currentDate);
-    },
-    selectDay(date) {
-      this.selectedDate = date;
-      console.log('Jour sélectionné:', format(date, 'yyyy-MM-dd'));
-    },
-  },
+// 📅 Calcul du mois actuel
+const currentMonth = computed(() => format(currentDate.value, "MMMM yyyy"));
+
+// 📆 Calcul des jours du mois affiché
+const days = computed(() => {
+  const start = startOfWeek(startOfMonth(currentDate.value));
+  const end = endOfWeek(endOfMonth(currentDate.value));
+  let day = start;
+  const daysArray = [];
+
+  while (day <= end) {
+    daysArray.push({ date: day, label: format(day, "d") });
+    day = addDays(day, 1);
+  }
+
+  return daysArray;
+});
+
+// 🔄 Navigation entre les mois
+const prevMonth = () => {
+  currentDate.value = subMonths(currentDate.value, 1);
 };
+const nextMonth = () => {
+  currentDate.value = addMonths(currentDate.value, 1);
+};
+
+// ✅ Vérifications sur les dates
+const isSelected = (date: Date) => selectedDate.value && isSameDay(date, selectedDate.value);
+const isInCurrentMonth = (date: Date) => isSameMonth(date, currentDate.value);
+
+// 📌 Sélection d'un jour
+const selectDay = (date: Date) => {
+  selectedDate.value = date;
+  console.log("Jour sélectionné:", format(date, "yyyy-MM-dd"));
+};
+
+// 🎥 Récupération des vidéos
+const getVideoFile = async () => {
+  const api = new callAPIServices();
+  try {
+    const response = await api.fetchAPIGet("videos/month-videos") as Video;
+    console.log(response);
+    video.value = response;
+  } catch (error) {
+    console.error("Les vidéos n'ont pas été récupérées pour le mois demandé", error);
+  }
+};
+
+// 🚀 Chargement des vidéos au montage du composant
+onMounted(() => {
+  getVideoFile();
+});
 </script>
+
 
 <style scoped>
 .calendar {
