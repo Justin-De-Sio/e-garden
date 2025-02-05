@@ -46,7 +46,7 @@ public class DoorService {
      */
     public Door saveDoor(Door door) {
         if (door.getName().length() < 2)
-            throw new IllegalArgumentException("Une porte doit avoir contenir minimum deux caractères"); // todo a tester
+            throw new IllegalArgumentException("Une porte doit avoir contenir minimum deux caractères");
         Door doorSaved = doorRepository.save(door);
         logService.createLog(String.valueOf(Levels.DOOR), "Enregistrement d'une porte", "Porte : " + door);
         return doorSaved;
