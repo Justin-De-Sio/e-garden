@@ -23,13 +23,12 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
      * @param response              la réponse
      * @param accessDeniedException Injection de l'objet AccessDeniedException
      * @throws IOException      l'exception levée avec le message personnalisée
-     * @throws ServletException l'exception levée en cas de besoin
      */
     @Override
     public void handle(
             HttpServletRequest request,
             HttpServletResponse response,
-            AccessDeniedException accessDeniedException) throws IOException, ServletException {
+            AccessDeniedException accessDeniedException) throws IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write("Accès refusé : Vous n'avez pas les autorisations requises.");
     }

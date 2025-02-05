@@ -30,7 +30,7 @@ public class UserService {
      * Instancies un nouveau User service.
      *
      * @param userRepository        l'user repository
-     * @param authenticationManager l'authentication manager
+     * @param authenticationManager authentication manager
      * @param jwtService            le jwt service
      * @param log                   le log
      */
@@ -121,9 +121,9 @@ public class UserService {
     }
 
     /**
-     * Save users list.
+     * Save users' list.
      *
-     * @param users l'users
+     * @param users les users
      * @return la liste
      */
     public List<User> saveUsers(Iterable<User> users) {
@@ -197,7 +197,7 @@ public class UserService {
     /**
      * Verify object.
      *
-     * @param user le user
+     * @param user l'user
      * @return le object
      */
     public Object verify(User user) {
@@ -256,7 +256,7 @@ public class UserService {
      *
      * @param currentUser utilisateur avec les informations connues
      * @param newUser     utilisateur avec les nouvelles informations
-     * @return l 'utilisateur à jour
+     * @return l'utilisateur à jour
      */
     public User updateUser(User currentUser, User newUser) {
         currentUser.setName(newUser.getName());

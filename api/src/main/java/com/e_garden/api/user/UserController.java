@@ -63,7 +63,7 @@ public class UserController {
      * Change user password response entity.
      *
      * @param id                   l'identifiant
-     * @param objectChangePassword l'object change password
+     * @param objectChangePassword object change password
      * @return le response entity
      */
     @PostMapping("/changePassword/{id}")
@@ -97,7 +97,7 @@ public class UserController {
     /**
      * Login response entity.
      *
-     * @param user le user
+     * @param user l'user
      * @return le response entity
      */
     @PostMapping("/login")
@@ -109,10 +109,10 @@ public class UserController {
     }
 
     /**
-     * Gets user by id.
+     * Gets user by an ID.
      *
-     * @param id the id
-     * @return le user by id
+     * @param id the ID
+     * @return le user by ID
      */
     @GetMapping("/{id}")
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
@@ -121,7 +121,7 @@ public class UserController {
     }
 
     /**
-     * Gets all user.
+     * Gets all users.
      *
      * @return le all user
      */
@@ -138,10 +138,10 @@ public class UserController {
     }
 
     /**
-     * Create user user.
+     * Create user.
      *
-     * @param user le user
-     * @return le user
+     * @param user l'user
+     * @return l'user
      */
     @PostMapping
     @Secured({"ADMINISTRATEUR", "RESPONSABLE"})
@@ -171,8 +171,8 @@ public class UserController {
     /**
      * Update user response entity.
      *
-     * @param id   le id
-     * @param user le user
+     * @param id   l'ID
+     * @param user l'user
      * @return le response entity
      */
     @PutMapping("/{id}")

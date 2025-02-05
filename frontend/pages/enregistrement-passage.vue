@@ -10,7 +10,7 @@ const api = new callAPIServices();
 const route = useRoute();
 const porte = route.query.porte;
 const message = ref('');
-const notificationVisible = ref(false);
+//const notificationVisible = ref(false);
 
 const enregistrerPassage = async () => {
   try {

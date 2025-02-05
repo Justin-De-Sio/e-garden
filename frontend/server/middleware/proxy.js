@@ -16,7 +16,7 @@ export default defineEventHandler((event) => {
         // Use the cookie name "session" instead of "jwtToken"
         const token = cookies.session;
         if (token) {
-          // Attach the token in the Authorization header with the Bearer scheme
+          // Attach the token in the Authorization header with the Bearer scheme.
           proxyReq.setHeader('Authorization', `Bearer ${token}`);
         }
       }

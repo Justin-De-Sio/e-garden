@@ -22,11 +22,11 @@ public class EventDTO {
     /**
      * Instancies un nouveau Event dto.
      *
-     * @param id          le id
-     * @param title       le title
-     * @param description le description
-     * @param eventType   le event type
-     * @param userId      le user id
+     * @param id          l'identifiant
+     * @param title       le titre
+     * @param description la description
+     * @param eventType   le type de l'événement
+     * @param userId      l'identifiant de l'utilisateur
      */
     public EventDTO(Long id, String title, String description, Integer eventType, Long userId) {
         this.id = id;
@@ -55,7 +55,7 @@ public class EventDTO {
     }
 
     /**
-     * Gets event type.
+     * Gets an event type.
      *
      * @return le event type
      */

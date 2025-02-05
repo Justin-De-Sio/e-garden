@@ -9,7 +9,7 @@ public class ObjectChangePassword {
     private String confirmNewPassword;
 
     /**
-     * Sets current password.
+     * Sets a current password.
      *
      * @param currentPassword le current password
      */
@@ -18,7 +18,7 @@ public class ObjectChangePassword {
     }
 
     /**
-     * Sets new password.
+     * Sets a new password.
      *
      * @param newPassword le new password
      */
@@ -27,7 +27,7 @@ public class ObjectChangePassword {
     }
 
     /**
-     * Sets confirm new password.
+     * Sets confirm a new password.
      *
      * @param confirmNewPassword le confirm new password
      */
@@ -36,7 +36,7 @@ public class ObjectChangePassword {
     }
 
     /**
-     * Gets current password.
+     * Gets a current password.
      *
      * @return le current password
      */
@@ -45,7 +45,7 @@ public class ObjectChangePassword {
     }
 
     /**
-     * Gets new password.
+     * Gets a new password.
      *
      * @return le new password
      */
@@ -54,7 +54,7 @@ public class ObjectChangePassword {
     }
 
     /**
-     * Gets confirm new password.
+     * Gets confirm a new password.
      *
      * @return le confirm new password
      */

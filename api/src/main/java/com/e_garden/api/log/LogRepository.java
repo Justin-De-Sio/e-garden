@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface LogRepository extends JpaRepository<Log, Long> {
     /**
-     * Find by level in list.
+     * Find by level in a list.
      *
      * @param levels les levels
      * @return la list

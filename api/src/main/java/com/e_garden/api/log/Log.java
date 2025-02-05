@@ -95,7 +95,7 @@ public class Log {
     /**
      * Gets details.
      *
-     * @return les details
+     * @return les détails
      */
     public String getDetails() {
         return details;
@@ -104,7 +104,7 @@ public class Log {
     /**
      * Sets details.
      *
-     * @param details les details
+     * @param details les détails
      */
     public void setDetails(String details) {
         this.details = details;

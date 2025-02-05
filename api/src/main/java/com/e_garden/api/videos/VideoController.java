@@ -77,8 +77,8 @@ public class VideoController {
         try {
             return videoService.streamVideo(dateTime, headers);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            System.err.println(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -86,7 +86,7 @@ public class VideoController {
     /**
      * Gets video.
      *
-     * @param fileName le file name
+     * @param fileName le filename
      * @return le video
      */
     @GetMapping("/{fileName}")

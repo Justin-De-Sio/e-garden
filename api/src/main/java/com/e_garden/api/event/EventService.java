@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -60,7 +59,7 @@ public class EventService {
     }
 
     /**
-     * Gets events by id.
+     * Gets events by an ID.
      *
      * @param id l'identifiant
      * @return l'events trouvé avec id

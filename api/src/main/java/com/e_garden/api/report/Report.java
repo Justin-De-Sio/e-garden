@@ -54,7 +54,7 @@ public class Report {
     /**
      * Instancie un nouveau Report.
      *
-     * @param user le user
+     * @param user l'user
      */
     public Report(User user) {
         this();
@@ -64,7 +64,7 @@ public class Report {
     /**
      * Instancie un nouveau Report.
      *
-     * @param user    le user
+     * @param user    l'user
      * @param content le content
      */
     public Report(User user, String content) {

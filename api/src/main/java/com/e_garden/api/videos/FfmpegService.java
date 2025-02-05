@@ -36,7 +36,7 @@ public class FfmpegService {
                         System.out.println("[FFmpeg] " + line); // Affiche chaque ligne de sortie dans la console
                     }
                 } catch (Exception e) {
-                    e.printStackTrace(); // Capture et affiche les erreurs liées à la lecture des logs
+                    System.err.println(e.getMessage());
                 }
             }).start();
 
@@ -58,7 +58,7 @@ public class FfmpegService {
 
         } catch (Exception e) {
             // Capture et affiche toutes les exceptions survenues lors de l'exécution de la commande
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             System.err.println("[FFmpeg] Error during command execution: " + e.getMessage());
         }
     }
