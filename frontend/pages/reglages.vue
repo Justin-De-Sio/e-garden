@@ -65,7 +65,7 @@
                 <h2>Les portes</h2>
                 <div class="wrapper_doors">
                   <ul>
-                      <li v-for="(door, index) in doors" :key="index"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door" @click="selectDoor(door)"> {{ door.name }}</li>
+                      <li v-for="(door, index) in doors" :key="index" @click="selectDoor(door)" class="selectDOOR"><img src="/public/assets/porte-ouverte.png" alt="" class="icon_door" > {{ door.name }}</li>
                   </ul>
                 </div>
             </div>  
@@ -438,6 +438,10 @@ const card_details = [
   color: black;
   font-size: clamp(0.8rem, 1.3vw, 1rem);
   transition: background-color 0.3s ease;
+}
+
+.selectDOOR{
+  cursor: pointer;
 }
 
 .right_section_gestion {
