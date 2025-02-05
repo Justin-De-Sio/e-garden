@@ -40,8 +40,8 @@ onMounted(async () => {
 });
 
 let columns = [
-  {key: 'id', label: 'ID'},
-  {key: 'surname', label: 'Nom', sortable: true},
+    {key: 'id', label: 'ID'},
+    {key: 'surname', label: 'Nom', sortable: true},
   {key: 'name', label: 'Prénom', sortable: true},
   {key: 'email', label: 'Email', sortable: true},
   {key: 'className', label: 'Classe', sortable: true},

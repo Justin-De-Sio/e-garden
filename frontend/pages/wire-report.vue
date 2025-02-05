@@ -6,17 +6,19 @@
         <header_title title="Page d'accueil" subtitle="Retrouvez tous les rapports pour la gestion de votre potager"/>
       </div>
     </div>
+    <Report_queue/>
   </div>
 </template>
 
 <script setup lang="ts">
 import navbarVertical from "~/components/navbar_vertical.vue"
 import header_title from "~/components/header_title.vue";
+import report_queue from "~/components/report_queue.vue";
+
 
 
 definePageMeta({
   middleware: "auth",
-  role: ["ADMINISTRATEUR", "RESPONSABLE", "UTILISATEUR"],
 })
 </script>
 
