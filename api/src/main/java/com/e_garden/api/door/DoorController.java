@@ -59,6 +59,7 @@ public class DoorController {
     public ResponseEntity<Door> updateDoor(@PathVariable Long id, @RequestBody Door door) {
         Door updatedDoor = new Door(door.getName());
         updatedDoor.setId(id);
+        updatedDoor.setOrder(door.getOrder());
         return ResponseEntity.ok(doorService.saveDoor(updatedDoor));
     }
 
