@@ -7,12 +7,12 @@
                 </div>
                 <div class="inside_content">
                     <h2>Rediffusion</h2>
-                    <h4>Date</h4>
+                    <h4>{{ day }} "-" {{ month }} "-" {{ year }}</h4>
                 </div>
             </div>
             <div class="right_section">
                 <div class="background_button">
-                    <button type="button">Visionner</button>
+                    <button type="button" @click="SeeVideo">Visionner</button>
                 </div>
             </div>
         </div>
@@ -20,7 +20,15 @@
 </template>
 
 <script setup lang="ts">
+    defineProps<{
+        day: string | number;
+        month: string;
+        year: string | number;
+    }>();
 
+    async function SeeVideo(day: string | number, month: string, year: string | number) {
+            
+    } 
 </script>
 
 <style scoped>
