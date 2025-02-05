@@ -21,6 +21,11 @@
 </template>
 
 <script setup lang="ts">
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 defineProps<{
   day: string | "";
   month: string | "";
@@ -29,7 +34,8 @@ defineProps<{
 }>();
 
 async function SeeVideo(year, month, day) {
-  navigateTo(`video?year=${year}&month=${month}&day=${day}`)
+  const url = router.resolve(`video?year=${year}&month=${month}&day=${day}`).href;  // Résolution de l'URL interne
+  window.open(url, '_blank');
 }
 </script>
 
