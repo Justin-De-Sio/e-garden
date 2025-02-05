@@ -5,8 +5,11 @@
       <div class="header_bis">
         <header_title title="Page d'accueil" subtitle="Retrouvez tous les rapports pour la gestion de votre potager"/>
       </div>
+
     </div>
+    <div class="media_item report_wrapper">
     <Report_queue/>
+    </div>
   </div>
 </template>
 
@@ -145,7 +148,12 @@ h3 {
   font-size: 1rem;
 }
 
-
+.report_wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
 
 
 </style>
