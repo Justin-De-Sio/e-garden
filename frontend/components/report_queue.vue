@@ -68,7 +68,7 @@ onUnmounted(() => {
 
 <style scoped>
 .loading-trigger {
-  height: 50px;
+  height: 80px;
 }
 .wrapperContainer {
   flex-direction: row;
@@ -98,4 +98,19 @@ onUnmounted(() => {
 .content {
   font-size: 1em;
 }
+
+@media screen and (max-width: 1200px) {
+  .wrapperContainer {
+    flex-direction: row;
+    align-items: center;
+    width: 90%;
+    max-height: 100%;
+    gap: 1rem;
+    background-color: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
 </style>
