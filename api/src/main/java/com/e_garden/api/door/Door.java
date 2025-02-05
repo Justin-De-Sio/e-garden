@@ -109,7 +109,6 @@ public class Door {
     @Override
     public String toString() {
         return "Door{" +
-                "events=" + events +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", order=" + doorNumber +
