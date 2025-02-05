@@ -42,7 +42,7 @@ onMounted(() => {
     hls.attachMedia(video);
 
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      console.log('HLS.js is ready!');
+      //console.log('HLS.js is ready!');
     });
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = videoSrc;

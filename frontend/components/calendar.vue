@@ -6,10 +6,10 @@
       </div>
       <div class="calendar-navigation">
         <button @click="prevMonth">
-          <img src="~/public/assets/gauche.png" alt="Mois précédent" />
+          <img src="~/public/assets/gauche.png" alt="Mois précédent"/>
         </button>
         <button @click="nextMonth">
-          <img src="~/public/assets/droite.png" alt="Mois suivant" />
+          <img src="~/public/assets/droite.png" alt="Mois suivant"/>
         </button>
       </div>
     </div>
@@ -23,6 +23,7 @@
         <div
             v-for="day in days"
             :key="day.date.toISOString()"
+            :style="{ fontWeight: isPresentVideo(day.date) ? 'bold' : 'normal' }"
             class="calendar-day"
             :class="{ selected: isSelected(day.date), 'not-in-month': !isInCurrentMonth(day.date) }"
             @click="selectDay(day.date)"
@@ -34,15 +35,27 @@
     <div class="events">
       <h2>Évènements</h2>
       <div class="wrapper_content">
-        <Replay />
+        <Replay/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, startOfToday, isSameDay, isSameMonth } from "date-fns";
+import {computed, onMounted, ref} from "vue";
+import {
+  addDays,
+  addMonths,
+  endOfMonth,
+  endOfWeek,
+  format,
+  isSameDay,
+  isSameMonth,
+  startOfMonth,
+  startOfToday,
+  startOfWeek,
+  subMonths
+} from "date-fns";
 import {callAPIServices} from "~/services/callAPIServices";
 import type {Video} from "~/model/Videos";
 
@@ -63,7 +76,7 @@ const days = computed(() => {
   const daysArray = [];
 
   while (day <= end) {
-    daysArray.push({ date: day, label: format(day, "d") });
+    daysArray.push({date: day, label: format(day, "d")});
     day = addDays(day, 1);
   }
 
@@ -71,12 +84,28 @@ const days = computed(() => {
 });
 
 // 🔄 Navigation entre les mois
-const prevMonth = () => {
+const prevMonth = async () => {
   currentDate.value = subMonths(currentDate.value, 1);
+  await getVideoFile();
 };
-const nextMonth = () => {
+const nextMonth = async () => {
   currentDate.value = addMonths(currentDate.value, 1);
+  await getVideoFile();
 };
+
+function isPresentVideo(date: Date): boolean {
+  // Vérifiez si 'video.value' est défini et si nous avons des vidéos disponibles
+  if (video.value && Array.isArray(video.value)) {
+    // Formater la date sous forme "yyyy-MM-dd" pour la comparaison
+    const formattedDate = format(date, "yyyy-MM-dd");
+
+    // Vérifiez si la date formatée est présente dans l'une des vidéos
+    return video.value.some((videoItem: Video) => videoItem.fileDate.split("T")[0] === formattedDate);
+  }
+  // Retourne false si aucune vidéo ou mauvais format
+  return false;
+}
+
 
 // ✅ Vérifications sur les dates
 const isSelected = (date: Date) => selectedDate.value && isSameDay(date, selectedDate.value);
@@ -85,16 +114,15 @@ const isInCurrentMonth = (date: Date) => isSameMonth(date, currentDate.value);
 // 📌 Sélection d'un jour
 const selectDay = (date: Date) => {
   selectedDate.value = date;
-  console.log("Jour sélectionné:", format(date, "yyyy-MM-dd"));
 };
 
 // 🎥 Récupération des vidéos
 const getVideoFile = async () => {
   const api = new callAPIServices();
   try {
-    const response = await api.fetchAPIGet("videos/month-videos") as Video;
-    console.log(response);
-    video.value = response;
+    const year = format(currentDate.value, "yyyy"); // Récupérer l'année
+    const month = format(currentDate.value, "MM"); // Récupérer le mois
+    video.value = await api.fetchAPIGet(`videos/month-videos?year=${year}&month=${month}`) as Video;
   } catch (error) {
     console.error("Les vidéos n'ont pas été récupérées pour le mois demandé", error);
   }
@@ -102,6 +130,7 @@ const getVideoFile = async () => {
 
 // 🚀 Chargement des vidéos au montage du composant
 onMounted(() => {
+  currentDate.value = startOfToday();
   getVideoFile();
 });
 </script>
@@ -161,7 +190,7 @@ onMounted(() => {
   margin-top: 10px;
 }
 
-.calendar-weekdays{
+.calendar-weekdays {
   margin: 2rem 0 1rem 0;
   color: #7F7F7F
 }
@@ -215,13 +244,13 @@ onMounted(() => {
   text-align: center;
 }
 
-.wrapper_content{
+.wrapper_content {
   margin-top: 1.5rem;
   width: 100%;
 }
 
 @media screen and (max-width: 1024px) {
-  .calendar{
+  .calendar {
     margin: 0rem;
   }
 }
