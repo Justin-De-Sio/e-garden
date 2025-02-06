@@ -76,9 +76,9 @@
                 <p>Cette action est définitive ! </p>
               </div>
               <div class="wrapper_form">
-                <UForm :schema="schema" :state="state" class="space-y-6" @submit="onSubmit" >
+                <UForm :schema="schema_edit" :state="state_edit" class="space-y-6" @submit="onSubmit" >
                 <UFormGroup label="Porte" name="door">
-                  <UInput v-model="state.door" />
+                  <UInput v-model="state_edit.door_edit" />
                 </UFormGroup>
                 <UButton type="submit" color="red" class="button_3_function">
                   Supprimer
@@ -119,7 +119,7 @@
               <div class="wrapper_form">
                 <UForm :schema="schema_edit" :state="state_edit" class="space-y-6" @submit="onSubmit_modify" >
                 <UFormGroup label="Numéro de la porte" name="order_door">
-                  <UInput v-model="state_edit.order_door" />
+                  <UInput v-model.number="state_edit.order_door" />
                 </UFormGroup>
 
                 <UFormGroup label= "Nouveau nom de la porte" name="door_edit">
@@ -171,7 +171,7 @@ const schema = z.object({
 })
 
 const schema_edit = z.object({
-  order_door: z.string(),
+  order_door: z.number(),
   door_edit: z.string(),
 })
 
@@ -180,6 +180,7 @@ type Schema = z.output<typeof schema>
 type Schema_edit = z.output<typeof schema_edit>
 
 const state = reactive({
+  id: undefined,
   door: undefined,
   order: undefined,
 })
@@ -214,23 +215,28 @@ const notificationTitle = ref("");
 const notificationMessage = ref("");
 const notificationColor =  ref("");
 
+const id = ref()
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  doorToDelete.value = event.data.door;
-  console.log("Saisie de l'utilisateur :", event.data.door);
+async function onSubmit(event: FormSubmitEvent<Schema_edit>) {
+
+
+  doorToDelete.value = event.data.door_edit.toLowerCase();
+  doorID.value = state_edit.id_door;
 
   if (!doors.value || doors.value.length === 0) {
     console.error("Aucune porte disponible !");
     return;
   }
-
+/*
   for (let i = 0; i < doors.value.length; i++) {
     if (doors.value[i].name === `${event.data.door}`) {
       console.log("ID trouvé :", doors.value[i].id);
       willDeleted.value = doors.value[i].id; 
     }
   }
-  await api.fetchAPIDelete("door",willDeleted.value)
+    */
+  await api.fetchAPIDelete("door",doorID.value)
+  state_edit.door_edit = undefined
   await getDoors();
 
   notificationColor.value = "red";
