@@ -210,7 +210,7 @@ public class UserService {
         else
             return false;
         if (!checkLoginFailure(userInfo))
-            return "Le compte utilisateur est bloqué";
+            return "Le compte utilisateur est bloqué, merci de réinitialiser le mot de passe.";
 
         try {
             Authentication authentication = authenticationManager.authenticate(

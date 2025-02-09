@@ -104,7 +104,7 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody UserDTO user) {
         Object verify = userService.verify(new User(user.getEmail().toLowerCase(Locale.ROOT), user.getPassword()));
         if (verify.equals(false))
-            return ResponseEntity.status(403).body("Identifiant ou mot de passe incorrecte");
+            return ResponseEntity.status(403).body("Identifiant ou mot de passe incorrecte.");
         return ResponseEntity.ok(verify.toString());
     }
 
